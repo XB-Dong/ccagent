@@ -81,3 +81,7 @@ Leader 已核对当前目录为空、无祖先 AGENTS.md；确认上述文件仅
 ### R1 后续上下文容量复查
 
 修改 `apps/server/business.ts` 的模型投影、`packages/cc-harness-adapter/profile.ts` 的上下文容量、`scripts/live-probe.ts` 的账本主机守卫；测试位于 `tests/context-bounds.test.ts` 与既有原生 Harness 集成。依赖仍为 Store/Learning 和原生压缩。保留完整业务数据，只分页/限制模型侧投影，避免增长后一次工具结果耗尽输入容量。云端接管预算后，本机旧账本不得用于再次付费。Leader 已审阅：无数据库迁移，工具读取新增可选分页参数，付费上限不变。
+
+### P1 活动与报表
+
+修改/新增 `packages/operations/{time,activities,csv,reports}.ts`、`apps/server/{business,app}.ts`、`apps/web/{App,api,ActivitiesPage,ReportsPage}.tsx`，测试 `tests/{activity,reports}.test.ts`。复用 Store/CAS/once 和 Tasks 状态，不建立外部平台适配器。活动阶段与到期提醒持久化，CSV 仅支持冻结的规范列。Leader 已审阅：既有通用实体表容纳新 kind，无 schema 迁移；新增受控 action，不变更付费限额；严格时间与重复导入是主要风险。

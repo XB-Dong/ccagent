@@ -13,18 +13,54 @@ test('growing task and memory stores yield bounded, paged model projections with
   try {
     for (let index = 0; index < 45; index++) {
       const source = store.source('a', `合成来源 ${index}`);
-      store.create('a', 'task', { title: '库存检查'.repeat(40), status: 'open', timeZone: 'Asia/Shanghai', checklist: Array(30).fill('检查'.repeat(100)), checked: [], sources: [source.id] });
+      store.create('a', 'task', {
+        title: '库存检查'.repeat(40),
+        status: 'open',
+        timeZone: 'Asia/Shanghai',
+        checklist: Array(30).fill('检查'.repeat(100)),
+        checked: [],
+        sources: [source.id],
+      });
       business.learning.remember('a', source.id, `事实${index}`, '精确数据'.repeat(60), true);
     }
-    const first = business.tool('a', undefined, 'list_tasks', {}) as { tasks: {id: string}[]; nextOffset: number };
+    const first = business.tool('a', undefined, 'list_tasks', {}) as {
+      tasks: { id: string }[];
+      nextOffset: number;
+    };
     assert.equal(first.tasks.length, 8);
     assert.ok(Buffer.byteLength(JSON.stringify(first)) < 6000);
-    const second = business.tool('a', undefined, 'list_tasks', { offset: first.nextOffset }) as typeof first;
+    const second = business.tool('a', undefined, 'list_tasks', {
+      offset: first.nextOffset,
+    }) as typeof first;
     assert.notEqual(first.tasks[0].id, second.tasks[0].id);
-    const memory = business.tool('a', undefined, 'read_memory', {}) as {facts: unknown[]};
+    const memory = business.tool('a', undefined, 'read_memory', {}) as { facts: unknown[] };
     assert.equal(memory.facts.length, 4);
     assert.ok(Buffer.byteLength(JSON.stringify(memory)) < 6000);
     assert.equal(store.list('a', 'memory').length, 45);
-    assert.deepEqual(business.tool('b', undefined, 'list_tasks', {}), {tasks: [], nextOffset: null, total: 0});
-  } finally { store.close(); rmSync(dir, {recursive:true, force:true}); }
+    for (let index = 0; index < 8; index++) {
+      const source = store.source('a', `Skill source ${index}`);
+      const task = store.create('a', 'task', {
+        title: `Workflow ${index}`,
+        status: 'done',
+        timeZone: 'Asia/Shanghai',
+        checklist: ['核对'],
+        checked: [true],
+        confirmedSuccess: true,
+        sources: [source.id],
+      });
+      business.learning.deriveSkill('a', task.id);
+    }
+    const found = business.tool('a', undefined, 'find_skills', { query: 'Workflow 0' }) as {
+      skills: { description: string }[];
+    };
+    assert.equal(found.skills[0].description, 'Workflow 0');
+    assert.deepEqual(business.tool('b', undefined, 'list_tasks', {}), {
+      tasks: [],
+      nextOffset: null,
+      total: 0,
+    });
+  } finally {
+    store.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
 });

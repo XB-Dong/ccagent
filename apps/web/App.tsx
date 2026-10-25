@@ -8,6 +8,8 @@ import { KnowledgePage } from './KnowledgePage.tsx';
 import { LoginPage } from './LoginPage.tsx';
 import { SettingsPage } from './SettingsPage.tsx';
 import { Assistant } from './Assistant.tsx';
+import { ActivitiesPage } from './ActivitiesPage.tsx';
+import { ReportsPage } from './ReportsPage.tsx';
 
 const navigation = [
   { id: 'home', name: '工作台', icon: 'home' },
@@ -15,9 +17,10 @@ const navigation = [
   { id: 'tasks', name: '任务清单', icon: 'tasks' },
   { id: 'feedback', name: '改进反馈', icon: 'feedback' },
   { id: 'knowledge', name: '经验与记忆', icon: 'book' },
+  { id: 'activities', name: '活动日历', icon: 'calendar' },
+  { id: 'reports', name: '数据报表', icon: 'chart' },
 ];
 const future = [
-  { id: 'activities', name: '活动日历', icon: 'calendar' },
   { id: 'inventory', name: '库存补货', icon: 'box' },
   { id: 'shipping', name: '发货协同', icon: 'box' },
   { id: 'advertising', name: '广告分析', icon: 'chart' },
@@ -72,7 +75,13 @@ export function App() {
     try {
       const result = await api(`actions/${action}`, body);
       await refresh();
-      setNotice(action === 'export' ? '需求审阅包已生成' : '已保存');
+      setNotice(
+        action === 'export'
+          ? '需求审阅包已生成'
+          : action === 'report-preview'
+            ? '检查完成，请核对预览'
+            : '已保存',
+      );
       return result;
     } catch (error) {
       setError(error instanceof Error ? error.message : '操作未完成');
@@ -221,6 +230,8 @@ export function App() {
           {page === 'tasks' && <TasksPage data={data} mutate={mutate} busy={busy} />}{' '}
           {page === 'feedback' && <FeedbackPage data={data} mutate={mutate} busy={busy} />}{' '}
           {page === 'knowledge' && <KnowledgePage data={data} mutate={mutate} busy={busy} />}
+          {page === 'activities' && <ActivitiesPage data={data} mutate={mutate} busy={busy} />}
+          {page === 'reports' && <ReportsPage data={data} mutate={mutate} busy={busy} />}
           {future.some((item) => item.id === page) && (
             <>
               <div className="page-heading">
