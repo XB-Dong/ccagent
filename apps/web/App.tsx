@@ -3,7 +3,10 @@ import { api, empty, modelLabel, type Snapshot, type Status } from './api.ts';
 import { Icon, Badge, Empty } from './components.tsx';
 import { Overview } from './Overview.tsx';
 import { TasksPage } from './TasksPage.tsx';
-import { FeedbackPage, KnowledgePage } from './LearningPages.tsx';
+import { FeedbackPage } from './FeedbackPage.tsx';
+import { KnowledgePage } from './KnowledgePage.tsx';
+import { LoginPage } from './LoginPage.tsx';
+import { SettingsPage } from './SettingsPage.tsx';
 import { Assistant } from './Assistant.tsx';
 
 const navigation = [
@@ -96,53 +99,7 @@ export function App() {
         <p>正在打开你的工作台…</p>
       </div>
     );
-  if (!authenticated)
-    return (
-      <main className="login-screen">
-        <div className="login-decoration" />
-        <section className="login-card">
-          <div className="brand">
-            <div className="brand-mark">
-              c<span>c</span>
-            </div>
-            <div>
-              <strong>cc 的工作台</strong>
-              <small>OPERATIONS COMPANION</small>
-            </div>
-          </div>
-          <span className="eyebrow">A CALMER WAY TO WORK</span>
-          <h1>cc，你好！</h1>
-          <p>
-            整理任务，积累经验。
-            <br />
-            从这里开始，让每天的运营轻一点。
-          </p>
-          <form onSubmit={(event) => void login(event)}>
-            <label>
-              工作台密码
-              <input
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                placeholder="输入你的访问密码"
-                required
-                autoFocus
-              />
-            </label>
-            {error && (
-              <div className="error-message" role="alert">
-                {error}
-              </div>
-            )}
-            <button className="primary" disabled={busy}>
-              进入工作台 <Icon name="arrow" size={17} />
-            </button>
-          </form>
-          <small>登录后可整理任务、反馈和经验；模型连接状态会单独显示。</small>
-        </section>
-        <div className="login-caption">少一些重复，多一些从容。</div>
-      </main>
-    );
+  if (!authenticated) return <LoginPage busy={busy} error={error} login={login} />;
   const name =
     [...navigation, ...future, { id: 'settings', name: '设置' }].find((item) => item.id === page)
       ?.name ?? '工作台';
@@ -284,64 +241,18 @@ export function App() {
             </>
           )}
           {page === 'settings' && (
-            <>
-              <div className="page-heading">
-                <div>
-                  <span className="eyebrow">YOUR SPACE, YOUR CONTROL</span>
-                  <h1>工作台设置</h1>
-                  <p>连接、学习与数据状态，都保持清晰。</p>
-                </div>
-              </div>
-              <section className="panel settings-panel">
-                <div>
-                  <span>助手连接</span>
-                  <Badge tone={status?.live ? 'green' : ''}>{modelLabel(status)}</Badge>
-                </div>
-                <div>
-                  <span>自动学习</span>
-                  <button
-                    className="secondary small"
-                    disabled={busy}
-                    onClick={() =>
-                      void mutate('learning', { enabled: !data.learningEnabled }).catch(() => {})
-                    }
-                  >
-                    {data.learningEnabled ? '暂停' : '恢复'}
-                  </button>
-                </div>
-                <div>
-                  <span>模型请求额度（累计）</span>
-                  <strong>
-                    {status?.budget.used.calls ?? 0} / {status?.budget.limits.maxCalls ?? 0} 次
-                  </strong>
-                </div>
-                <div>
-                  <span>整理队列</span>
-                  <strong>
-                    {data.jobs.filter((row) => row.status === 'pending').length} 待处理 ·{' '}
-                    {data.jobs.filter((row) => row.status === 'failed').length} 失败
-                  </strong>
-                </div>
-                <div>
-                  <span>需求与经验</span>
-                  <p>保存在工作台的数据目录；不会自动修改研发仓库。</p>
-                </div>
-                <div>
-                  <span>离开工作台</span>
-                  <button
-                    className="text-button"
-                    onClick={() =>
-                      void api('logout', {}).then(() => {
-                        setAuthenticated(false);
-                        setData(empty);
-                      })
-                    }
-                  >
-                    退出登录
-                  </button>
-                </div>
-              </section>
-            </>
+            <SettingsPage
+              data={data}
+              status={status}
+              busy={busy}
+              mutate={mutate}
+              logout={() =>
+                void api('logout', {}).then(() => {
+                  setAuthenticated(false);
+                  setData(empty);
+                })
+              }
+            />
           )}
         </main>
         <footer className="workspace-footer">

@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0",
   "waveId": "P0",
-  "specVersion": "0.1.0",
+  "specVersion": "0.2.0",
   "timeZone": "Asia/Shanghai",
   "phase": "execution",
   "preparationStatus": "completed",
   "executionStatus": "in_progress",
   "authorization": "human-started-fullstack-with-autonomous-wave-progression",
-  "specStatus": "r0_feasibility_in_progress",
+  "specStatus": "runtime_contract_frozen",
   "baselineSha": "3a198f0b6e07bc31021df9d73d3cfe30e3f1c469",
   "baselinePolicy": "resolve-and-freeze-exact-sha-before-task-dispatch",
   "startAt": "2026-10-26T01:23:56+08:00",
@@ -20,9 +20,9 @@
   },
   "requestedDevelopmentModels": null,
   "actualDevelopmentModels": null,
-  "independentReviewStatus": "not_run",
-  "productAcceptanceStatus": "not_run",
-  "modelApiStatus": "not_run",
+  "independentReviewStatus": "findings_fixed_reverification_in_progress",
+  "productAcceptanceStatus": "in_progress",
+  "modelApiStatus": "live_synthetic_tool_probe_passed",
   "deploymentStatus": "not_run",
   "preparationCiStatus": "passed",
   "taskIds": [
@@ -32,7 +32,22 @@
     "P0-ACCEPTANCE",
     "P0-RELEASE"
   ],
-  "repairCounts": {},
+  "repairCounts": {
+    "budget-row-projection": 1,
+    "http-task-status-overwrite": 1,
+    "native-probe-argument-order": 1,
+    "R001-negated-memory": 1,
+    "R002-truncated-usage": 1,
+    "R003-deletion-closure": 1,
+    "R004-withdrawn-export": 1,
+    "R005-cancel-status": 1,
+    "R006-chat-retry": 1,
+    "R007-delete-idempotency": 1,
+    "R008-model-status": 1,
+    "R009-budget-restore": 1,
+    "R010-amendment-export": 1,
+    "R011-token-status": 1
+  },
   "requirementsRef": "docs/product/REQUIREMENTS.zh.md",
   "requirementsChangesRef": "docs/product/changes/README.md",
   "preparationReportRef": "docs/audit/reports/report-20261026T004638+0800.md",
@@ -68,5 +83,22 @@
     "currentTurnScope": "fullstack-project-execution",
     "retainCumulativeBudgetsAndRootRepairCounts": true,
     "requirementsScopeExpansionAuthorized": false
-  }
+  },
+  "implementationSha": "ebed58c062604249051ef48b1f122a0c34298e22",
+  "currentRound": "R1-hardening-and-release-readiness",
+  "modelApiUsage": {
+    "calls": 2,
+    "inputTokens": 2206,
+    "outputTokens": 36,
+    "verified": true,
+    "ledger": "external-persistent-project-budget"
+  },
+  "taskExecution": {
+    "P0-FOUNDATION": "interfaces_validated",
+    "P0-WORKBENCH": "implemented_hardening",
+    "P0-LEARNING": "implemented_hardening",
+    "P0-ACCEPTANCE": "in_progress",
+    "P0-RELEASE": "preparing"
+  },
+  "latestStatusAt": "2026-10-26T02:06:11+08:00"
 }

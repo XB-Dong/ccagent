@@ -7,6 +7,7 @@ import { Store } from '../packages/core/store.ts';
 import { Learning, type Task } from '../packages/learning/service.ts';
 import { Capture } from '../packages/learning/capture.ts';
 import { confirmChange, exportChanges, withdrawFeedback } from '../packages/learning/export.ts';
+import { Business } from '../apps/server/business.ts';
 
 test('privacy deletion closes derived tasks, changes, exports and replay without clearing unrelated receipts', () => {
   const dir = mkdtempSync(join(tmpdir(), 'cc-closure-'));
@@ -44,6 +45,33 @@ test('confirmed requirement withdrawal exports a stable append-only withdrawal e
     assert.equal(pack.changes.length, 0);
     assert.equal(pack.withdrawals.length, 1);
     assert.equal(pack.withdrawals[0].withdrawnChangeId, change.changeId);
+  } finally {
+    store.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('feedback correction survives export and reconfirmation creates a new stable requirement change', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'cc-amendment-'));
+  const store = new Store(join(dir, 'business.sqlite'));
+  try {
+    const business = new Business(store, dir);
+    const source = store.source('a', 'Original suggestion');
+    let feedback = business.learning.feedback('a', source.id, { text: source.text })!;
+    const first = confirmChange(store, 'a', feedback.id, 'CC-FEEDBACK-001');
+    business.mutate('a', 'feedback-append', {
+      id: feedback.id,
+      revision: feedback.revision,
+      text: 'Correction: use a different order',
+      requestId: 'amendment-1',
+    });
+    let pack = exportChanges(store, 'a', dir);
+    assert.ok(JSON.stringify(pack).includes('Correction: use a different order'));
+    feedback = store.get('a', feedback.id);
+    const second = confirmChange(store, 'a', feedback.id, 'CC-FEEDBACK-001');
+    assert.notEqual(second.changeId, first.changeId);
+    pack = exportChanges(store, 'a', dir);
+    assert.match(pack.markdown, /Correction: use a different order/);
   } finally {
     store.close();
     rmSync(dir, { recursive: true, force: true });

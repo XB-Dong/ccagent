@@ -1,0 +1,11 @@
+ccagent.114-67-222-150.sslip.io {
+    encode zstd gzip
+    request_body {
+        max_size 256KB
+    }
+    reverse_proxy 127.0.0.1:4310
+    header {
+        -Server
+        Strict-Transport-Security "max-age=86400"
+    }
+}

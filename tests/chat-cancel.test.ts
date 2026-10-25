@@ -57,6 +57,15 @@ test('explicit API cancellation is persisted as cancelled and never starts a rep
     }[];
     assert.equal(rows[0].messages.at(-1)?.status, 'cancelled');
     assert.equal(app.budget.snapshot().calls, 0);
+    app.budget.reserve(1, 4096);
+    const status = (await (await fetch(`${url}/api/status`, { headers: { cookie } })).json()) as {
+      modelState: string;
+    };
+    assert.equal(
+      status.modelState,
+      'budget_exhausted',
+      'an exhausted output allowance must be visible',
+    );
   } finally {
     await app.close();
     rmSync(dir, { recursive: true, force: true });
