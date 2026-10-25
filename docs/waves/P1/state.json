@@ -1,1 +1,27 @@
-{"waveId":"P1","specVersion":"operations-v1.0","baselineSha":"9124665c76dc8ff8d706b4d5ea12e5b0682b74ff","owner":"Leader","planStatus":"frozen","executionStatus":"in_progress","entryDecision":"nonblocking-business-development-with-P0-release-gap-retained","carriedRoots":{"P0-RELEASE":"partial-public-https-and-real-recovery-rollback"},"tasks":{"P1-ACTIVITY":"ready","P1-DATA":"ready","P1-INTEGRATION":"ready"},"paidCallsPlanned":0,"perRootRepairLimit":2,"cumulativeRepairsRef":"../P0/state.json"}
+{
+  "waveId": "P1",
+  "specVersion": "operations-v1.1",
+  "baselineSha": "9124665c76dc8ff8d706b4d5ea12e5b0682b74ff",
+  "owner": "Leader",
+  "planStatus": "frozen",
+  "executionStatus": "partial",
+  "entryDecision": "nonblocking-business-development-with-P0-release-gap-retained",
+  "carriedRoots": {
+    "P0-RELEASE": "partial-public-https-and-real-recovery-rollback"
+  },
+  "tasks": {
+    "P1-ACTIVITY": "synthetic_verified",
+    "P1-DATA": "synthetic_verified",
+    "P1-INTEGRATION": "browser_verified"
+  },
+  "paidCallsPlanned": 0,
+  "perRootRepairLimit": 2,
+  "cumulativeRepairsRef": "../P0/state.json",
+  "repairCounts": {
+    "report-kind": 2,
+    "report-row-order": 1,
+    "report-blank-row": 1,
+    "activity-short-duration": 1
+  },
+  "reportRef": "../../audit/reports/P1-execution-20261026.md"
+}

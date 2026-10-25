@@ -209,6 +209,7 @@ export async function createApp(options: AppOptions) {
       const scope = String(row.scope);
       business.capture.drain(scope);
       business.tasks.drain(scope);
+      business.activities.tick(scope);
     }
   }, 3000);
   worker.unref();

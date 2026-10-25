@@ -159,6 +159,7 @@ export class Learning {
       const steps = [...task.checklist];
       const content = `# ${task.title}\n\n适用范围：${scope}\n\n前提：人工检查当前店铺与时间。\n\n${steps.map((step, index) => `${index + 1}. ${step}`).join('\n')}\n\n检查：逐项确认，缺失信息询问 cc。失败时停止并报告，不操作外部平台。`;
       const validation = this.validateDraft(steps);
+      if (Buffer.byteLength(content) > 5000) validation.push('SKILL_CONTEXT_TOO_LARGE');
       return this.store.create(scope, 'skill', {
         name: `cc-workflow-${digest(taskId).slice(0, 12)}`,
         description: task.title,
@@ -175,6 +176,7 @@ export class Learning {
   }
   validateDraft(steps: string[]): string[] {
     const errors: string[] = [];
+    if (Buffer.byteLength(JSON.stringify(steps)) > 4000) errors.push('SKILL_CONTEXT_TOO_LARGE');
     if (
       steps.length < 1 ||
       steps.length > 30 ||

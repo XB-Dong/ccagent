@@ -19,7 +19,18 @@ export function apply(ctx) {
     return result;
   }
   const definitions = [
-    ['cc_list_tasks', '分页查看当前范围内的运营任务，更多结果使用 nextOffset。', 'list_tasks', { offset: {type: 'number'} }],
+    [
+      'cc_find_skills',
+      '搜索所有已启用流程，查找历史经验；更多结果使用nextOffset，可将skillId交给cc_draft_checklist复用。',
+      'find_skills',
+      { query: { type: 'string', required: true }, offset: { type: 'number' } },
+    ],
+    [
+      'cc_list_tasks',
+      '分页查看当前范围内的运营任务，更多结果使用 nextOffset。',
+      'list_tasks',
+      { offset: { type: 'number' } },
+    ],
     [
       'cc_prepare_task',
       '创建内部任务草稿，须由 cc 确认；不能执行外部操作。',
@@ -41,7 +52,12 @@ export function apply(ctx) {
         actual: { type: 'string' },
       },
     ],
-    ['cc_read_memory', '分页查看当前范围中有效的已确认业务记忆，更多结果使用 nextOffset。', 'read_memory', { offset: {type: 'number'} }],
+    [
+      'cc_read_memory',
+      '分页查看当前范围中有效的已确认业务记忆，更多结果使用 nextOffset。',
+      'read_memory',
+      { offset: { type: 'number' } },
+    ],
     [
       'cc_draft_checklist',
       '将当前有效的 L0 Skill 清单复用为只读内部草稿。撤销版本不能使用。',

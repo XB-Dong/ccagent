@@ -9,6 +9,8 @@ export const disabledTools = [
   'terminal-pwsh',
   'pty',
   'llm-retry',
+  'session-log-deepseek',
+  'plugin-package-inventory-deepseek',
 ];
 export function operatorProfile(baseURL: string, compactWindow = 4096): object[] {
   return [

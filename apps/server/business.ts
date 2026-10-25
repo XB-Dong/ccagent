@@ -10,6 +10,8 @@ import { Capture } from '../../packages/learning/capture.ts';
 import { Tasks, type TaskInput } from '../../packages/operations/tasks.ts';
 import { confirmChange, exportChanges, withdrawFeedback } from '../../packages/learning/export.ts';
 import { safeText } from './security.ts';
+import { Activities, type Activity } from '../../packages/operations/activities.ts';
+import { Reports, type ReportInput } from '../../packages/operations/reports.ts';
 
 export class Business {
   store: Store;
@@ -17,17 +19,25 @@ export class Business {
   capture: Capture;
   tasks: Tasks;
   dataDir: string;
+  activities: Activities;
+  reports: Reports;
   constructor(store: Store, dataDir: string) {
     this.store = store;
     this.dataDir = dataDir;
     this.learning = new Learning(store);
     this.capture = new Capture(store, this.learning);
     this.tasks = new Tasks(store, this.learning);
+    this.activities = new Activities(store);
+    this.reports = new Reports(store);
   }
   snapshot(scope: string) {
     this.capture.drain(scope);
     this.tasks.drain(scope);
+    this.activities.tick(scope);
     return {
+      activities: this.store.list(scope, 'activity'),
+      reminders: this.store.list(scope, 'reminder'),
+      reports: this.store.list(scope, 'report'),
       tasks: this.store.list(scope, 'task'),
       feedback: this.store.list(scope, 'feedback'),
       memories: this.store.list(scope, 'memory'),
@@ -39,6 +49,43 @@ export class Business {
     };
   }
   mutate(scope: string, action: string, body: Record<string, unknown>) {
+    if (action === 'report-preview' || action === 'report-import') {
+      const input = body as ReportInput;
+      return action === 'report-preview'
+        ? this.reports.preview(input)
+        : this.reports.import(scope, input);
+    }
+    if (action === 'activity')
+      return this.activities.create(scope, safeText(body.requestId, 100), {
+        title: safeText(body.title, 200),
+        store: safeText(body.store, 100),
+        listing: safeText(body.listing, 100),
+        timeZone: safeText(body.timeZone, 100),
+        startAt: safeText(body.startAt, 40),
+        endAt: safeText(body.endAt, 40),
+        leadHours: Number(body.leadHours),
+        offerNote: body.offerNote ? safeText(body.offerNote, 1000) : '',
+      });
+    if (action === 'activity-cancel')
+      return this.activities.cancel(scope, safeText(body.id, 100), Number(body.revision));
+    if (action === 'activity-observe') {
+      const row = this.store.get<Activity>(scope, safeText(body.id, 100));
+      if (
+        row.kind !== 'activity' ||
+        body.confirmed !== true ||
+        !(
+          (row.status === 'planned' && body.status === 'active') ||
+          (row.status === 'active' && body.status === 'restored')
+        )
+      )
+        throw new Error('INVALID_ACTIVITY_STATE');
+      return this.store.update(row, { status: String(body.status) }, Number(body.revision));
+    }
+    if (action === 'reminder-read') {
+      const row = this.store.get<Base & { read: boolean }>(scope, safeText(body.id, 100));
+      if (row.kind !== 'reminder') throw new Error('NOT_FOUND');
+      return this.store.update(row, { read: true }, Number(body.revision));
+    }
     if (action === 'task') {
       const title = safeText(body.title, 200);
       const checklist = Array.isArray(body.checklist)
@@ -153,24 +200,61 @@ export class Business {
     throw new Error('NOT_FOUND');
   }
   tool(scope: string, sourceId: string | undefined, action: string, body: Record<string, unknown>) {
+    if (action === 'find_skills') {
+      const query = safeText(body.query, 100).toLowerCase();
+      const offset = body.offset === undefined ? 0 : Number(body.offset);
+      if (!Number.isSafeInteger(offset) || offset < 0) throw new Error('INVALID_OFFSET');
+      const rows = this.learning
+        .activeSkills(scope)
+        .filter((s) => `${s.name} ${s.description} ${s.content}`.toLowerCase().includes(query));
+      return {
+        skills: rows
+          .slice(offset, offset + 6)
+          .map(({ id, name, description }) => ({ id, name, description })),
+        total: rows.length,
+        nextOffset: offset + 6 < rows.length ? offset + 6 : null,
+      };
+    }
     if (action === 'skills')
       return this.learning
         .activeSkills(scope)
         .slice(0, 6)
         .map(({ id, name, description }) => ({ id, name, description }));
     if (action === 'skill')
-      return this.learning.activeSkills(scope).find((row) => row.id === body.id && Buffer.byteLength(row.content) <= 6000) ?? null;
+      return (
+        this.learning
+          .activeSkills(scope)
+          .find((row) => row.id === body.id && Buffer.byteLength(row.content) <= 6000) ?? null
+      );
     if (action === 'list_tasks' || action === 'read_memory') {
       const offset = body.offset === undefined ? 0 : Number(body.offset);
       if (!Number.isSafeInteger(offset) || offset < 0) throw new Error('INVALID_OFFSET');
       if (action === 'list_tasks') {
         const rows = this.store.list<Task>(scope, 'task');
-        const tasks = rows.slice(offset, offset + 8).map(({ id, title, status, timeZone, dueAt }) => ({ id, title: title.slice(0, 100), status, timeZone, dueAt }));
-        return {tasks, total: rows.length, nextOffset: offset + 8 < rows.length ? offset + 8 : null};
+        const tasks = rows
+          .slice(offset, offset + 8)
+          .map(({ id, title, status, timeZone, dueAt }) => ({
+            id,
+            title: title.slice(0, 100),
+            status,
+            timeZone,
+            dueAt,
+          }));
+        return {
+          tasks,
+          total: rows.length,
+          nextOffset: offset + 8 < rows.length ? offset + 8 : null,
+        };
       }
       const rows = this.learning.context(scope).facts;
-      const facts = rows.slice(offset, offset + 4).map(({ id, key, value, sources }) => ({ id, key, value, sources: sources.slice(0, 2) }));
-      return {facts, total: rows.length, nextOffset: offset + 4 < rows.length ? offset + 4 : null};
+      const facts = rows
+        .slice(offset, offset + 4)
+        .map(({ id, key, value, sources }) => ({ id, key, value, sources: sources.slice(0, 2) }));
+      return {
+        facts,
+        total: rows.length,
+        nextOffset: offset + 4 < rows.length ? offset + 4 : null,
+      };
     }
     if (action === 'draft_checklist') {
       const skill = this.learning.activeSkills(scope).find((row) => row.id === body.skillId);

@@ -1118,3 +1118,36 @@
     scroll-behavior: auto !important;
   }
 }
+.activity-stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.activity-stages > div {
+  padding: 15px;
+  background: var(--background, #f7f8f5);
+  border-radius: 12px;
+}
+.table-scroll {
+  overflow-x: auto;
+  margin: 18px 0;
+}
+.table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+.table-scroll th,
+.table-scroll td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e9e4;
+  white-space: nowrap;
+}
+.confirmation-box {
+  background: #f1f6f3;
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 14px;
+}
