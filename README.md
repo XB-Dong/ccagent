@@ -2,7 +2,7 @@
 
 基于 **DeepSeek Harness**，面向 cc 的亚马逊日常运营：对话入口、活动跟进、库存补货、发货协同、广告分析，以及持续积累的工作经验。
 
-**当前状态：P0 前置准备。产品尚未实现、尚未部署，不能作为运营工具使用。**
+**当前状态：P0 前置准备已完成，实施计划待审阅。产品尚未实现、尚未部署，不能作为运营工具使用。**
 
 仓库为私密仓库：[XB-Dong/ccagent](https://github.com/XB-Dong/ccagent)。本地目录：`D:/project/ccagent`。
 
@@ -17,6 +17,7 @@
 | 怎样记住反馈、压缩经验和生成 Skill | [自适应机制](specs/adaptive-learning.md) |
 | 行为怎样被验收 | [验收矩阵](specs/acceptance.md) · [领域契约](specs/contracts/domain.md) |
 | 当前波次的真实状态 | [P0 状态](docs/waves/P0/state.json) · [前置交接](docs/waves/P0/handoffs/preparation.md) |
+| 本轮结果、证据与尚未运行项 | [前置交付报告](docs/audit/reports/report-20261026T004638+0800.md) |
 
 ## 项目方向
 
@@ -41,3 +42,5 @@ GitHub Actions 使用同一检查入口。它检查文档链接、结构、追�
 业务文档和审阅材料使用中文；源码标识符、注释、接口字段、提交信息和 Agent 执行指令使用英文。按职责组织文件，先写可检查的行为与验收，再实现；核心规则采用真实 TDD，审核与验收保留证据。
 
 凭据、真实运营报表、会话原文、数据库、日志、运行时 Skill 和上游源码缓存放在仓库外。已有服务器与模型凭据继续使用原受限配置，项目不保存副本。暂不指定项目源码许可证；上游 MIT 许可与第三方声明在引入实际代码时保留。
+
+本机运维交接索引：`D:/project/.ccagent-support/LOCAL-OPERATIONS.md`（仓库外，仅记录既有配置位置，不含密码或 Key 正文）。后续接手按此定位，不重复索取已有凭据。
