@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "recordedAt": "2026-10-26T00:46:38+08:00",
+  "storage": "outside-git: ../.ccagent-local/evidence",
+  "items": [
+    {
+      "id": "pre-commit-check.json",
+      "sha256": "80b0947561fd1ca69d92771f5f15508af5416384596fae6397b17ee23c70cf51"
+    },
+    {
+      "id": "transport-failures.json",
+      "sha256": "6105cb905d793ed746d66979acd72397f2bdf9bce85a8dc556f2c4d4008704a6"
+    },
+    {
+      "id": "github-status-c0584e3c9903199991d839f63c3b48e7023b7819.json",
+      "sha256": "55c4618ca988231f9e5ad37b9da60ceb4208cc0c1b8dd34df4755fd4d2c0d607"
+    }
+  ]
+}

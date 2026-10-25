@@ -4,7 +4,7 @@
   "specVersion": "0.1.0",
   "timeZone": "Asia/Shanghai",
   "phase": "preparation",
-  "preparationStatus": "in_progress",
+  "preparationStatus": "completed",
   "executionStatus": "not_started",
   "authorization": "private-repository-and-preparation-only",
   "specStatus": "draft_for_review",
@@ -19,7 +19,7 @@
   "productAcceptanceStatus": "not_run",
   "modelApiStatus": "not_run",
   "deploymentStatus": "not_run",
-  "preparationCiStatus": "not_run",
+  "preparationCiStatus": "passed",
   "taskIds": [
     "P0-FOUNDATION",
     "P0-WORKBENCH",
@@ -30,5 +30,8 @@
   "repairCounts": {},
   "requirementsRef": "docs/product/REQUIREMENTS.zh.md",
   "requirementsChangesRef": "docs/product/changes/README.md",
-  "preparationReportRef": null
+  "preparationReportRef": "docs/audit/reports/report-20261026T004638+0800.md",
+  "preparationCompletedAt": "2026-10-26T00:46:38+08:00",
+  "preparationCiVerifiedSha": "c0584e3c9903199991d839f63c3b48e7023b7819",
+  "preparationCiUrl": "https://github.com/XB-Dong/ccagent/actions/runs/40213184119"
 }

@@ -16,6 +16,7 @@ The current business view is docs/product/REQUIREMENTS.zh.md. Append dated chang
 - Organize actual modules by capability. Separate UI, domain rules, persistence and external adapters. Inspect responsibilities around 300 handwritten lines; do not split mechanically.
 - Prefer explicit boundaries over speculative frameworks. Pin dependencies and preserve upstream licenses when importing code.
 - Keep secrets, business files, raw sessions, databases, generated skills, tools, caches, evidence payloads and worktrees outside the repository. Never print credentials or authenticated URLs.
+- Existing protected configuration locations are indexed by ../.ccagent-local/LOCAL-OPERATIONS.md outside Git. Read that index when later authorized work needs authentication; do not ask the user to resend existing credentials.
 - Run python scripts/verify.py for preparation changes. This is repository verification, not product acceptance.
 
 ## Execution after a human starts P0
