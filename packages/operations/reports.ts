@@ -1,7 +1,7 @@
 import { Store, digest, type Base } from '../core/store.ts';
 import { parseCSV } from './csv.ts';
 import { calendarDate } from './time.ts';
-import { safeText } from '../../apps/server/security.ts';
+import { safeText } from '../core/validation.ts';
 export type ReportInput = {
   kind: 'sales' | 'ads';
   store: string;

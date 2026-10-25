@@ -1,0 +1,32 @@
+{
+  "waveId": "P2",
+  "baselineSha": "27567670a3b863b299db361c7bd25dd0ac84a5ff",
+  "specVersion": "inventory-v1.1",
+  "owner": "Leader",
+  "planStatus": "frozen",
+  "executionStatus": "partial",
+  "entryDecision": "P1 synthetic prerequisites verified; P0 release gap retained",
+  "tasks": {
+    "P2-FORECAST": "synthetic_verified",
+    "P2-INVENTORY": "synthetic_verified",
+    "P2-SHIP": "browser_ready_verified",
+    "P2-INTEGRATION": "review_followup"
+  },
+  "cumulativeRepairsRef": "../P1/state.json",
+  "perRootRepairLimit": 2,
+  "paidCallsPlanned": 0,
+  "carriedRoots": {
+    "P0-RELEASE": "partial"
+  },
+  "repairCounts": {
+    "fractional-demand": 1,
+    "late-arrival-gap": 1,
+    "zero-partial-receipt": 1,
+    "external-id-normalization": 1,
+    "forecast-intent": 1,
+    "physical-batch": 1,
+    "pool-sku-normalization": 1,
+    "pool-key-collision": 1
+  },
+  "reportRef": "../../audit/reports/P2-execution-20261026.md"
+}

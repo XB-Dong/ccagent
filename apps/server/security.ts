@@ -1,17 +1,7 @@
 import { randomBytes, scryptSync, timingSafeEqual, createHash } from 'node:crypto';
 import type { IncomingMessage } from 'node:http';
 
-export function safeText(value: unknown, maximum = 12000): string {
-  if (typeof value !== 'string' || !value.trim() || value.length > maximum)
-    throw new Error('INVALID_TEXT');
-  if (
-    /(?:\bsk-[a-z\d_-]{20,}|\b(?:ghp_|github_pat_)[a-z\d_]{20,}|-----BEGIN.*PRIVATE KEY|(?:password|api[_ -]?key|cookie)\s*[:=]\s*\S{6,})/i.test(
-      value,
-    )
-  )
-    throw new Error('SENSITIVE_INPUT_BLOCKED');
-  return value.trim();
-}
+export { safeText } from '../../packages/core/validation.ts';
 export function scopeOf(req: IncomingMessage): string {
   const scope = String(req.headers['x-cc-workspace'] ?? 'main');
   if (!/^[a-z0-9][a-z0-9-]{0,39}$/.test(scope)) throw new Error('INVALID_SCOPE');
