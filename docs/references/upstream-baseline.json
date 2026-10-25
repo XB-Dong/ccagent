@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "recordedDate": "2026-10-26",
+  "timeZone": "Asia/Shanghai",
+  "referenceProject": {
+    "repository": "https://github.com/XB-Dong/classroom-annotator",
+    "sha": "d31971124cfcbad19e9b56efd54f6f963d618310",
+    "role": "engineering-pattern-reference-only"
+  },
+  "harness": {
+    "repository": "https://github.com/deepseek-ai/deepseek-harness",
+    "sha": "22ddee3792402c3e70ec5f86a63c3e3e895a2f60",
+    "commitTime": "2026-10-23T11:48:59Z",
+    "rootManifestVersion": "0.2.1-rc.3",
+    "nodeEngine": ">=24.9.0",
+    "packageManager": "pnpm@11.28.5",
+    "license": "MIT",
+    "status": "source-inspected-not-installed",
+    "publishedArtifactVerification": "not_run",
+    "runtimeVerification": "not_run"
+  }
+}

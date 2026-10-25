@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0",
+  "recordedAt": "2026-10-26T00:41:54+08:00",
+  "methodDocument": {
+    "name": "AI-CODING-PARADIGM.zh.md",
+    "version": "1.0",
+    "sha256": "58ae6c8aaacfb07af31ee10c37f902ebd5fc7e718c699130e73bb932cd1dac0f"
+  },
+  "upstreamSourceFiles": [
+    {
+      "path": "docs/architecture.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/architecture.md",
+      "sha256": "e07f34a0111ef6a37aee51e8f13bc23c631f1f81d4fd15f3f3ab8790ed41d469"
+    },
+    {
+      "path": "docs/capability-seams.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/capability-seams.md",
+      "sha256": "777d2b6f3395dc71fbd793f7049ea35597ed9218fce0c24042808bde8d4e15ad"
+    },
+    {
+      "path": "docs/cookbook/adding-a-plugin-preview.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/cookbook/adding-a-plugin-preview.md",
+      "sha256": "b63d4df8a1d55729a30ea081f48a61254fbd4f5a7edea7493c537cdebf7113be"
+    },
+    {
+      "path": "docs/cookbook/adding-a-settings-card.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/cookbook/adding-a-settings-card.md",
+      "sha256": "8032b80e9e18ff374fcc88b8db1d091a5b85567f92c1dfab6ce0344e963ab9be"
+    },
+    {
+      "path": "docs/subsystems/compaction.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/subsystems/compaction.md",
+      "sha256": "eeda604d2e3da90ada52ef143cf7807f2f9969174379e5e2182442f763cf16e8"
+    },
+    {
+      "path": "docs/subsystems/skills.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/subsystems/skills.md",
+      "sha256": "d12d4ebf14406654a4c7b9a5a85fc2a7a5519125b5050ae7b06ff88ceb680399"
+    },
+    {
+      "path": "docs/user/develop/basic/tool.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/user/develop/basic/tool.md",
+      "sha256": "2b9f0694c614ecf7d29c98d879026c2c73d5da9064524373c0d970105a433cf7"
+    },
+    {
+      "path": "docs/user/guide/mcp-memory.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/user/guide/mcp-memory.md",
+      "sha256": "cc7a1215afb0b13d28fe21dda8913ad15ae7ddb37e71e1f690e05d729696d7f4"
+    },
+    {
+      "path": "docs/user/guide/plugin-market.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/user/guide/plugin-market.md",
+      "sha256": "d2a0fed485097c9cb9d39207dacf08eb5ac10e0edfc9e18bf28c07cf66089cb1"
+    },
+    {
+      "path": "docs/user/guide/public-deployments.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/user/guide/public-deployments.md",
+      "sha256": "fa89861b1009a4175ebf4473a3b3e97550ded99b276d0127c6a6a7e8ba48c3ef"
+    },
+    {
+      "path": "docs/web-styling.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/web-styling.md",
+      "sha256": "287b4eb0e73f7f3f7499733c6c6792fba2025b5b8487d9e73aaafe48ad8f46c6"
+    },
+    {
+      "path": "package.json",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/package.json",
+      "sha256": "66198aca0bdd771b052545470137723bcf30a53fb92a1da611d9bb2f490952ff"
+    },
+    {
+      "path": "README.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/README.md",
+      "sha256": "0f5516be2acde776f05572cbc8c3093c90549afe04ce118e11157d073d5d15f4"
+    }
+  ],
+  "limitations": "Hashes bind inspected source bytes, not runtime or API verification."
+}
