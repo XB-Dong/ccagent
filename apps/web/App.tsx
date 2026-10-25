@@ -10,6 +10,8 @@ import { SettingsPage } from './SettingsPage.tsx';
 import { Assistant } from './Assistant.tsx';
 import { ActivitiesPage } from './ActivitiesPage.tsx';
 import { ReportsPage } from './ReportsPage.tsx';
+import { InventoryPage } from './InventoryPage.tsx';
+import { ShippingPage } from './ShippingPage.tsx';
 
 const navigation = [
   { id: 'home', name: '工作台', icon: 'home' },
@@ -19,12 +21,10 @@ const navigation = [
   { id: 'knowledge', name: '经验与记忆', icon: 'book' },
   { id: 'activities', name: '活动日历', icon: 'calendar' },
   { id: 'reports', name: '数据报表', icon: 'chart' },
-];
-const future = [
   { id: 'inventory', name: '库存补货', icon: 'box' },
   { id: 'shipping', name: '发货协同', icon: 'box' },
-  { id: 'advertising', name: '广告分析', icon: 'chart' },
 ];
+const future = [{ id: 'advertising', name: '广告分析', icon: 'chart' }];
 export function App() {
   const [page, setPage] = useState('home');
   const [status, setStatus] = useState<Status>();
@@ -232,6 +232,8 @@ export function App() {
           {page === 'knowledge' && <KnowledgePage data={data} mutate={mutate} busy={busy} />}
           {page === 'activities' && <ActivitiesPage data={data} mutate={mutate} busy={busy} />}
           {page === 'reports' && <ReportsPage data={data} mutate={mutate} busy={busy} />}
+          {page === 'inventory' && <InventoryPage data={data} mutate={mutate} busy={busy} />}
+          {page === 'shipping' && <ShippingPage data={data} mutate={mutate} busy={busy} />}
           {future.some((item) => item.id === page) && (
             <>
               <div className="page-heading">

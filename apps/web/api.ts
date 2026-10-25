@@ -2,8 +2,17 @@ import type { Task, Feedback, Memory, Skill } from '../../packages/learning/serv
 import type { Conversation } from '../server/chat.ts';
 import type { Activity } from '../../packages/operations/activities.ts';
 import type { ReportBatch } from '../../packages/operations/reports.ts';
+import type { Forecast } from '../../packages/operations/forecast.ts';
+import type { Inventory } from '../../packages/operations/inventory.ts';
+import type { Pool, Allocation } from '../../packages/operations/allocation.ts';
+import type { Shipment } from '../../packages/operations/shipping.ts';
 
 export type Snapshot = {
+  forecasts: Forecast[];
+  inventories: Inventory[];
+  pools: Pool[];
+  allocations: Allocation[];
+  shipments: Shipment[];
   activities: Activity[];
   reminders: {
     id: string;
@@ -68,6 +77,16 @@ const errorLabels: Record<string, string> = {
   INVALID_CSV: 'CSV格式不正确，请检查引号及每行列数',
   INVALID_DATE: '日期无效，请使用 YYYY-MM-DD',
   INVALID_NUMBER: '数量或金额无效，请检查负数和小数',
+  INSUFFICIENT_SALES: '缺少截至日期连续7日销量，请补齐或明确填写人工日需求及原因',
+  MANUAL_REASON_REQUIRED: '人工修正需填写原因，原始基线会保留',
+  POOL_EXHAUSTED: '共享库存不足，已有分配不会重复计算',
+  STORE_WINDOW_CLOSED: '发货日期不在该店铺可用时段',
+  POOL_SKU_MISMATCH: '共享池与库存方案的实物SKU不一致',
+  PREREQUISITES_REQUIRED: '请完成四项前置检查，并填写目的仓与负责人',
+  DUAL_IDS_REQUIRED: '请先关联Amazon及ERP两个系统的单号',
+  DUPLICATE_EXTERNAL_ID: '该系统单号已经关联另一发货记录',
+  INVALID_RECEIPT: '累计到货不可倒退、超量或在发运前登记',
+  PAST_INBOUND: '在途日期早于库存快照，请核实延误或实际到货',
 };
 export const errorMessage = (value: string) => errorLabels[value] ?? `操作未完成（${value}）`;
 export async function api<T>(path: string, body?: object): Promise<T> {
@@ -90,6 +109,11 @@ export function download(name: string, content: string, type = 'text/markdown') 
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 export const empty: Snapshot = {
+  forecasts: [],
+  inventories: [],
+  pools: [],
+  allocations: [],
+  shipments: [],
   activities: [],
   reminders: [],
   reports: [],

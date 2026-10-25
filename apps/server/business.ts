@@ -12,6 +12,7 @@ import { confirmChange, exportChanges, withdrawFeedback } from '../../packages/l
 import { safeText } from './security.ts';
 import { Activities, type Activity } from '../../packages/operations/activities.ts';
 import { Reports, type ReportInput } from '../../packages/operations/reports.ts';
+import { operate } from './operations.ts';
 
 export class Business {
   store: Store;
@@ -35,6 +36,11 @@ export class Business {
     this.tasks.drain(scope);
     this.activities.tick(scope);
     return {
+      forecasts: this.store.list(scope, 'forecast'),
+      inventories: this.store.list(scope, 'inventory'),
+      pools: this.store.list(scope, 'pool'),
+      allocations: this.store.list(scope, 'allocation'),
+      shipments: this.store.list(scope, 'shipment'),
       activities: this.store.list(scope, 'activity'),
       reminders: this.store.list(scope, 'reminder'),
       reports: this.store.list(scope, 'report'),
@@ -49,6 +55,8 @@ export class Business {
     };
   }
   mutate(scope: string, action: string, body: Record<string, unknown>) {
+    const result = operate(this.store, scope, action, body);
+    if (result !== undefined) return result;
     if (action === 'report-preview' || action === 'report-import') {
       const input = body as ReportInput;
       return action === 'report-preview'

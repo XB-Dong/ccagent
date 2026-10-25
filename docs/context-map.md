@@ -85,3 +85,7 @@ Leader 已核对当前目录为空、无祖先 AGENTS.md；确认上述文件仅
 ### P1 活动与报表
 
 修改/新增 `packages/operations/{time,activities,csv,reports}.ts`、`apps/server/{business,app}.ts`、`apps/web/{App,api,ActivitiesPage,ReportsPage}.tsx`，测试 `tests/{activity,reports}.test.ts`。复用 Store/CAS/once 和 Tasks 状态，不建立外部平台适配器。活动阶段与到期提醒持久化，CSV 仅支持冻结的规范列。Leader 已审阅：既有通用实体表容纳新 kind，无 schema 迁移；新增受控 action，不变更付费限额；严格时间与重复导入是主要风险。
+
+### P2 库存/发货
+
+新增 forecast/inventory/allocation/shipping 领域模块及 InventoryPage/ShippingPage，依赖P1规范reportKind及严格日期。测试 inventory/shipping，复用Store短事务与CAS。Business负责受控输入，领域重新校验数量/引用/状态，API不信任UI。Leader已审阅：无DDL迁移，主要风险为重复扣预留、缺日当0、池超配、发运后错误返还及数量越界；先留失败行为测试。
