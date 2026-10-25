@@ -3,16 +3,21 @@
   "waveId": "P0",
   "specVersion": "0.1.0",
   "timeZone": "Asia/Shanghai",
-  "phase": "preparation",
+  "phase": "execution",
   "preparationStatus": "completed",
-  "executionStatus": "not_started",
-  "authorization": "documentation-update-now-autonomous-progression-after-project-start",
-  "specStatus": "draft_for_review",
-  "baselineSha": null,
+  "executionStatus": "in_progress",
+  "authorization": "human-started-fullstack-with-autonomous-wave-progression",
+  "specStatus": "r0_feasibility_in_progress",
+  "baselineSha": "3a198f0b6e07bc31021df9d73d3cfe30e3f1c469",
   "baselinePolicy": "resolve-and-freeze-exact-sha-before-task-dispatch",
-  "startAt": null,
+  "startAt": "2026-10-26T01:23:56+08:00",
   "deadlineAt": null,
-  "executionBudget": null,
+  "executionBudget": {
+    "deadline": null,
+    "perRootRepairLimit": 2,
+    "allocationOwner": "Leader",
+    "noUnlimitedRetries": true
+  },
   "requestedDevelopmentModels": null,
   "actualDevelopmentModels": null,
   "independentReviewStatus": "not_run",
@@ -35,8 +40,16 @@
   "preparationCiVerifiedSha": "c0584e3c9903199991d839f63c3b48e7023b7819",
   "preparationCiUrl": "https://github.com/XB-Dong/ccagent/actions/runs/40213184119",
   "modelApiBudgetPolicyRef": "docs/testing/deepseek-budget.md",
-  "modelApiTestMode": "offline_default",
-  "modelApiTestBudget": null,
+  "modelApiTestMode": "offline_default_explicit_live_probes_only",
+  "modelApiTestBudget": {
+    "maxCalls": 6,
+    "maxInputTokens": 24000,
+    "maxOutputTokens": 4096,
+    "maxTotalTokens": 28096,
+    "timeoutSeconds": 45,
+    "maxRetries": 0,
+    "purpose": "minimal-synthetic-r0-and-release-probes"
+  },
   "executionPolicy": {
     "recordedDate": "2026-10-26",
     "waveSequence": [
@@ -51,8 +64,8 @@
     "humanPerWaveApprovalRequired": false,
     "waveReportsRequired": true,
     "finalHumanAcceptance": "complete-project-and-final-report",
-    "progressionStatus": "authorized_not_started",
-    "currentTurnScope": "documents-and-repository-sync-only",
+    "progressionStatus": "executing",
+    "currentTurnScope": "fullstack-project-execution",
     "retainCumulativeBudgetsAndRootRepairCounts": true,
     "requirementsScopeExpansionAuthorized": false
   }

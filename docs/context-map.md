@@ -68,3 +68,12 @@ Leader 已核对当前目录为空、无祖先 AGENTS.md；确认上述文件仅
 用户明确要求统一 P1/P2/P3，P0 后由 Leader 自主决定推进；每波先生成类似 P0 的计划，不经人工逐波审批，最终交完整项目和 report。本次只更新已有文档与状态，不启动开发。
 修改范围：CONSTITUTION、AGENTS、NEXT-WAVES、P0-PLAN、README、验收说明、P0 Release 任务/交接及 ADR 0001；state 同步持久化推进政策。历史报告/事件不改写，业务需求正文不变。
 作者已核对旧“报告后停止、用户决定下一波”与新授权冲突，改为“每波报告与就绪判断后自主推进”；预算、外部权限及真实依赖仍单独遵守。现有仓库检查足以验证本轮文档变更。
+
+## 2026-10-26 启动 · P0/R0
+
+用户已明确启动全栈开发。R0 修改范围：当前授权/state、Foundation 任务包、依赖清单/锁文件、`packages/cc-harness-adapter/` 与其测试、运行配置和验证脚本。先在仓库外安装固定官方 Harness 产物、读取官方扩展契约并验证 UI/工具/持久化 seam；不在未知接口上编写业务实现。
+依赖为固定上游 0.2.1-rc.3 与源码基线、现有受限配置和合成数据；核心 TDD 首先覆盖额度守卫、配置和安全工具边界。基础探针允许只读复查已授权云主机，SSH 指纹先于密码认证核对。当前地图经 Leader 自查，独立审核状态仍未运行。
+
+### R0 接口确认后的实现路径
+
+`packages/core/`（SQLite、额度）、`packages/learning/`（来源/反馈/记忆/Skill）、`packages/cc-harness-adapter/`（官方 SDK/overlay/受控插件）、`apps/server/`（鉴权/API/有界学习队列）、`apps/web/`（React 工作台）、`tests/`（领域/权限/集成）。Leader 单写共享契约、依赖、状态和发布配置。依赖 `specs/contracts/runtime-v0.2.md`；已审阅风险为 SQLite 迁移、scope 隔离、运行时预算、会话删除与恢复。原有参考模式不变。

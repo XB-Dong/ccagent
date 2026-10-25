@@ -2,7 +2,7 @@
 
 基于 **DeepSeek Harness**，面向 cc 的亚马逊日常运营：对话入口、活动跟进、库存补货、发货协同、广告分析，以及持续积累的工作经验。
 
-**当前状态：P0 前置准备已完成，产品尚未开始开发或部署。本轮先更新执行规则；正式开始后由 Leader 自主规划并连续推进 P1/P2/P3，最终交用户统一验收。**
+**当前状态：用户已启动全栈开发，正在执行 P0/R0。业务功能和部署尚未通过验收；Leader 将按依赖自主规划并推进 P1/P2/P3，最终交用户统一验收。**
 
 仓库为私密仓库：[XB-Dong/ccagent](https://github.com/XB-Dong/ccagent)。本地目录：`D:/project/ccagent`。
 
@@ -27,7 +27,7 @@
 
 自适应分两路：使用反馈形成迭代需求；成功工作流程形成有来源、适用条件和版本的 Skill。会话压缩、长期业务记忆与研发记录分别管理。具体方案尚待 P0 技术验证，不把上游已有压缩机制当作业务学习已实现。
 
-## 本轮交付范围
+## 准备阶段的交付范围（历史）
 
 业务需求与日期记录、工程规范、上游版本基线、P0 提案、任务包、验收设计和轻量仓库检查。本轮没有产品代码、依赖安装、API 调用或服务器操作。
 
@@ -38,6 +38,14 @@ python scripts/verify.py
 ```
 
 GitHub Actions 使用同一检查入口。它检查文档链接、结构、追踪记录和常见凭据风险，**不证明产品功能或部署通过**。
+
+## 开发运行
+
+Node 24.19.0、pnpm 11.25.0。安装 `pnpm install --frozen-lockfile --ignore-scripts`，检查 `pnpm check` / `pnpm test`，构建 `pnpm build` 后执行 `pnpm server`。默认地址 `http://127.0.0.1:4310`，默认离线，不加载真实模型 Key。
+
+`CC_DATA_DIR` 默认为仓库外的 `../.ccagent-support/product-data`；首次运行的访问密码保存在该目录 `access.json`，不要提交或公开。配置及维护说明会随发布验收补齐。开发 Vite 使用 `pnpm dev`，后端相应设置 `CC_ORIGIN=http://127.0.0.1:4311`。
+
+当前实测与未验项见 [R0 运行事实](docs/waves/P0/R0-evidence.md)。CI 已增加类型检查、离线测试和构建，真实 DeepSeek 探针不在 CI 中运行。
 
 ## 仓库约定
 
