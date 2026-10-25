@@ -20,6 +20,12 @@ export function apply(ctx) {
   }
   const definitions = [
     [
+      'cc_read_operations',
+      '按店铺或链接查询当前活动、库存方案、发货和广告分析摘要，保留数据日期；只读，结果有上限。',
+      'read_operations',
+      { query: { type: 'string' } },
+    ],
+    [
       'cc_find_skills',
       '搜索所有已启用流程，查找历史经验；更多结果使用nextOffset，可将skillId交给cc_draft_checklist复用。',
       'find_skills',

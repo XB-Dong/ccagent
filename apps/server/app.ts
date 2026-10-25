@@ -22,6 +22,11 @@ export type AppOptions = {
   modelTransport?: typeof fetch;
 };
 export async function createApp(options: AppOptions) {
+  let sourceSha: string | null = null;
+  try {
+    const value = JSON.parse(readFileSync('release-manifest.json', 'utf-8')).sourceSha;
+    if (/^[a-f0-9]{40}$/.test(value)) sourceSha = value;
+  } catch {}
   const store = new Store(join(options.dataDir, 'business.sqlite'));
   const budget = new ModelBudget(
     options.budgetPath ?? join(options.dataDir, 'model-budget.sqlite'),
@@ -82,7 +87,7 @@ export async function createApp(options: AppOptions) {
     try {
       const url = new URL(req.url ?? '/', 'http://localhost');
       if (url.pathname === '/health') {
-        json(res, { status: 'ok', version: '0.1.0', harness: '0.2.1-rc.3' });
+        json(res, { status: 'ok', version: '0.1.0', harness: '0.2.1-rc.3', sourceSha });
         return;
       }
       if (url.pathname.startsWith('/api/')) {

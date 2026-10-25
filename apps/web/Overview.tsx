@@ -85,6 +85,28 @@ export function Overview({
           </div>
         </div>
       </section>
+      {data.reminders.some((r) => !r.read) && (
+        <section className="panel">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">DUE IN YOUR WORKSPACE</span>
+              <h2>有活动事项到期了</h2>
+            </div>
+            <button onClick={() => navigate('activities')}>
+              查看到期提醒（{data.reminders.filter((r) => !r.read).length}）
+            </button>
+          </div>
+          {data.reminders
+            .filter((r) => !r.read)
+            .slice(0, 3)
+            .map((r) => (
+              <p key={r.id}>
+                {r.title} · {new Date(r.dueAt).toLocaleString('zh-CN', { timeZone: r.timeZone })} ·{' '}
+                {r.timeZone}
+              </p>
+            ))}
+        </section>
+      )}
       <div className="stats-grid">
         {stats.map((item) => (
           <button className="stat-card" key={item.name} onClick={() => navigate(item.page)}>

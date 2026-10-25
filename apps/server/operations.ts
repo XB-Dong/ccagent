@@ -8,6 +8,7 @@ import {
   updateShipment,
   type Shipment,
 } from '../../packages/operations/shipping.ts';
+import { saveAdAnalysis, type AdOptions } from '../../packages/operations/advertising.ts';
 
 export function operate(
   store: Store,
@@ -15,6 +16,8 @@ export function operate(
   action: string,
   body: Record<string, unknown>,
 ): unknown {
+  if (action === 'advertising')
+    return saveAdAnalysis(store, scope, safeText(body.batchId, 100), body.options as AdOptions);
   if (action === 'forecast') {
     safeText(body.requestId, 100);
     return forecastVersion(store, scope, body as ForecastInput);

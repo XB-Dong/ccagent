@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import { api, empty, modelLabel, type Snapshot, type Status } from './api.ts';
-import { Icon, Badge, Empty } from './components.tsx';
+import { Icon } from './components.tsx';
 import { Overview } from './Overview.tsx';
 import { TasksPage } from './TasksPage.tsx';
 import { FeedbackPage } from './FeedbackPage.tsx';
@@ -12,6 +12,7 @@ import { ActivitiesPage } from './ActivitiesPage.tsx';
 import { ReportsPage } from './ReportsPage.tsx';
 import { InventoryPage } from './InventoryPage.tsx';
 import { ShippingPage } from './ShippingPage.tsx';
+import { AdvertisingPage } from './AdvertisingPage.tsx';
 
 const navigation = [
   { id: 'home', name: '工作台', icon: 'home' },
@@ -23,8 +24,8 @@ const navigation = [
   { id: 'reports', name: '数据报表', icon: 'chart' },
   { id: 'inventory', name: '库存补货', icon: 'box' },
   { id: 'shipping', name: '发货协同', icon: 'box' },
+  { id: 'advertising', name: '广告分析', icon: 'chart' },
 ];
-const future = [{ id: 'advertising', name: '广告分析', icon: 'chart' }];
 export function App() {
   const [page, setPage] = useState('home');
   const [status, setStatus] = useState<Status>();
@@ -50,6 +51,13 @@ export function App() {
       .catch(() => setAuthenticated(false))
       .finally(() => setReady(true));
   }, [refresh]);
+  useEffect(() => {
+    if (!authenticated) return;
+    const timer = setInterval(() => {
+      if (document.visibilityState === 'visible') void refresh().catch(() => {});
+    }, 30000);
+    return () => clearInterval(timer);
+  }, [authenticated, refresh]);
   useEffect(() => {
     if (!notice) return;
     const timer = setTimeout(() => setNotice(''), 3500);
@@ -110,8 +118,8 @@ export function App() {
     );
   if (!authenticated) return <LoginPage busy={busy} error={error} login={login} />;
   const name =
-    [...navigation, ...future, { id: 'settings', name: '设置' }].find((item) => item.id === page)
-      ?.name ?? '工作台';
+    [...navigation, { id: 'settings', name: '设置' }].find((item) => item.id === page)?.name ??
+    '工作台';
   return (
     <div className="app-shell">
       <button
@@ -149,19 +157,6 @@ export function App() {
                     }
                   </small>
                 )}
-            </button>
-          ))}
-          <div className="nav-label">
-            业务工具 <span>后续开放</span>
-          </div>
-          {future.map((item) => (
-            <button
-              key={item.id}
-              className={`planned ${page === item.id ? 'active' : ''}`}
-              onClick={() => navigate(item.id)}
-            >
-              <Icon name={item.icon} />
-              <span>{item.name}</span>
             </button>
           ))}
         </nav>
@@ -234,25 +229,7 @@ export function App() {
           {page === 'reports' && <ReportsPage data={data} mutate={mutate} busy={busy} />}
           {page === 'inventory' && <InventoryPage data={data} mutate={mutate} busy={busy} />}
           {page === 'shipping' && <ShippingPage data={data} mutate={mutate} busy={busy} />}
-          {future.some((item) => item.id === page) && (
-            <>
-              <div className="page-heading">
-                <div>
-                  <span className="eyebrow">COMING IN THE NEXT WAVES</span>
-                  <h1>{name}</h1>
-                  <p>将按计划接入运营流程。</p>
-                </div>
-                <Badge>规划中</Badge>
-              </div>
-              <section className="panel">
-                <Empty
-                  icon={future.find((item) => item.id === page)!.icon}
-                  title="这个业务模块正在准备中"
-                  text="当前可以先在任务清单中记录准备事项；这里暂不进行真实业务分析或外部操作。"
-                />
-              </section>
-            </>
-          )}
+          {page === 'advertising' && <AdvertisingPage data={data} mutate={mutate} busy={busy} />}
           {page === 'settings' && (
             <SettingsPage
               data={data}

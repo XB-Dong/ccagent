@@ -1151,3 +1151,12 @@
   padding: 18px;
   margin-top: 14px;
 }
+.ad-group {
+  border-top: 1px solid #e5e9e4;
+  padding: 20px 0;
+}
+.ad-group .activity-stages strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 21px;
+}
