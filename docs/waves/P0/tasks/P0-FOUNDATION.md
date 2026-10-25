@@ -7,6 +7,8 @@ Spec version: 0.1.0 draft; freeze the reviewed version before behavior implement
 Requirements: CC-HARNESS-001, CC-ENTRY-001, CC-MEMORY-001, CC-SKILL-001.
 Read P0-PLAN.md, specs/architecture.md, specs/adaptive-learning.md, specs/contracts/domain.md, specs/acceptance.md and docs/references/upstream-baseline.json.
 
+API quota: follow docs/testing/deepseek-budget.md. Implement the shared preflight call/token guard before live probes; test it with a counting fake transport. Enable only a minimal live text/tool sample within the configured wave budget, record usage and sanitized replay, and hand evidence to Acceptance instead of repeating the same probe. Fault-inject timeout/429/cancellation offline. Budget exhaustion blocks further paid calls, not independent offline work.
+
 Allowed after dispatch: assigned disposable prototype outside the repository; packages/cc-harness-adapter/**; explicitly assigned config files; own evidence/handoff. Leader alone updates canonical specs and shared lockfiles after review. Do not create an alternative agent loop, silently fork the entire upstream, access real business data or deploy.
 
 Validate the pinned official runtime, exact artifact/version/license, a greeting/UI extension, minimal tool composition without ambient shell/source/credential access, real bounded DeepSeek text/tool calls, event replay, native compaction, scoped Skill provider and a transactional store. Report unsupported extension seams and measured resource requirements before downstream work depends on them.
