@@ -2,7 +2,7 @@
 
 基于 **DeepSeek Harness**，面向 cc 的亚马逊日常运营：对话入口、活动跟进、库存补货、发货协同、广告分析，以及持续积累的工作经验。
 
-**当前状态：P0 前置准备已完成，实施计划待审阅。产品尚未实现、尚未部署，不能作为运营工具使用。**
+**当前状态：P0 前置准备已完成，产品尚未开始开发或部署。本轮先更新执行规则；正式开始后由 Leader 自主规划并连续推进 P1/P2/P3，最终交用户统一验收。**
 
 仓库为私密仓库：[XB-Dong/ccagent](https://github.com/XB-Dong/ccagent)。本地目录：`D:/project/ccagent`。
 
@@ -12,6 +12,7 @@
 | --- | --- |
 | cc 要解决哪些问题，后来增加了什么 | [业务需求总览](docs/product/REQUIREMENTS.zh.md) · [按日期追加记录](docs/product/changes/README.md) |
 | P0 准备做什么，什么还没确定 | [P0 计划](P0-PLAN.md) · [待确认清单](docs/discovery/open-questions.md) |
+| 后续波次与自主推进、最终验收 | [P1/P2/P3 规划规则](NEXT-WAVES.md) |
 | 如何开发、验证与交付 | [AI Coding 宪法](CONSTITUTION.md) · [Agent 规则](AGENTS.md) |
 | 工作台怎样复用 Harness | [架构](specs/architecture.md) · [上游调研](docs/references/deepseek-harness.md) |
 | 同类项目哪些值得参考、哪些技术可迁移 | [同类项目调研](docs/references/同类项目.md) |

@@ -6,7 +6,7 @@
   "phase": "preparation",
   "preparationStatus": "completed",
   "executionStatus": "not_started",
-  "authorization": "private-repository-and-preparation-only",
+  "authorization": "documentation-update-now-autonomous-progression-after-project-start",
   "specStatus": "draft_for_review",
   "baselineSha": null,
   "baselinePolicy": "resolve-and-freeze-exact-sha-before-task-dispatch",
@@ -36,5 +36,24 @@
   "preparationCiUrl": "https://github.com/XB-Dong/ccagent/actions/runs/40213184119",
   "modelApiBudgetPolicyRef": "docs/testing/deepseek-budget.md",
   "modelApiTestMode": "offline_default",
-  "modelApiTestBudget": null
+  "modelApiTestBudget": null,
+  "executionPolicy": {
+    "recordedDate": "2026-10-26",
+    "waveSequence": [
+      "P0",
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "autonomousProgressionAfterProjectStart": true,
+    "planRequiredBeforeEachWave": true,
+    "planReviewer": "Leader",
+    "humanPerWaveApprovalRequired": false,
+    "waveReportsRequired": true,
+    "finalHumanAcceptance": "complete-project-and-final-report",
+    "progressionStatus": "authorized_not_started",
+    "currentTurnScope": "documents-and-repository-sync-only",
+    "retainCumulativeBudgetsAndRootRepairCounts": true,
+    "requirementsScopeExpansionAuthorized": false
+  }
 }
