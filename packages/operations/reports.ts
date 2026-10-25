@@ -18,6 +18,9 @@ export type ReportBatch = Base &
     sources: string[];
     warnings: string[];
   };
+function normalize(input: ReportInput): ReportInput {
+  return { ...input, store: safeText(input.store, 100), site: safeText(input.site, 30) };
+}
 export class Reports {
   store: Store;
   constructor(store: Store) {
@@ -28,6 +31,7 @@ export class Reports {
     contentHash: string;
     warnings: string[];
   } {
+    input = normalize(input);
     if (
       !['sales', 'ads'].includes(input.kind) ||
       !input.mapping ||
@@ -55,6 +59,7 @@ export class Reports {
             'currency',
           ];
     const numbers = new Set(['units', 'impressions', 'clicks', 'spend', 'orders', 'revenue']);
+    if (input.kind === 'ads' && input.mapping.adGroup) fields.push('adGroup');
     const indices = fields.map((f) => data[0].indexOf(input.mapping[f]));
     if (indices.some((i) => i < 0) || new Set(indices).size !== indices.length)
       throw new Error('MISSING_COLUMN');
@@ -80,7 +85,13 @@ export class Reports {
       if (String(row.date) > input.asOf) throw new Error('AS_OF_BEFORE_DATA');
       if (row.currency && !/^[A-Z]{3}$/.test(String(row.currency)))
         throw new Error('INVALID_CURRENCY');
-      const key = JSON.stringify([row.date, row.listing, row.campaign, row.searchTerm]);
+      const key = JSON.stringify([
+        row.date,
+        row.listing,
+        row.campaign,
+        row.adGroup,
+        row.searchTerm,
+      ]);
       if (keys.has(key)) throw new Error('DUPLICATE_ROW');
       keys.add(key);
       return row;
@@ -103,6 +114,7 @@ export class Reports {
     };
   }
   import(scope: string, input: ReportInput): ReportBatch {
+    input = normalize(input);
     const preview = this.preview(input);
     return this.store.once(scope, `report:${preview.contentHash}`, () => {
       const source = this.store.source(

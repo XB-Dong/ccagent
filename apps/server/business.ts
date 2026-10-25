@@ -1,3 +1,4 @@
+import { readOperations } from '../../packages/operations/context.ts';
 import { Store, type Base } from '../../packages/core/store.ts';
 import {
   Learning,
@@ -41,6 +42,7 @@ export class Business {
       pools: this.store.list(scope, 'pool'),
       allocations: this.store.list(scope, 'allocation'),
       shipments: this.store.list(scope, 'shipment'),
+      adAnalyses: this.store.list(scope, 'adAnalysis'),
       activities: this.store.list(scope, 'activity'),
       reminders: this.store.list(scope, 'reminder'),
       reports: this.store.list(scope, 'report'),
@@ -208,6 +210,7 @@ export class Business {
     throw new Error('NOT_FOUND');
   }
   tool(scope: string, sourceId: string | undefined, action: string, body: Record<string, unknown>) {
+    if (action === 'read_operations') return readOperations(this.store, scope, body);
     if (action === 'find_skills') {
       const query = safeText(body.query, 100).toLowerCase();
       const offset = body.offset === undefined ? 0 : Number(body.offset);

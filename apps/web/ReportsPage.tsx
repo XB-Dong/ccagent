@@ -147,7 +147,10 @@ export function ReportsPage({
               setPending(undefined);
             }}
           />
-          <small>规范列：{columns[kind].join('、')}。空值、负数和重复记录不会被自动修补。</small>
+          <small>
+            规范列：{columns[kind].join('、')}。空值、负数和重复记录不会被自动修补。
+            {kind === 'ads' ? '如需广告组分析，在映射中添加 adGroup → 对应CSV标题。' : ''}
+          </small>
         </label>
         <div className="form-actions wide">
           <button disabled={busy} className="primary" onClick={() => void inspect()}>

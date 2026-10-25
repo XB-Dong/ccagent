@@ -89,3 +89,7 @@ Leader 已核对当前目录为空、无祖先 AGENTS.md；确认上述文件仅
 ### P2 库存/发货
 
 新增 forecast/inventory/allocation/shipping 领域模块及 InventoryPage/ShippingPage，依赖P1规范reportKind及严格日期。测试 inventory/shipping，复用Store短事务与CAS。Business负责受控输入，领域重新校验数量/引用/状态，API不信任UI。Leader已审阅：无DDL迁移，主要风险为重复扣预留、缺日当0、池超配、发运后错误返还及数量越界；先留失败行为测试。
+
+### P3 广告与最终交付
+
+新增advertising.ts/AdvertisingPage及其测试，复用Reports规范批次与csvCell；接入operations/API/App，更新发布/使用/证据矩阵。恢复脚本复用既有recovery/ops。Leader已审阅：零分母、混币种、归因窗口和缺成本主要风险；不执行广告写入、不增加付费额度。无DDL迁移。所有发布时间/HTTPS/真实模型证据独立标注。

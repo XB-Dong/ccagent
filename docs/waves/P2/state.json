@@ -25,8 +25,9 @@
     "external-id-normalization": 1,
     "forecast-intent": 1,
     "physical-batch": 1,
-    "pool-sku-normalization": 1,
+    "pool-sku-normalization": 2,
     "pool-key-collision": 1
   },
-  "reportRef": "../../audit/reports/P2-execution-20261026.md"
+  "reportRef": "../../audit/reports/P2-execution-20261026.md",
+  "independentReviewStatus": "all_findings_reverified"
 }

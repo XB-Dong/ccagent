@@ -5,6 +5,43 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Store } from '../packages/core/store.ts';
 import { Business } from '../apps/server/business.ts';
+test('operation summaries disclose omitted records and preserve campaign ownership', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'cc-ops-context-'));
+  const store = new Store(join(dir, 'business.sqlite'));
+  const business = new Business(store, dir);
+  try {
+    for (let i = 0; i < 3; i++)
+      store.create('a', 'adAnalysis', {
+        store: 'S',
+        asOf: '2026-10-25',
+        batchId: 'synthetic',
+        options: { attributionDays: 7, costBasisComplete: false },
+        groups: [
+          {
+            name: 'Default',
+            campaign: `C${i}`,
+            currency: 'USD',
+            profit: null,
+            acos: null,
+            roas: null,
+            mature: false,
+          },
+        ],
+      });
+    const result = business.tool('a', undefined, 'read_operations', {}) as any;
+    assert.equal(result.totals.adAnalysis, 3);
+    assert.equal(result.truncated, true);
+    assert.equal(result.advertising[0].groups[0].campaign, 'C2');
+    assert.ok(Buffer.byteLength(JSON.stringify(result)) <= 5000);
+    assert.equal(
+      (business.tool('b', undefined, 'read_operations', {}) as any).totals.adAnalysis,
+      0,
+    );
+  } finally {
+    store.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
 
 test('growing task and memory stores yield bounded, paged model projections without losing facts', () => {
   const dir = mkdtempSync(join(tmpdir(), 'cc-context-'));

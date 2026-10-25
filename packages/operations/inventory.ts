@@ -119,7 +119,7 @@ export function projectInventory(input: ProjectionInput, dailyDemand: number) {
     safetyThreshold: Math.ceil(dailyDemand * input.safetyDays),
     lostDemand: days.reduce((sum, d) => sum + d.lostDemand, 0),
     assumptions: [
-      'available已排除预留，不再次扣减reserved',
+      '可售库存已经排除预留；预留仅展示，不再次扣减',
       '到货当天先入库再按需求消耗',
       '按累计期望需求向上取整后逐日差分，避免小数日均被每天加一',
       '补货量取覆盖期逐日前缀最大缺口；提前期内缺口需人工加急/调拨，普通运输无法回补已损失销量',

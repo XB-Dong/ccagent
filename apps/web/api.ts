@@ -6,8 +6,10 @@ import type { Forecast } from '../../packages/operations/forecast.ts';
 import type { Inventory } from '../../packages/operations/inventory.ts';
 import type { Pool, Allocation } from '../../packages/operations/allocation.ts';
 import type { Shipment } from '../../packages/operations/shipping.ts';
+import type { AdAnalysis } from '../../packages/operations/advertising.ts';
 
 export type Snapshot = {
+  adAnalyses: AdAnalysis[];
   forecasts: Forecast[];
   inventories: Inventory[];
   pools: Pool[];
@@ -87,6 +89,11 @@ const errorLabels: Record<string, string> = {
   DUPLICATE_EXTERNAL_ID: '该系统单号已经关联另一发货记录',
   INVALID_RECEIPT: '累计到货不可倒退、超量或在发运前登记',
   PAST_INBOUND: '在途日期早于库存快照，请核实延误或实际到货',
+  BUDGET_SCOPE_REQUIRED: '预算比较需选择广告活动分组，并明确一个活动名称',
+  MISSING_AD_GROUP: '当前报表未映射广告组adGroup，请补充该列后重新导入',
+  MONEY_PRECISION_OR_RANGE: '金额超出支持精度或范围，最多6位小数，请核对数据',
+  BUDGET_CURRENCY_REQUIRED: '请明确填写每日预算的币种',
+  INVALID_CURRENCY: '币种请使用三个大写字母，例如USD',
 };
 export const errorMessage = (value: string) => errorLabels[value] ?? `操作未完成（${value}）`;
 export async function api<T>(path: string, body?: object): Promise<T> {
@@ -109,6 +116,7 @@ export function download(name: string, content: string, type = 'text/markdown') 
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 export const empty: Snapshot = {
+  adAnalyses: [],
   forecasts: [],
   inventories: [],
   pools: [],

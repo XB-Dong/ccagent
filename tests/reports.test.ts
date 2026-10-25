@@ -5,6 +5,41 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Store } from '../packages/core/store.ts';
 import { Reports, type ReportInput } from '../packages/operations/reports.ts';
+import { forecastVersion } from '../packages/operations/forecast.ts';
+test('normalized report identity remains usable by forecasting across the module boundary', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'cc-report-identity-'));
+  const store = new Store(join(dir, 'business.sqlite'));
+  const reports = new Reports(store);
+  try {
+    const input: ReportInput = {
+      kind: 'sales',
+      store: ' S ',
+      site: ' US ',
+      asOf: '2026-10-25',
+      mapping: { date: 'date', listing: 'listing', units: 'units' },
+      csv:
+        'date,listing,units\n' +
+        Array.from({ length: 7 }, (_, i) => `2026-10-${19 + i},A,10`).join('\n'),
+    };
+    const batch = reports.import('a', input);
+    assert.equal(batch.store, 'S');
+    assert.equal(reports.import('a', { ...input, store: 'S', site: 'US' }).id, batch.id);
+    assert.equal(
+      forecastVersion(store, 'a', {
+        store: ' S ',
+        site: ' US ',
+        listing: 'A',
+        asOf: input.asOf,
+        batchId: batch.id,
+        requestId: 'identity',
+      }).dailyDemand,
+      10,
+    );
+  } finally {
+    store.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
 test('CSV mapping preserves quoted listing, rejects missing/invalid values and imports a batch idempotently', () => {
   const dir = mkdtempSync(join(tmpdir(), 'cc-reports-'));
   const store = new Store(join(dir, 'business.sqlite'));

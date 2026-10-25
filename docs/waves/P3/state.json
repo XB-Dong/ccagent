@@ -1,0 +1,31 @@
+{
+  "waveId": "P3",
+  "baselineSha": "2b70206287b3509383a8f27971ab71953727419b",
+  "specVersion": "advertising-v1.1",
+  "planStatus": "frozen",
+  "executionStatus": "partial",
+  "owner": "Leader",
+  "tasks": {
+    "P3-ADS": "synthetic_browser_verified",
+    "P3-INTEGRATION": "37_tests_passed_review_passed",
+    "P3-RELEASE": "candidate_preparing"
+  },
+  "cumulativeRepairsRef": "../P2/state.json",
+  "carriedRoots": {
+    "P0-RELEASE": "public-https-blocked-recovery-rollback-pending",
+    "pool-sku-normalization": {
+      "count": 2,
+      "status": "report-forecast-integration-green"
+    }
+  },
+  "perRootRepairLimit": 2,
+  "liveBudgetRef": "../P0/state.json",
+  "independentReviewStatus": "all_findings_reverified",
+  "repairCounts": {
+    "ad-group-scope": 1,
+    "budget-currency": 1,
+    "decimal-money": 2,
+    "operation-summary-ownership": 1,
+    "operation-summary-omission": 1
+  }
+}
