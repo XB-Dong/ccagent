@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "1.0",
+  "recordedAt": "2026-10-26T01:03:09+08:00",
+  "timeZone": "Asia/Shanghai",
+  "scope": "read-only-research-no-dependency-adoption",
+  "p0ScopeChanged": false,
+  "deepseekCalls": 0,
+  "repositories": [
+    {
+      "repository": "https://github.com/BWB03/inventory-dashboard",
+      "commitSha": "34d517a3150e1caa888dbd05767f419c9b9d3d53",
+      "treeSha": "e145dffe329afc95393557c0b571489f3b6a50c7",
+      "committedAt": "2026-02-16T20:03:23Z",
+      "files": [
+        {
+          "path": "README.md",
+          "blobSha": "1c52ae9674a40a4655babac8f1c89d7c42ee5c44",
+          "source": "https://github.com/BWB03/inventory-dashboard/blob/34d517a3150e1caa888dbd05767f419c9b9d3d53/README.md",
+          "cachedTextSha256": "703337a3b2960b08755071091910bca2d2068207693631761caae005547407f9"
+        },
+        {
+          "path": "LICENSE",
+          "blobSha": "0ca2cc8734b5495adf24f7526dcb522caaae69ff",
+          "source": "https://github.com/BWB03/inventory-dashboard/blob/34d517a3150e1caa888dbd05767f419c9b9d3d53/LICENSE",
+          "cachedTextSha256": "1074b7a88c366a32a379330a886833e3e9ef0ff83f893786fb4251ea18f0b418"
+        },
+        {
+          "path": "js/app.js",
+          "blobSha": "921c4ac56ec0ba947dc40f69ed6ec96a69a72112",
+          "source": "https://github.com/BWB03/inventory-dashboard/blob/34d517a3150e1caa888dbd05767f419c9b9d3d53/js/app.js",
+          "cachedTextSha256": "88ac9dac12a8cecbe2cea47089eedc2cd74e9114c3368c6b90c59f6ecba1d3b7"
+        }
+      ],
+      "runtimeVerification": "not_run"
+    },
+    {
+      "repository": "https://github.com/La0310/timeseries_stock_forecasting",
+      "commitSha": "e97727813204ab9f59db99f849e1ade25c176b7d",
+      "treeSha": "484a0f355c221d9a58de8ebb8f42ba29b296d07c",
+      "committedAt": "2026-09-29T08:29:12Z",
+      "files": [
+        {
+          "path": "README.md",
+          "blobSha": "75ab160c7c2cf785c09032040471fc5985e7c0a2",
+          "source": "https://github.com/La0310/timeseries_stock_forecasting/blob/e97727813204ab9f59db99f849e1ade25c176b7d/README.md",
+          "cachedTextSha256": "4a8e25123c3dd76c681eed585af3e256562e1a8d3345f9f0f97ad8744862b307"
+        },
+        {
+          "path": "stock-management/backend/services/forecast_engine.py",
+          "blobSha": "d39ad1bf67d105ab60a95c882ca24071dc86747e",
+          "source": "https://github.com/La0310/timeseries_stock_forecasting/blob/e97727813204ab9f59db99f849e1ade25c176b7d/stock-management/backend/services/forecast_engine.py",
+          "cachedTextSha256": "31d51163071107e899b467ec2073f0e8bb2726f9ae4d7f212a1bfcb146fa324e"
+        },
+        {
+          "path": "stock-management/backend/services/inventory_recommender.py",
+          "blobSha": "a3ebeafd34c92b891aa35ae1d64f69787e10bca8",
+          "source": "https://github.com/La0310/timeseries_stock_forecasting/blob/e97727813204ab9f59db99f849e1ade25c176b7d/stock-management/backend/services/inventory_recommender.py",
+          "cachedTextSha256": "863ab8d1e4eb95149989bfd1529ceb1adbce3863b8b97e175923be2f10c67f93"
+        },
+        {
+          "path": "stock-management/requirements.txt",
+          "blobSha": "ea473c6991b1dbf1274d63cc021aa8866912df3a",
+          "source": "https://github.com/La0310/timeseries_stock_forecasting/blob/e97727813204ab9f59db99f849e1ade25c176b7d/stock-management/requirements.txt",
+          "cachedTextSha256": "c857b4c63032eca3d3b8a89ec2638c5df4d50c6a3d581f1e2122beb73e315bcd"
+        }
+      ],
+      "runtimeVerification": "not_run"
+    },
+    {
+      "repository": "https://github.com/quguolin/llm-data-agent",
+      "commitSha": "f5732b8afb2bafbb9eacfcce3ed692c4dfca2ee0",
+      "treeSha": "ff296b4fcd97f7f58f9e5efe51b8541339a46beb",
+      "committedAt": "2026-04-19T15:23:51Z",
+      "files": [
+        {
+          "path": "README.md",
+          "blobSha": "5be1496875a149e5631336abbea08915ead13548",
+          "source": "https://github.com/quguolin/llm-data-agent/blob/f5732b8afb2bafbb9eacfcce3ed692c4dfca2ee0/README.md",
+          "cachedTextSha256": "a448599498e8a3e6412843fc0e11f6506dc4c066112d6a705366d41eba8fdc70"
+        },
+        {
+          "path": "core/dataset.py",
+          "blobSha": "a0de626bff98de62608b97f101b9fe3a827f4cb5",
+          "source": "https://github.com/quguolin/llm-data-agent/blob/f5732b8afb2bafbb9eacfcce3ed692c4dfca2ee0/core/dataset.py",
+          "cachedTextSha256": "2c4377ed25acc3681041b5cc7a2c75852f6f215403764775e0218071fc67b4ed"
+        },
+        {
+          "path": "core/experience.py",
+          "blobSha": "59c346c162f7092e9e6150c8a5b019b74954922b",
+          "source": "https://github.com/quguolin/llm-data-agent/blob/f5732b8afb2bafbb9eacfcce3ed692c4dfca2ee0/core/experience.py",
+          "cachedTextSha256": "5c6ee7651472265d5cf00b7c717b77f0c2acc612e8165fd8954c9cf5fa875159"
+        },
+        {
+          "path": "core/tools.py",
+          "blobSha": "617970e2e3d089bca7710ae1ed85924da72731c0",
+          "source": "https://github.com/quguolin/llm-data-agent/blob/f5732b8afb2bafbb9eacfcce3ed692c4dfca2ee0/core/tools.py",
+          "cachedTextSha256": "503e6b5af53e9b9db7c4a67a0ec952660440c9aaf4f73ea2f7dd498215e824f8"
+        },
+        {
+          "path": "requirements.txt",
+          "blobSha": "67e9a0e61cdc240b5b79a427bd2774ccd7cc6408",
+          "source": "https://github.com/quguolin/llm-data-agent/blob/f5732b8afb2bafbb9eacfcce3ed692c4dfca2ee0/requirements.txt",
+          "cachedTextSha256": "067852a3827d47f7a966dfe34ce82dd3c3014ea15bf889d599c1949e01ff4cd3"
+        }
+      ],
+      "runtimeVerification": "not_run"
+    },
+    {
+      "repository": "https://github.com/Rohit-Punjabi/inventory-analytics-dashboard",
+      "commitSha": "3dc5c375ae3c2a8889621d61eba7bcb2b0d5d6a2",
+      "treeSha": "4264f60ef770b5942d5eb9f057c7d66ea791b695",
+      "committedAt": "2026-07-14T11:02:42Z",
+      "files": [
+        {
+          "path": "README.md",
+          "blobSha": "deef5f5b3e47b15495fafcdc39e224d1435e1fb8",
+          "source": "https://github.com/Rohit-Punjabi/inventory-analytics-dashboard/blob/3dc5c375ae3c2a8889621d61eba7bcb2b0d5d6a2/README.md",
+          "cachedTextSha256": "48758e0867600647dd370b9831c0a8316c3287ca9e17243cc0d6c3e9af159847"
+        },
+        {
+          "path": "LICENSE",
+          "blobSha": "d3f7d01ef66deee115dcce15fb519ca201ad6431",
+          "source": "https://github.com/Rohit-Punjabi/inventory-analytics-dashboard/blob/3dc5c375ae3c2a8889621d61eba7bcb2b0d5d6a2/LICENSE",
+          "cachedTextSha256": "46b13f0ab4c96bb5966e2a4e493476992de325fcb0d7261696754d814cd69799"
+        },
+        {
+          "path": "requirements.txt",
+          "blobSha": "8a11eba267ff57c99618d0e350a504229c4a31ef",
+          "source": "https://github.com/Rohit-Punjabi/inventory-analytics-dashboard/blob/3dc5c375ae3c2a8889621d61eba7bcb2b0d5d6a2/requirements.txt",
+          "cachedTextSha256": "23cdb3f26dc15dc7d8007f6c0d16df8f1233b8783dd5085ada0523c47e9f7ebd"
+        },
+        {
+          "path": "src/identity.py",
+          "blobSha": "395b93c084b6873cc61fac37eb77acdd694bf641",
+          "source": "https://github.com/Rohit-Punjabi/inventory-analytics-dashboard/blob/3dc5c375ae3c2a8889621d61eba7bcb2b0d5d6a2/src/identity.py",
+          "cachedTextSha256": "7f3683f02ca823740cf109ae49479c24e8a2c1d99528c841046b6d3402deb099"
+        },
+        {
+          "path": "src/restock.py",
+          "blobSha": "39430239d3fba8fe35f001899823004ceefb0b9d",
+          "source": "https://github.com/Rohit-Punjabi/inventory-analytics-dashboard/blob/3dc5c375ae3c2a8889621d61eba7bcb2b0d5d6a2/src/restock.py",
+          "cachedTextSha256": "5078cb56a7c4f1adb7d034e9af19a6150250c137b7d1e172e5a0854bb86ad7d3"
+        },
+        {
+          "path": "src/validate.py",
+          "blobSha": "0ce6e82388649e1a495669a8e58d00dda084ecec",
+          "source": "https://github.com/Rohit-Punjabi/inventory-analytics-dashboard/blob/3dc5c375ae3c2a8889621d61eba7bcb2b0d5d6a2/src/validate.py",
+          "cachedTextSha256": "60fa934e2229d435cb3f37bebae4336dff57ec58d5b442cc8d532acf04950129"
+        }
+      ],
+      "runtimeVerification": "not_run"
+    },
+    {
+      "repository": "https://github.com/PropampAI/Propamp.ai-for-Amazon-Sellers-MCP",
+      "commitSha": "d277825c8c04d84b927e55b07f609a69a0944fcd",
+      "treeSha": "ddb7f046f0e47125484b6491ed40fdb73e082a44",
+      "committedAt": "2026-08-25T10:54:01Z",
+      "files": [
+        {
+          "path": "README.md",
+          "blobSha": "453f5bc3a57c9fad48344299affddf1f0e22d5c1",
+          "source": "https://github.com/PropampAI/Propamp.ai-for-Amazon-Sellers-MCP/blob/d277825c8c04d84b927e55b07f609a69a0944fcd/README.md",
+          "cachedTextSha256": "062eca1ed741204539f05727ff2ad3479b045c2b751d8908f9b1d0770f61c351"
+        }
+      ],
+      "runtimeVerification": "not_run"
+    },
+    {
+      "repository": "https://github.com/saleweaver/python-amazon-sp-api",
+      "commitSha": "b19785afa8df885af045337f877dd2bd54c87ab6",
+      "treeSha": "de6267dc0996fbf3ffeb703df60fe7ca3de325ce",
+      "committedAt": "2026-10-24T07:04:43Z",
+      "files": [
+        {
+          "path": "README.md",
+          "blobSha": "d404fdfa4a08af8213ac36b71c9f6a8f85b82f06",
+          "source": "https://github.com/saleweaver/python-amazon-sp-api/blob/b19785afa8df885af045337f877dd2bd54c87ab6/README.md",
+          "cachedTextSha256": "d8e4d3bfdf2da7a99fdd01034b206914a5cc1c2587dbacc229ea4b6d34990853"
+        },
+        {
+          "path": "LICENSE",
+          "blobSha": "589fec601137ea9795a9b1a3ec5818ba7e47654e",
+          "source": "https://github.com/saleweaver/python-amazon-sp-api/blob/b19785afa8df885af045337f877dd2bd54c87ab6/LICENSE",
+          "cachedTextSha256": "9dbce898f215a353d59796e91809eda1fb18005ed9436521cceb4a81fec888dc"
+        },
+        {
+          "path": "sp_api/api/reports/reports.py",
+          "blobSha": "8a2f211595a0a78891c7730ef9f2ab4942b15870",
+          "source": "https://github.com/saleweaver/python-amazon-sp-api/blob/b19785afa8df885af045337f877dd2bd54c87ab6/sp_api/api/reports/reports.py",
+          "cachedTextSha256": "8c4c08923400d1fd64a85f07d2aabdbbea6021bc75f44b53ae18b994274f416f"
+        }
+      ],
+      "runtimeVerification": "not_run"
+    }
+  ],
+  "cacheHashScope": "UTF-8/LF cached text, not executed code; GitHub blobSha identifies the source object."
+}

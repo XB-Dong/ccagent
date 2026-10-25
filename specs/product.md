@@ -12,5 +12,6 @@
 | CC-HISTORY-001 | [日期追加](../docs/product/changes/README.md) | PREP-REQ / P0-REQ-EXPORT |
 | CC-ACT-001 的人工记录子集 | [领域契约](contracts/domain.md) | P0-TASK |
 | CC-INV-001 / CC-SHIP-001 / CC-ADS-001 | 业务方向已记录，实施规格留待后续波次 | 尚未排入 P0 |
+| CC-DATA-001 / CC-ANALYSIS-001 | 需求文档中的候选补充，待确认再编写实施规格 | 不自动增加 P0 验收 |
 
 所有 P0 编号的具体验收见[验收矩阵](acceptance.md)。冻结前的 ID 不更换，规格变更递增版本并保留决策。

@@ -71,6 +71,12 @@
       "path": "README.md",
       "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/README.md",
       "sha256": "0f5516be2acde776f05572cbc8c3093c90549afe04ce118e11157d073d5d15f4"
+    },
+    {
+      "path": "docs/subsystems/persistence.md",
+      "source": "https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/docs/subsystems/persistence.md",
+      "sha256": "7ba823d3492e5ce91b355696e9a8a298db9365e7259691e73bcf24e61929d530",
+      "addedDate": "2026-10-26"
     }
   ],
   "limitations": "Hashes bind inspected source bytes, not runtime or API verification."

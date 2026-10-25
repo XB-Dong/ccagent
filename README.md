@@ -14,6 +14,7 @@
 | P0 准备做什么，什么还没确定 | [P0 计划](P0-PLAN.md) · [待确认清单](docs/discovery/open-questions.md) |
 | 如何开发、验证与交付 | [AI Coding 宪法](CONSTITUTION.md) · [Agent 规则](AGENTS.md) |
 | 工作台怎样复用 Harness | [架构](specs/architecture.md) · [上游调研](docs/references/deepseek-harness.md) |
+| 同类项目哪些值得参考、哪些技术可迁移 | [同类项目调研](docs/references/同类项目.md) |
 | 怎样记住反馈、压缩经验和生成 Skill | [自适应机制](specs/adaptive-learning.md) |
 | 行为怎样被验收 | [验收矩阵](specs/acceptance.md) · [领域契约](specs/contracts/domain.md) |
 | 当前波次的真实状态 | [P0 状态](docs/waves/P0/state.json) · [前置交接](docs/waves/P0/handoffs/preparation.md) |
