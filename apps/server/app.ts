@@ -47,7 +47,7 @@ export async function createApp(options: AppOptions) {
         store,
         budget,
         options.dataDir,
-        join(options.dataDir, '..', 'backups'),
+        join(options.dataDir, 'backups'),
       );
     } finally {
       maintenance = false;
