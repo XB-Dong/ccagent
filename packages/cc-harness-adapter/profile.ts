@@ -10,7 +10,7 @@ export const disabledTools = [
   'pty',
   'llm-retry',
 ];
-export function operatorProfile(baseURL: string, compactWindow = 32000): object[] {
+export function operatorProfile(baseURL: string, compactWindow = 4096): object[] {
   return [
     ...disabledTools.map((id) => ({ id, disabled: true })),
     {
@@ -37,9 +37,9 @@ export function operatorProfile(baseURL: string, compactWindow = 32000): object[
     {
       id: 'compaction-basic',
       config: {
-        thresholdRatio: 0.75,
-        retainTokens: 2048,
-        headroomTokens: 1024,
+        thresholdRatio: 0.6,
+        retainTokens: 512,
+        headroomTokens: 768,
         maxTokens: 384,
         compactionRetries: 0,
         maxOverflowRetries: 0,

@@ -1,0 +1,30 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { Store } from '../packages/core/store.ts';
+import { Business } from '../apps/server/business.ts';
+
+test('growing task and memory stores yield bounded, paged model projections without losing facts', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'cc-context-'));
+  const store = new Store(join(dir, 'business.sqlite'));
+  const business = new Business(store, dir);
+  try {
+    for (let index = 0; index < 45; index++) {
+      const source = store.source('a', `合成来源 ${index}`);
+      store.create('a', 'task', { title: '库存检查'.repeat(40), status: 'open', timeZone: 'Asia/Shanghai', checklist: Array(30).fill('检查'.repeat(100)), checked: [], sources: [source.id] });
+      business.learning.remember('a', source.id, `事实${index}`, '精确数据'.repeat(60), true);
+    }
+    const first = business.tool('a', undefined, 'list_tasks', {}) as { tasks: {id: string}[]; nextOffset: number };
+    assert.equal(first.tasks.length, 8);
+    assert.ok(Buffer.byteLength(JSON.stringify(first)) < 6000);
+    const second = business.tool('a', undefined, 'list_tasks', { offset: first.nextOffset }) as typeof first;
+    assert.notEqual(first.tasks[0].id, second.tasks[0].id);
+    const memory = business.tool('a', undefined, 'read_memory', {}) as {facts: unknown[]};
+    assert.equal(memory.facts.length, 4);
+    assert.ok(Buffer.byteLength(JSON.stringify(memory)) < 6000);
+    assert.equal(store.list('a', 'memory').length, 45);
+    assert.deepEqual(business.tool('b', undefined, 'list_tasks', {}), {tasks: [], nextOffset: null, total: 0});
+  } finally { store.close(); rmSync(dir, {recursive:true, force:true}); }
+});

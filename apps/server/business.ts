@@ -4,6 +4,7 @@ import {
   type Skill,
   type Memory,
   type Feedback,
+  type Task,
 } from '../../packages/learning/service.ts';
 import { Capture } from '../../packages/learning/capture.ts';
 import { Tasks, type TaskInput } from '../../packages/operations/tasks.ts';
@@ -155,11 +156,22 @@ export class Business {
     if (action === 'skills')
       return this.learning
         .activeSkills(scope)
+        .slice(0, 6)
         .map(({ id, name, description }) => ({ id, name, description }));
     if (action === 'skill')
-      return this.learning.activeSkills(scope).find((row) => row.id === body.id) ?? null;
-    if (action === 'list_tasks') return { tasks: this.store.list(scope, 'task') };
-    if (action === 'read_memory') return this.learning.context(scope);
+      return this.learning.activeSkills(scope).find((row) => row.id === body.id && Buffer.byteLength(row.content) <= 6000) ?? null;
+    if (action === 'list_tasks' || action === 'read_memory') {
+      const offset = body.offset === undefined ? 0 : Number(body.offset);
+      if (!Number.isSafeInteger(offset) || offset < 0) throw new Error('INVALID_OFFSET');
+      if (action === 'list_tasks') {
+        const rows = this.store.list<Task>(scope, 'task');
+        const tasks = rows.slice(offset, offset + 8).map(({ id, title, status, timeZone, dueAt }) => ({ id, title: title.slice(0, 100), status, timeZone, dueAt }));
+        return {tasks, total: rows.length, nextOffset: offset + 8 < rows.length ? offset + 8 : null};
+      }
+      const rows = this.learning.context(scope).facts;
+      const facts = rows.slice(offset, offset + 4).map(({ id, key, value, sources }) => ({ id, key, value, sources: sources.slice(0, 2) }));
+      return {facts, total: rows.length, nextOffset: offset + 4 < rows.length ? offset + 4 : null};
+    }
     if (action === 'draft_checklist') {
       const skill = this.learning.activeSkills(scope).find((row) => row.id === body.skillId);
       if (!skill || skill.risk !== 'L0') throw new Error('SKILL_REVOKED_OR_UNAVAILABLE');

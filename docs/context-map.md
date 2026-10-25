@@ -77,3 +77,7 @@ Leader 已核对当前目录为空、无祖先 AGENTS.md；确认上述文件仅
 ### R0 接口确认后的实现路径
 
 `packages/core/`（SQLite、额度）、`packages/learning/`（来源/反馈/记忆/Skill）、`packages/cc-harness-adapter/`（官方 SDK/overlay/受控插件）、`apps/server/`（鉴权/API/有界学习队列）、`apps/web/`（React 工作台）、`tests/`（领域/权限/集成）。Leader 单写共享契约、依赖、状态和发布配置。依赖 `specs/contracts/runtime-v0.2.md`；已审阅风险为 SQLite 迁移、scope 隔离、运行时预算、会话删除与恢复。原有参考模式不变。
+
+### R1 后续上下文容量复查
+
+修改 `apps/server/business.ts` 的模型投影、`packages/cc-harness-adapter/profile.ts` 的上下文容量、`scripts/live-probe.ts` 的账本主机守卫；测试位于 `tests/context-bounds.test.ts` 与既有原生 Harness 集成。依赖仍为 Store/Learning 和原生压缩。保留完整业务数据，只分页/限制模型侧投影，避免增长后一次工具结果耗尽输入容量。云端接管预算后，本机旧账本不得用于再次付费。Leader 已审阅：无数据库迁移，工具读取新增可选分页参数，付费上限不变。

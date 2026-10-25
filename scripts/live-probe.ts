@@ -1,4 +1,4 @@
-import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, mkdirSync, writeFileSync, existsSync } from 'node:fs';
 import { parseEnv } from 'node:util';
 import { resolve, join } from 'node:path';
 import { createApp } from '../apps/server/app.ts';
@@ -9,6 +9,8 @@ if (!process.argv.includes('--live')) {
   process.exit(0);
 }
 const support = resolve('../.ccagent-support');
+if (existsSync(join(support, 'cloud-budget-authority.json')))
+  throw new Error('MODEL_BUDGET_OWNED_BY_CLOUD');
 const secretPath = process.env.CC_MODEL_ENV_FILE;
 if (!secretPath) throw new Error('MODEL_ENV_FILE_REQUIRED');
 const secret = parseEnv(readFileSync(secretPath, 'utf-8'));
