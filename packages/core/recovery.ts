@@ -1,4 +1,4 @@
-import { backup } from 'node:sqlite';
+import { backup, DatabaseSync } from 'node:sqlite';
 import {
   mkdirSync,
   readdirSync,
@@ -67,12 +67,19 @@ export async function createRecoveryPoint(
   });
   return { directory, manifest };
 }
-export function restoreRecoveryPoint(directory: string, target: string, currentLedger: string) {
+export function restoreRecoveryPoint(
+  directory: string,
+  target: string,
+  currentLedger: string,
+  currentBudget?: string,
+) {
   const root = resolve(directory);
   const destination = resolve(target);
   if (existsSync(destination) && readdirSync(destination).length)
     throw new Error('RESTORE_TARGET_NOT_EMPTY');
   if (!existsSync(currentLedger)) throw new Error('CURRENT_PRIVACY_LEDGER_REQUIRED');
+  if (!currentBudget || !existsSync(currentBudget))
+    throw new Error('CURRENT_MODEL_BUDGET_REQUIRED');
   const manifest = JSON.parse(readFileSync(join(root, 'manifest.json'), 'utf-8')) as Manifest;
   if (manifest.schemaVersion !== '1.0' || !Array.isArray(manifest.files))
     throw new Error('INVALID_BACKUP_MANIFEST');
@@ -94,6 +101,34 @@ export function restoreRecoveryPoint(directory: string, target: string, currentL
     copyFileSync(join(root, file.path), path);
   }
   copyFileSync(currentLedger, join(destination, 'privacy-ledger.jsonl'));
+  // Restoring business data must never refund attempts or uncertain usage.
+  const current = new DatabaseSync(currentBudget, { readOnly: true });
+  const merged = new DatabaseSync(join(destination, 'model-budget.sqlite'));
+  try {
+    merged.exec('BEGIN IMMEDIATE');
+    for (const row of current.prepare('SELECT * FROM model_requests').all()) {
+      merged
+        .prepare(
+          `INSERT INTO model_requests (id,input_tokens,output_tokens,settled,usage_verified,created_at) VALUES (?,?,?,?,?,?)
+        ON CONFLICT(id) DO UPDATE SET input_tokens=MAX(input_tokens,excluded.input_tokens),output_tokens=MAX(output_tokens,excluded.output_tokens),settled=MAX(settled,excluded.settled),usage_verified=MIN(usage_verified,excluded.usage_verified)`,
+        )
+        .run(
+          row.id,
+          row.input_tokens,
+          row.output_tokens,
+          row.settled,
+          row.usage_verified,
+          row.created_at,
+        );
+    }
+    merged.exec('COMMIT');
+  } catch (error) {
+    merged.exec('ROLLBACK');
+    throw error;
+  } finally {
+    current.close();
+    merged.close();
+  }
   const restored = new Store(join(destination, 'business.sqlite'));
   try {
     if (restored.db.prepare('PRAGMA integrity_check').get()?.integrity_check !== 'ok')

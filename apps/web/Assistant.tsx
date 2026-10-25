@@ -21,12 +21,13 @@ export function Assistant({
   const [conversationId, setConversationId] = useState<string>();
   const [messages, setMessages] = useState<Message[]>([]);
   const [busy, setBusy] = useState(false);
-  const bottom = useRef<HTMLDivElement>(null);
+  const messagesContainer = useRef<HTMLDivElement>(null);
   useEffect(() => {
     setText(initialPrompt);
   }, [initialPrompt]);
   useEffect(() => {
-    bottom.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (messagesContainer.current)
+      messagesContainer.current.scrollTop = messagesContainer.current.scrollHeight;
   }, [messages.length, busy]);
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -104,7 +105,7 @@ export function Assistant({
             新对话 <Icon name="plus" size={15} />
           </button>
         </div>
-        <div className="messages">
+        <div className="messages" ref={messagesContainer}>
           <div className="message assistant">
             <span className="message-avatar">
               <Icon name="spark" size={16} />
@@ -146,7 +147,6 @@ export function Assistant({
               <span /> 正在整理，请稍等
             </div>
           )}
-          <div ref={bottom} />
         </div>
         <form className="composer" onSubmit={(event) => void submit(event)}>
           <textarea

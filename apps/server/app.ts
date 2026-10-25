@@ -19,6 +19,7 @@ export type AppOptions = {
   secure?: boolean;
   limits: Limits;
   budgetPath?: string;
+  modelTransport?: typeof fetch;
 };
 export async function createApp(options: AppOptions) {
   const store = new Store(join(options.dataDir, 'business.sqlite'));
@@ -57,7 +58,7 @@ export async function createApp(options: AppOptions) {
       if (req.method !== 'POST') throw new Error('METHOD_FORBIDDEN');
       const body = await readBody(req);
       if (path === '/model/v1/messages') {
-        await forwardModel(req, res, body, budget, options.apiKey);
+        await forwardModel(req, res, body, budget, options.apiKey, options.modelTransport);
         return;
       }
       if (!path.startsWith('/tools/')) throw new Error('TOOL_FORBIDDEN');
@@ -109,9 +110,12 @@ export async function createApp(options: AppOptions) {
           json(res, {
             authenticated: true,
             live: chat.live,
+            syntheticModel: !!options.modelTransport,
             modelState: !chat.live
               ? 'disabled'
               : budget.snapshot().calls >= budget.limits.maxCalls ||
+                  budget.snapshot().inputTokens >= budget.limits.maxInputTokens ||
+                  budget.snapshot().outputTokens >= budget.limits.maxOutputTokens ||
                   budget.snapshot().inputTokens + budget.snapshot().outputTokens >=
                     budget.limits.maxTotalTokens
                 ? 'budget_exhausted'
@@ -218,6 +222,8 @@ export async function createApp(options: AppOptions) {
     async close() {
       clearInterval(worker);
       await chat.close();
+      await Promise.allSettled([...activeChats]);
+      await Promise.allSettled([...activeChats]);
       await Promise.all([
         new Promise<void>((resolve) => server.close(() => resolve())),
         new Promise<void>((resolve) => internalServer.close(() => resolve())),

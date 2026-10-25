@@ -1,4 +1,4 @@
-import { Learning, type Feedback } from './service.ts';
+import type { Feedback } from './service.ts';
 import { Store, digest, type Base } from '../core/store.ts';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -9,6 +9,10 @@ type Change = Base & {
   text: string;
   status: string;
   changeId: string;
+  feedbackRevision: number;
+  amendments: NonNullable<Feedback['amendments']>;
+  sources: string[];
+  supersedes?: string;
 };
 export function confirmChange(
   store: Store,
@@ -20,18 +24,23 @@ export function confirmChange(
   const feedback = store.get<Feedback>(scope, feedbackId);
   if (feedback.kind !== 'feedback' || feedback.status === 'withdrawn')
     throw new Error('INVALID_FEEDBACK');
-  return store.once(
-    scope,
-    `change:${feedbackId}`,
-    () =>
-      store.create(scope, 'change', {
-        feedbackId,
-        requirementId,
-        text: feedback.text,
-        status: 'confirmed',
-        changeId: `cc-change-${digest([scope, feedbackId]).slice(0, 20)}`,
-      }) as Change,
-  );
+  return store.once(scope, `change:${feedbackId}:${feedback.revision}`, () => {
+    const previous = store
+      .list<Change>(scope, 'change')
+      .find((row) => row.feedbackId === feedbackId && row.status === 'confirmed');
+    if (previous) store.update(previous, { status: 'superseded' });
+    return store.create(scope, 'change', {
+      feedbackId,
+      requirementId,
+      text: feedback.text,
+      status: 'confirmed',
+      feedbackRevision: feedback.revision,
+      amendments: feedback.amendments ?? [],
+      sources: feedback.sources,
+      supersedes: previous?.changeId,
+      changeId: `cc-change-${digest([scope, feedbackId, feedback.revision]).slice(0, 20)}`,
+    }) as Change;
+  });
 }
 export function exportChanges(store: Store, scope: string, dataDir: string) {
   const changes = store
@@ -42,9 +51,20 @@ export function exportChanges(store: Store, scope: string, dataDir: string) {
         !store.isDeleted(scope, row.feedbackId) &&
         store.get<Feedback>(scope, row.feedbackId).status !== 'withdrawn',
     );
+  const history = store.list<Change>(scope, 'change').filter((row) => row.status === 'superseded');
+  const pendingAmendments = store
+    .list<Feedback>(scope, 'feedback')
+    .filter(
+      (row) =>
+        row.status !== 'withdrawn' &&
+        (row.amendments?.length ?? 0) > 0 &&
+        !changes.some(
+          (change) => change.feedbackId === row.id && change.feedbackRevision === row.revision,
+        ),
+    );
   if (
-    changes.some((row) =>
-      /(?:sk-[a-z\d]{12}|password\s*[:=]|api.?key\s*[:=]|cookie\s*[:=])/i.test(row.text),
+    /(?:sk-[a-z\d]{12}|password\s*[:=]|api.?key\s*[:=]|cookie\s*[:=])/i.test(
+      JSON.stringify([changes, history, pendingAmendments]),
     )
   )
     throw new Error('EXPORT_REDACTION_REQUIRED');
@@ -60,6 +80,8 @@ export function exportChanges(store: Store, scope: string, dataDir: string) {
   const batchId = digest([
     changes.map((row) => [row.changeId, row.revision]),
     withdrawals.map((row) => row.changeId),
+    pendingAmendments.map((row) => [row.id, row.revision]),
+    history.map((row) => row.changeId),
   ]);
   const pack = {
     schemaVersion: '1.0',
@@ -70,8 +92,12 @@ export function exportChanges(store: Store, scope: string, dataDir: string) {
     redactionStatus: 'rule_checked_manual_review_required',
     changes,
     withdrawals,
+    history,
+    pendingAmendments,
   };
-  const markdown = `# ${date} · cc 需求审阅包\n\n自动规则检查后仍须人工脱敏审核；产品不会自动更新代码仓库。\n\n${changes.map((row) => `## ${row.requirementId}\n\nchangeId: ${row.changeId}\n\n${row.text}\n\n来源：${row.feedbackId}\n`).join('\n')}\n${withdrawals.map((row) => `## 撤回 · ${row.requirementId}\n\nchangeId: ${row.changeId}\n\n撤回原变更：${row.withdrawnChangeId}\n\ncc 已明确撤回该建议，请追加撤回记录，保留原历史。\n`).join('\n')}`;
+  const render = (row: Change) =>
+    `## ${row.requirementId}\n\nchangeId: ${row.changeId}\n\n${row.text}\n\n${(row.amendments ?? []).map((item) => `补充/纠正（${item.createdAt}，来源 ${item.sourceId}）：${item.text}`).join('\n\n')}\n\n来源：${row.feedbackId}${row.supersedes ? `\n\n替代原变更：${row.supersedes}` : ''}\n`;
+  const markdown = `# ${date} · cc 需求审阅包\n\n自动规则检查后仍须人工脱敏审核；产品不会自动更新代码仓库。\n\n${changes.map(render).join('\n')}\n${withdrawals.map((row) => `## 撤回 · ${row.requirementId}\n\nchangeId: ${row.changeId}\n\n撤回原变更：${row.withdrawnChangeId}\n\ncc 已明确撤回该建议，请追加撤回记录，保留原历史。\n`).join('\n')}\n${pendingAmendments.length ? '# 候选附录 · 新补充尚待重新确认\n\n' + pendingAmendments.map((row) => `## ${row.id}\n\n${(row.amendments ?? []).map((item) => `${item.createdAt} / ${item.sourceId}：${item.text}`).join('\n\n')}`).join('\n\n') : ''}\n${history.length ? '# 被替代的历史变更（保留原记录）\n\n' + history.map(render).join('\n') : ''}`;
   const directory = join(dataDir, 'exports', scope);
   mkdirSync(directory, { recursive: true });
   writeFileSync(join(directory, `${batchId}.json`), JSON.stringify(pack, null, 2));

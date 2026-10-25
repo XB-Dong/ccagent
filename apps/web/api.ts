@@ -12,6 +12,7 @@ export type Snapshot = {
   summary: { summary: string; revision: number } | null;
 };
 export type Status = {
+  syntheticModel?: boolean;
   modelState?: string;
   authenticated: boolean;
   live: boolean;
@@ -22,6 +23,7 @@ export type Status = {
   };
 };
 export function modelLabel(status?: Status) {
+  if (status?.syntheticModel) return '合成模型验收';
   const labels: Record<string, string> = {
     disabled: '模型未启用',
     budget_exhausted: '调用额度已用完',

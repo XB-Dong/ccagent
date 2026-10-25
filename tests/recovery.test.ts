@@ -67,18 +67,40 @@ test('complete recovery point detects tampering and retains current privacy deci
     mkdirSync(join(data, 'harness/a/sessions'), { recursive: true });
     writeFileSync(join(data, 'harness/a/sessions/synthetic.jsonl'), '{"fixture":true}\n');
     const point = await createRecoveryPoint(store, budget, data, join(dir, 'backups'));
+    budget.reserve(100, 50);
     new Learning(store).deleteSource('a', source.id);
     const target = join(dir, 'restored');
     assert.equal(
-      restoreRecoveryPoint(point.directory, target, store.ledgerPath).privacyLedgerReapplied,
+      restoreRecoveryPoint(
+        point.directory,
+        target,
+        store.ledgerPath,
+        join(data, 'model-budget.sqlite'),
+      ).privacyLedgerReapplied,
       true,
     );
     const restored = new Store(join(target, 'business.sqlite'));
     assert.equal(new Learning(restored).context('a').facts.length, 0);
     restored.close();
+    const restoredBudget = new ModelBudget(join(target, 'model-budget.sqlite'), budget.limits);
+    try {
+      assert.equal(
+        restoredBudget.snapshot().calls,
+        budget.snapshot().calls,
+        'restoring business data must not roll back paid-request accounting',
+      );
+    } finally {
+      restoredBudget.close();
+    }
     writeFileSync(join(point.directory, 'harness/a/sessions/synthetic.jsonl'), 'tampered');
     assert.throws(
-      () => restoreRecoveryPoint(point.directory, join(dir, 'tampered'), store.ledgerPath),
+      () =>
+        restoreRecoveryPoint(
+          point.directory,
+          join(dir, 'tampered'),
+          store.ledgerPath,
+          join(data, 'model-budget.sqlite'),
+        ),
       /HASH_MISMATCH/,
     );
   } finally {
