@@ -21,6 +21,8 @@ The current business view is docs/product/REQUIREMENTS.zh.md. Append dated chang
 
 ## Execution after a human starts P0
 
+Conserve DeepSeek API quota in prototyping, tests, debugging, review and repeated verification. Follow docs/testing/deepseek-budget.md: offline by default, no production key in ordinary CI, synthetic fixtures and sanitized replay first, minimal bounded live probes only. Configure shared call/token limits before enabling paid tests; include tool loops, learning/compaction and failed attempts. Stop at the limit, retain valid evidence and rerun only affected live cases. Never represent replay as live verification or treat missing usage as zero. The budget guard is a future implementation requirement, not an existing feature.
+
 Leader owns canonical contracts, wave state, shared configuration, integration and release decisions. Populate every draft packet with a precise baseline SHA, frozen spec version, owner, dependencies and repair/time limits before dispatch. Do not infer model settings or claim independent verification from model self-identification.
 
 Use isolated branches/worktrees for concurrent writers when parallel work is authorized. Do not change another task's files or shared contracts without coordination. Keep review read-only except assigned review artifacts. Record accepted, rejected and deferred findings and verify fixes.
