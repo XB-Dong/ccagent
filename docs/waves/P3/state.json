@@ -6,9 +6,9 @@
   "executionStatus": "partial",
   "owner": "Leader",
   "tasks": {
-    "P3-ADS": "synthetic_browser_verified",
-    "P3-INTEGRATION": "37_tests_passed_review_passed",
-    "P3-RELEASE": "candidate_preparing"
+    "P3-ADS": "verified_synthetic_browser",
+    "P3-INTEGRATION": "38_tests_review_cloud_recovery_rollback_passed",
+    "P3-RELEASE": "partial_public_https"
   },
   "cumulativeRepairsRef": "../P2/state.json",
   "carriedRoots": {
@@ -26,6 +26,11 @@
     "budget-currency": 1,
     "decimal-money": 2,
     "operation-summary-ownership": 1,
-    "operation-summary-omission": 1
-  }
+    "operation-summary-omission": 1,
+    "checkpoint-writable-root": 1
+  },
+  "latestStatusAt": "2026-10-26T03:11:11+08:00",
+  "deployedSourceSha": "3a37ec5fbc160b24f744a7285356cee6e2360734",
+  "projectReportRef": "../../audit/FINAL-REPORT.zh.md",
+  "remainingReleaseGate": "public_https_requires_permitted_domain_dns_provider_configuration"
 }

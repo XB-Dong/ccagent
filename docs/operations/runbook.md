@@ -2,13 +2,15 @@
 
 当前发布方案是 [ADR 0005](../decisions/0005-native-service-release.md)：固定官方 Node 24.19.0、Caddy 2.11.7、pnpm 11.25.0，专用 systemd 用户；不需要 Docker Hub。公网地址只有在 HTTPS/鉴权实测后才作为可用入口交付。
 
+2026-10-26实际云端为3a37ec5。公网域名被厂商拦截，Caddy停止/禁用。当前本机`http://127.0.0.1:4314`经SSH回环转发访问云端`127.0.0.1:4310`，Origin按本机入口校验；不是公网HTTPS。隧道与凭据位置见仓库外维护索引，SSH身份每次核验。
+
 ## 路径与凭据
 
 - `/opt/ccagent/releases/<source-sha>`：只读版本源码和已构建静态资源；`current` 是当前代码软链接。
 - `/opt/ccagent/tooling`：已校验的官方运行时。
 - `/opt/ccagent/config`：受限环境配置与 Caddyfile，`service.env` 为 root-only；模型 Key 不进仓库。
 - `/var/lib/ccagent`：业务 SQLite、持久预算、Harness JSONL、导出、访问密码和隐私账本，专用用户可写。
-- `/var/lib/backups`（由实际命令指定）或仓库外 backup root：恢复点；访问权限限维护者。配置和模型 Key 独立受限保管，不混入业务备份。
+- `/var/lib/ccagent/backups`（运行中API，位于systemd可写根内）或维护者显式指定的停机 backup root：恢复点；访问权限限维护者。配置和模型 Key 独立受限保管，不混入业务备份。
 
 服务：`systemctl status ccagent ccagent-caddy`；日志：`journalctl -u ccagent`。程序日志只输出运行 metadata，不应打印密码、Key 或原始业务会话。只在受信任主机维护，禁止把环境文件或 Docker inspect 等可能含凭据的输出粘贴到聊天。
 
@@ -45,3 +47,7 @@ CC_DATA_DIR=/var/lib/ccagent node scripts/ops.ts restore --backup /path/to/point
 删除反馈/记忆会清除其关联来源及带内容的派生记录、失效当前导出，并退休旧对话入口，阻止旧上下文重建已删除事实；无关幂等回执保留。撤回需求会生成稳定撤回事件，补充纠正再次确认后生成新变更并保留旧版历史。产品不会自动写 GitHub。
 
 Harness 原始日志和既有备份作为隔离存档另行保留，不承诺所有备份即时物理擦除。恢复必须先应用当前隐私账本；已经下载到个人设备的审阅包不由服务器远程删除。真实业务资料/公司数据仍须先明确上传及发模型的许可。
+
+## 本次实机证据
+
+鉴权checkpoint生成11文件恢复点，隔离恢复实体/原生日志/预算一致、integrity通过。代码另行回退9124665再切回3a37ec5，数据与4次预算仍在。云端预算为唯一权威，本机旧付费探针禁用；初始2次种子不覆盖现有账本。正式数据恢复前停服务，确保目标权限归ccagent，保留当前隐私/预算账本；隔离恢复目录不会自动成为生产目录。详见项目交付报告。

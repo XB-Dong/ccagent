@@ -2,9 +2,9 @@
 
 基于 **DeepSeek Harness**，面向 cc 的亚马逊日常运营：对话入口、活动跟进、库存补货、发货协同、广告分析，以及持续积累的工作经验。
 
-**当前状态：P0–P3 内部验收版已实现；37项离线测试与业务浏览器流程通过，最终部署验证进行中。公网HTTPS因云厂商临时域名拦截未通过，不标完整发布。**
+**当前状态：P0–P3 内部验收版已实现；38项离线测试、业务浏览器、云端真实工具、恢复与回退通过。公网HTTPS因云厂商临时域名拦截未通过，不标完整发布。**
 
-[使用说明](docs/operations/USER-GUIDE.zh.md) · [维护与恢复](docs/operations/runbook.md) · [P1计划](P1-PLAN.md) · [P2计划](P2-PLAN.md) · [P3计划](P3-PLAN.md)
+[交付报告](docs/audit/FINAL-REPORT.zh.md) · [使用说明](docs/operations/USER-GUIDE.zh.md) · [维护与恢复](docs/operations/runbook.md) · [P1计划](P1-PLAN.md) · [P2计划](P2-PLAN.md) · [P3计划](P3-PLAN.md)
 
 仓库为私密仓库：[XB-Dong/ccagent](https://github.com/XB-Dong/ccagent)。本地目录：`D:/project/ccagent`。
 

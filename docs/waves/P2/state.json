@@ -29,5 +29,9 @@
     "pool-key-collision": 1
   },
   "reportRef": "../../audit/reports/P2-execution-20261026.md",
-  "independentReviewStatus": "all_findings_reverified"
+  "independentReviewStatus": "all_findings_reverified",
+  "latestStatusAt": "2026-10-26T03:11:11+08:00",
+  "deployedSourceSha": "3a37ec5fbc160b24f744a7285356cee6e2360734",
+  "projectReportRef": "../../audit/FINAL-REPORT.zh.md",
+  "remainingReleaseGate": "public_https_requires_permitted_domain_dns_provider_configuration"
 }
