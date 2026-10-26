@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
 import { join, resolve } from 'node:path';
 import { createApp } from './app.ts';
-import type { BudgetPolicy } from '../../packages/core/budget.ts';
+import { parseBudgetLimit, type BudgetPolicy } from '../../packages/core/budget.ts';
 
 const dataDir = resolve(process.env.CC_DATA_DIR ?? '../.ccagent-support/product-data');
 mkdirSync(dataDir, { recursive: true });
@@ -32,10 +32,10 @@ const app = await createApp({
     period: (process.env.CC_BUDGET_PERIOD ?? 'daily') as BudgetPolicy['period'],
   },
   limits: {
-    maxCalls: Number(process.env.CC_MAX_CALLS ?? 100),
-    maxInputTokens: Number(process.env.CC_MAX_INPUT_TOKENS ?? 1000000),
-    maxOutputTokens: Number(process.env.CC_MAX_OUTPUT_TOKENS ?? 65536),
-    maxTotalTokens: Number(process.env.CC_MAX_TOTAL_TOKENS ?? 1065536),
+    maxCalls: parseBudgetLimit(process.env.CC_MAX_CALLS, 100),
+    maxInputTokens: parseBudgetLimit(process.env.CC_MAX_INPUT_TOKENS, 1000000),
+    maxOutputTokens: parseBudgetLimit(process.env.CC_MAX_OUTPUT_TOKENS, 65536),
+    maxTotalTokens: parseBudgetLimit(process.env.CC_MAX_TOTAL_TOKENS, 1065536),
   },
 });
 app.server.listen(port, host, () =>

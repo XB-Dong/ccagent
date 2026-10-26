@@ -2,11 +2,18 @@ import { DatabaseSync } from 'node:sqlite';
 import { randomUUID } from 'node:crypto';
 
 export type Limits = {
-  maxCalls: number;
-  maxInputTokens: number;
-  maxOutputTokens: number;
-  maxTotalTokens: number;
+  maxCalls: number | null;
+  maxInputTokens: number | null;
+  maxOutputTokens: number | null;
+  maxTotalTokens: number | null;
 };
+export function parseBudgetLimit(value: string | undefined, fallback: number): number | null {
+  if (value === undefined) return fallback;
+  if (value === 'unlimited') return null;
+  if (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value)))
+    throw new Error('INVALID_MODEL_BUDGET');
+  return Number(value);
+}
 export type Usage = { inputTokens: number; outputTokens: number };
 export type BudgetPolicy = { account: string; period: 'daily' | 'lifetime' };
 
@@ -48,7 +55,11 @@ export class ModelBudget {
     policy: BudgetPolicy = { account: 'legacy', period: 'lifetime' },
     now = Date.now,
   ) {
-    if (Object.values(limits).some((value) => !Number.isSafeInteger(value) || value <= 0)) {
+    if (
+      Object.values(limits).some(
+        (value) => value !== null && (!Number.isSafeInteger(value) || value <= 0),
+      )
+    ) {
       throw new Error('INVALID_MODEL_BUDGET');
     }
     if (
@@ -80,11 +91,14 @@ export class ModelBudget {
       const account = this.account();
       const used = this.readSnapshot(account);
       if (
-        used.calls + 1 > this.limits.maxCalls ||
-        used.inputTokens + inputTokens > this.limits.maxInputTokens ||
-        used.outputTokens + outputTokens > this.limits.maxOutputTokens ||
-        used.inputTokens + used.outputTokens + inputTokens + outputTokens >
-          this.limits.maxTotalTokens
+        (this.limits.maxCalls !== null && used.calls + 1 > this.limits.maxCalls) ||
+        (this.limits.maxInputTokens !== null &&
+          used.inputTokens + inputTokens > this.limits.maxInputTokens) ||
+        (this.limits.maxOutputTokens !== null &&
+          used.outputTokens + outputTokens > this.limits.maxOutputTokens) ||
+        (this.limits.maxTotalTokens !== null &&
+          used.inputTokens + used.outputTokens + inputTokens + outputTokens >
+            this.limits.maxTotalTokens)
       ) {
         throw new Error('MODEL_BUDGET_EXHAUSTED');
       }
@@ -128,10 +142,11 @@ export class ModelBudget {
   exhausted(): boolean {
     const used = this.snapshot();
     return (
-      used.calls >= this.limits.maxCalls ||
-      used.inputTokens >= this.limits.maxInputTokens ||
-      used.outputTokens >= this.limits.maxOutputTokens ||
-      used.inputTokens + used.outputTokens >= this.limits.maxTotalTokens
+      (this.limits.maxCalls !== null && used.calls >= this.limits.maxCalls) ||
+      (this.limits.maxInputTokens !== null && used.inputTokens >= this.limits.maxInputTokens) ||
+      (this.limits.maxOutputTokens !== null && used.outputTokens >= this.limits.maxOutputTokens) ||
+      (this.limits.maxTotalTokens !== null &&
+        used.inputTokens + used.outputTokens >= this.limits.maxTotalTokens)
     );
   }
   private readSnapshot(account?: string): Usage & { calls: number } {

@@ -1,5 +1,13 @@
 # P0 前置工作上下文地图
 
+## 2026-10-26 · 取消累计测试上限并补完验收
+
+Leader按用户“不再设置测试上限，做完测试”自查冻结此地图。修改`packages/core/budget.ts`支持显式null代表无累计上限，仍逐请求落账；`apps/server/main.ts`解析维护者环境值unlimited，未填写继续原日常保护值，非法值拒绝；`apps/web/api.ts`状态类型兼容null。客户端不能改变政策，网关、工具循环/超时/无自动重试保持。测试账户沿用smoke-20261026-release并保留先前12次，验收结束恢复runtime日常配置。
+
+依赖：`app.ts`只把服务端limits交给预算，`gateway.ts`调用reserve/settle，`recovery.ts`只合并请求行，均不需更改数据结构。先在`tests/budget-unbounded.test.ts`验证旧有12次后仍可预留、usage保留、混合有限维度仍拦截及非法配置fail closed；复用budget-policy/api/gateway/recovery回归。随后补真实经验复用完整自然语言回复和浏览器登录/发消息/历史回读及业务页面导航。浏览器先排查官方工具绑定故障，不把API回放冒作浏览器结果。
+
+风险：明确无上限与漏配/无效数值不可混淆；null不能被比较运算误当0；日常有界行为不能退化。无需数据库迁移，服务器维护配置需备份；所有真实请求与仍未通过项据实记载，普通CI不加载Key。仅补完约定检查，不后台持续调用模型。
+
 ## 2026-10-26 · 全面排查、预算隔离与真实公网冒烟
 
 Leader已审阅并冻结本轮范围：基准628b9c0，用户明确要求全面排查并用DeepSeek API冒烟。`packages/core/budget.ts`新增服务端预算账户/北京时间日周期，历史行归legacy；`recovery.ts`迁移及恢复保持账户，不退款历史请求。`apps/server/{main,app,chat}.ts`接入政策与每轮请求上限，`apps/web`如有验收缺陷只修对应行为；部署配置/运维/预算策略同步。相关测试为budget/gateway/recovery/api/ui-status及既有Harness离线集成。先为历史6次耗尽不影响新账户、跨北京时间日界、并发及恢复写行为失败用例，再实现。
