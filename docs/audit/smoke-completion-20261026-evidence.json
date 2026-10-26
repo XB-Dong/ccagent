@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1.0",
+  "recordedAt": "2026-10-26T13:53:56.091263+08:00",
+  "applicationSha": "8a63477289ed229f8e1c51d6770f308c3a33fe7f",
+  "storage": "outside-git: ../.ccagent-local/evidence",
+  "newLiveRequests": 5,
+  "newInputTokens": 7336,
+  "newOutputTokens": 376,
+  "items": [
+    {
+      "id": "deployment/cloud-completion-restore-20261026.json",
+      "bytes": 472,
+      "sha256": "6ca0c014ec10dccbb172d4a25c60cdfa2fe074368ca2f1e50832273e7c5eb849"
+    },
+    {
+      "id": "deployment/cloud-completion-runtime-20261026.json",
+      "bytes": 462,
+      "sha256": "2297221ee942e4f31969ed815ccc0081594b600d5f9ed340bef5cda1ac1d9d61"
+    },
+    {
+      "id": "deployment/cloud-completion-tool-summary-20261026.json",
+      "bytes": 1336,
+      "sha256": "0ee6faeca7f831f5c788b5fe02703e4ebfb38492a6d66163a1086570ced721b7"
+    },
+    {
+      "id": "deployment/cloud-unbounded-release-8a63477289ed229f8e1c51d6770f308c3a33fe7f.json",
+      "bytes": 1404,
+      "sha256": "f3a2262d0b21f655dd2c469c210031db2f1ed43296e466a386f2895bedaec712"
+    },
+    {
+      "id": "smoke-20261026/browser-api-check.json",
+      "bytes": 1667,
+      "sha256": "22b41c91d42124ec1febda4156a8a7d65b8ca7c568f1e9c18e39152c3a009519"
+    },
+    {
+      "id": "smoke-20261026/browser-before.json",
+      "bytes": 703,
+      "sha256": "06a159857fd151996d8b2a594ee9d032da8a9ba2abcda61e8c9c5c16c100f798"
+    },
+    {
+      "id": "smoke-20261026/completion-checkpoint.json",
+      "bytes": 9284,
+      "sha256": "4272ba6f7898cd8f2be3d335bfee6e44aa8ba04633b641461771f117593fd415"
+    },
+    {
+      "id": "smoke-20261026/completion-final-api.json",
+      "bytes": 1096,
+      "sha256": "9f5e87756311ba5b43188ae600f404d0f6d303dbd8da89029268d8ccb053ffb9"
+    },
+    {
+      "id": "smoke-20261026/reuse-completed-task.json",
+      "bytes": 514,
+      "sha256": "5aec73824ed38465324531a01ce6e522d3d99f4218c7e2fe6c196bbd8bbf7ea7"
+    },
+    {
+      "id": "smoke-20261026/reuse-completed-unbounded.json",
+      "bytes": 5744,
+      "sha256": "da4bf5a7572b71abbde402f83a088c29c50b57452859fcfd6a93671d0b8ac709"
+    },
+    {
+      "id": "smoke-20261026/reuse-replay-check.json",
+      "bytes": 132,
+      "sha256": "9beef51b006d7dae723b3e88f89268b49ddec253ed8b6f57695eac25802bda07"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/checks.json",
+      "bytes": 983,
+      "sha256": "2caa7fe59ca778a6e7e5cd9ac4b3ae8d919a0d06641bc50e2f68255568fec846"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/help.txt",
+      "bytes": 4030,
+      "sha256": "f57cd5675850afd525da291d2ea85a2bd843ba399f3bcaf07d1340c2429a4d97"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/history.txt",
+      "bytes": 3453,
+      "sha256": "eb2dab6f3bf9843a23c594984c54c6d61cdc3c268d81cd1c65a321f2254d9375"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/login-after-restart.txt",
+      "bytes": 643,
+      "sha256": "3564d20a9a343ed95805b01006ccae9c0606f36b632f00db7b29e96cb0506140"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/login-success.txt",
+      "bytes": 3453,
+      "sha256": "6bdd0148664347ef8ca1e3f4b4c24ffe51997b2132bf49a2a17fc82a4872b310"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/new-conversation.txt",
+      "bytes": 3104,
+      "sha256": "f8352ef8322dbbbdbc74fc2185ce5c0ef5a30c6967e206036f263eb23f53b37d"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/public-chat.png",
+      "bytes": 76007,
+      "sha256": "4f14804e7420a1374503d5dc8e45c2791476974181fd1d66fd756080631a933b"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/report-example.txt",
+      "bytes": 2969,
+      "sha256": "86e13caa6f3e3aab95651ece7ee1521f5470fa1d830f226f27a62a8d15aca5ac"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/report-preview.txt",
+      "bytes": 3524,
+      "sha256": "efa7e2ee3c1a3f2ef43a641eaa0a33ce0f84248443928435799e8a1aeddda1f1"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/reports.txt",
+      "bytes": 2878,
+      "sha256": "5bb0cc5c3403e5254c8d409bc02c4cb75616489a59bb028bd68aef49c9dbdd53"
+    },
+    {
+      "id": "smoke-completion-20261026/browser/tasks.txt",
+      "bytes": 2131,
+      "sha256": "a2da2b1dd0628ffcf1b9db496a2c97969264922251471eb2d591bd7074d0fa9b"
+    },
+    {
+      "id": "smoke-completion-20261026/release-ci-8a63477.json",
+      "bytes": 443,
+      "sha256": "e43e0daae1f810d94a519fe05e1da6287d829f81383e7d3b1a680bfde1951f17"
+    },
+    {
+      "id": "unbounded-behavior-red-final-20261026.log",
+      "bytes": 1826,
+      "sha256": "e68b8672c1e4dfc2d0cdc0aab1fbfb6bf30355c0f110bc46aed464d935a79fbf"
+    },
+    {
+      "id": "unbounded-full-tests-20261026.log",
+      "bytes": 5930,
+      "sha256": "484d2e320d2561b95541654bfaf88bc057c1083ed7ee2486e0773f720163c5e0"
+    },
+    {
+      "id": "unbounded-green-20261026.log",
+      "bytes": 1399,
+      "sha256": "c3c3bf969698ba9b8c6c32ef583f6d87c3b206e5f1ff40e3126df2e281ef2003"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "recordedAt": "2026-10-26T00:46:38+08:00",
+  "recordedAt": "2026-10-26T03:11:11+08:00",
   "storage": "outside-git: ../.ccagent-local/evidence",
   "items": [
     {
@@ -14,6 +14,50 @@
     {
       "id": "github-status-c0584e3c9903199991d839f63c3b48e7023b7819.json",
       "sha256": "55c4618ca988231f9e5ad37b9da60ceb4208cc0c1b8dd34df4755fd4d2c0d607"
+    },
+    {
+      "id": "tests/P3-release-offline.json",
+      "sha256": "43e4ba9cbfcce1cf1cfbf90de740e022f4e2183e34bf36ef777dddc63752ad43"
+    },
+    {
+      "id": "deployment/cloud-final-recovery.json",
+      "sha256": "6d2d6867aaa632c132d2e0b54e3e00d9622c43dc27feb8248c6090b7fa561af7"
+    },
+    {
+      "id": "deployment/cloud-code-rollback.json",
+      "sha256": "096288883bc5de6f5fa50ec86085c1404842fb09567ff73c72d456e38410f12a"
+    },
+    {
+      "id": "deployment/cloud-release-state.json",
+      "sha256": "f8b63e5189dbb40a4f9df3b5314edabc6ce928281743f2843f8a6365afe7704e"
+    },
+    {
+      "id": "deployment/cloud-release.json",
+      "sha256": "a23e9332e22aad7257a45a85187f66ac3d1dc84df145053d68365df3c9c0eb53"
+    },
+    {
+      "id": "release-ci-3a37ec5.json",
+      "sha256": "3e58ff90627acde86904218101cf7dce613d2f42a559eea91a4698856e78143e"
+    },
+    {
+      "id": "P3/browser/cloud-live-tool.png",
+      "sha256": "ca831d45b308d9fde9071f94d218e7de1f174eccb4b75e283b3d4b54695bcad0"
+    },
+    {
+      "id": "P3/browser/advertising.png",
+      "sha256": "54f2ad9b74ea8ec2eec09215b4c4ac1e7bfb3af757c79088e923d28e9f6956d0"
+    },
+    {
+      "id": "P2/browser/inventory.png",
+      "sha256": "74b9472a069cfc3b61af8937b8bb5a6eb578bbcf094a261f0cb152a209363050"
+    },
+    {
+      "id": "P2/browser/shipping-ready.png",
+      "sha256": "bb89ddf95d48233ed8570eb296ae1d68ef8f5a5a97ec138519bd3ee5453f77b7"
+    },
+    {
+      "id": "P1/browser/home-reminders.png",
+      "sha256": "9bc50ad45e97c7d124f6870945bc97df41303cd342cb71bdb5a4190ac5bc09a5"
     }
   ]
 }
