@@ -1,5 +1,7 @@
 # ccagent 项目交付报告
 
+后续维护追加（2026-10-26）：应用已更新至b4744a8，42项离线测试和中文界面维护通过；公网 **https://114.67.222.150/** 已完成可信证书、密码登录、Secure会话、Origin和只读预览验证，Caddy自动续期已启用。原“公网HTTPS未过”为下文03:13历史交付时的事实，不再代表当前IP入口。固定域名/正式资料/接口及当前已触发的6次调用上限仍单独保留，详见[公网接入决定](../decisions/0006-public-ip-https.md)、[域名步骤](../operations/PUBLIC-ACCESS.zh.md)及[中文界面维护](reviews/UI-20261026.md)。
+
 2026-10-26 03:13 +0800｜**内部验收版可用，公网发布 partial**。未通过门槛没有改成完成。
 
 本地 `D:/project/ccagent`；私密仓库 `XB-Dong/ccagent`，分支 `codex/fullstack`；[验收PR #1](https://github.com/XB-Dong/ccagent/pull/1)保留draft。实际云端源码 `3a37ec5fbc160b24f744a7285356cee6e2360734`，[精确提交CI通过](https://github.com/XB-Dong/ccagent/actions/runs/40224405193)。发布包SHA256 `0d6ed9537f3f32f2ba45af1072cd9a6d08a80a39740d88976c8c7e405428b57b`。后续文档提交单独追踪，不冒充已部署代码。

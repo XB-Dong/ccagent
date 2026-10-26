@@ -2,7 +2,9 @@
 
 当前发布方案是 [ADR 0005](../decisions/0005-native-service-release.md)：固定官方 Node 24.19.0、Caddy 2.11.7、pnpm 11.25.0，专用 systemd 用户；不需要 Docker Hub。公网地址只有在 HTTPS/鉴权实测后才作为可用入口交付。
 
-2026-10-26实际云端为3a37ec5。公网域名被厂商拦截，Caddy停止/禁用。当前本机`http://127.0.0.1:4314`经SSH回环转发访问云端`127.0.0.1:4310`，Origin按本机入口校验；不是公网HTTPS。隧道与凭据位置见仓库外维护索引，SSH身份每次核验。
+2026-10-26后续维护：应用源码为b4744a853cb53ba8a197d822d1c4b7f3c9d59877；公网入口为 `https://114.67.222.150/`，严格证书校验、既有密码登录、Secure会话和Origin校验通过。Caddy已启用开机启动与自动证书续期。历史临时域名失败保留，但不再代表当前IP入口不可用。详见[公网接入决定](../decisions/0006-public-ip-https.md)和[域名接入步骤](PUBLIC-ACCESS.zh.md)。
+
+应用仍只监听云端127.0.0.1:4310；公网经Caddy。`CC_ORIGIN`已切换为公网HTTPS，原HTTP隧道不再是日常入口；旧地址上的写入和登录会被Origin保护拒绝，不应为兼容而关闭保护。
 
 ## 路径与凭据
 
@@ -16,7 +18,9 @@
 
 ## 启停与健康
 
-`systemctl restart ccagent` 只重启本项目；`GET /health` 仅表示进程健康。登录后状态区分别显示模型启用、最近成功/失败及预算耗尽，不把 Key 存在当作网络可用。生产 Cookie 为 Secure/HttpOnly/SameSite，API 写入校验已配置的 Origin。
+`systemctl restart ccagent` 只重启本项目；`GET /health` 仅表示进程健康。CC界面使用中文服务提示，不展示开发调用计数。维护者通过已鉴权的`GET /api/status`查看模型状态与预算；不把Key存在当作网络可用。生产Cookie为Secure/HttpOnly/SameSite，API写入校验已配置的Origin。
+
+Caddy管理IP的短期证书，初次证书的有效期到2026-11-02 03:24:57+08:00；自动续期配置已启用，未来续期成功尚需实际运行日志验证。保持80端口供HTTP-01验证、443端口供HTTPS，保持专用用户证书目录可写。维护时检查`journalctl -u ccagent-caddy`中的签发/续期状态，不输出私钥。此次TLS-ALPN被网络重置，已显式使用HTTP-01，未关闭浏览器/客户端证书校验。
 
 普通回归 `pnpm check` / `pnpm test` / `pnpm build` 不载入真实 Key。研发真实测试跨波共享累计6次上限，不因恢复/重启重置。运行配置可由维护者显式调整；不要把这一能力当作自动扩大研发额度的许可。
 

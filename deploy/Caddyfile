@@ -1,9 +1,21 @@
-ccagent.114-67-222-150.sslip.io {
+{
+    default_sni 114.67.222.150
+}
+
+114.67.222.150 {
+    tls {
+        issuer acme https://acme-v02.api.letsencrypt.org/directory {
+            profile shortlived
+            disable_tlsalpn_challenge
+        }
+    }
     encode zstd gzip
     request_body {
         max_size 256KB
     }
-    reverse_proxy 127.0.0.1:4310
+    reverse_proxy 127.0.0.1:4310 {
+        flush_interval -1
+    }
     header {
         -Server
         Strict-Transport-Security "max-age=86400"
