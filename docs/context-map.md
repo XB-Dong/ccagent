@@ -10,6 +10,8 @@ Leader已审阅并冻结本轮范围：基准628b9c0，用户明确要求全面�
 
 排查中追加修复：`chat.ts`启动恢复孤立accepted回执、不重发模型；截断turn/end不标完整成功；`packages/operations/tasks.ts`暂停学习保留待整理工作；`workspace.css`窄屏保留最近对话入口。对应chat-restart/chat-truncation/tasks测试均保留实际Red/Green；预算策略3项行为Red→Green，恢复/HTTP边界另有回归。收到用户最新单Agent要求后已停止子审核，后续仅Leader执行。
 
+真实测试结束追加：工具落库后额度不足的用户提示在`chat.ts`修复，`tests/chat-budget-end.test.ts`先Red再Green；12次上限不再追加。最终51项离线/26项公网合成通过，经验复用回执partial及浏览器超时在`docs/audit/reports/SMOKE-20261026.zh.md`保留；当前runtime按日可用，历史18次仍在。
+
 ## 2026-10-26 · 公网入口与域名指引维护
 
 Leader已审阅：修改`deploy/Caddyfile`、`deploy/service.env.example`及运维/入口说明；新增ADR0006和公网域名步骤。依赖既有Caddy2.11.7、Node鉴权和已授权云主机；不改业务接口/数据库/模型预算，不引入付费资源。先对无业务数据探测页签发可信IP证书，再开启反代与HTTPS Origin；以外网严格证书、401/403、Secure登录、只读预览及预算不变检查验收。云端配置已备份；维持80/443及自动续期进程，旧HTTP隧道不再作为日常入口。仓库检查与Caddy配置验证即可，普通业务测试不因文档变更重复付费。
