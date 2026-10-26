@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "1.0",
+  "recordedAt": "2026-10-26T13:12:36.142239+08:00",
+  "storage": "outside-git: D:/project/.ccagent-support/evidence",
+  "applicationSha": "835de30c5716343db21870831eb80c783a9fa4e0",
+  "liveModelSha": "b7a0e179836a24056f7d81a16bef9c3ac844e014",
+  "items": [
+    {
+      "id": "budget-policy-green-20261026.log",
+      "bytes": 878,
+      "sha256": "cf8d8362f527bb3294e1023a3e88dea0e918038a32e10403a3c940fe86d9bc16"
+    },
+    {
+      "id": "budget-policy-red-20261026.log",
+      "bytes": 2960,
+      "sha256": "3138c0df8235380712ea7a074def8ca6d9ed9b8c1c81d50592d9541e55347f3f"
+    },
+    {
+      "id": "chat-budget-end-green-20261026.log",
+      "bytes": 327,
+      "sha256": "3b1d6342ab9408a9589f306f456875652e49619ab5048c978fb96618488fa065"
+    },
+    {
+      "id": "chat-budget-end-red-20261026.log",
+      "bytes": 1476,
+      "sha256": "20d5fb97666df1beada1ac367a5de1c29a89b6525b2f0db93f25e4263fbc067d"
+    },
+    {
+      "id": "chat-restart-red-20261026.log",
+      "bytes": 948,
+      "sha256": "e30abddeab406b14127d62e5f8a9a604b51f78d9d26c752c832956cc71e216a2"
+    },
+    {
+      "id": "chat-truncation-red-20261026.log",
+      "bytes": 1384,
+      "sha256": "b6279c4b2c71711735950cdcab9fb995c2d7576828f01e476160766c0e5efd4c"
+    },
+    {
+      "id": "deployment/cloud-runtime-release-835de30c5716343db21870831eb80c783a9fa4e0.json",
+      "bytes": 1402,
+      "sha256": "866b44e8b968cc55738278d33b3e953a00f67fcafb3c3aa443fbc281acb3a0a0"
+    },
+    {
+      "id": "deployment/cloud-smoke-inspect-20261026.json",
+      "bytes": 11248,
+      "sha256": "0b030bbce8367ee3f36d24e637c9693c7908fbe16a1efb1cee2b3fed2168a533"
+    },
+    {
+      "id": "deployment/cloud-smoke-release-b7a0e179836a24056f7d81a16bef9c3ac844e014.json",
+      "bytes": 1400,
+      "sha256": "89737a30743b4e6c4b9bc9db8ac797e629f8837a80d06f0ef8fa88d788806c06"
+    },
+    {
+      "id": "deployment/cloud-smoke-restore-20261026.json",
+      "bytes": 416,
+      "sha256": "bf4f0ede9ee03de400c668c40aee47cf5dc96e47fc4b0b83090a272a5c0e10f8"
+    },
+    {
+      "id": "deployment/cloud-smoke-tool-summary-20261026.json",
+      "bytes": 1136,
+      "sha256": "5498c5c9926fadaa593ac4fedcc7bc792faf02a26d245f25780283c34db9c216"
+    },
+    {
+      "id": "final-offline-tests-20261026.log",
+      "bytes": 5552,
+      "sha256": "bcfa11015341ed8e6add38844ef74ee384366705fed596dd5c6a967bc1f8d57d"
+    },
+    {
+      "id": "smoke-20261026/cloud-checkpoint.json",
+      "bytes": 7631,
+      "sha256": "e5c08e30049c250c115b3007233c7e7a0fd648bea8cd63982a13cb59cced47b2"
+    },
+    {
+      "id": "smoke-20261026/feedback-persisted.json",
+      "bytes": 523,
+      "sha256": "d859715f1db7ff5ab447c1914de16e89b9c189c6c6b619cb5e71ff8b1f14c192"
+    },
+    {
+      "id": "smoke-20261026/feedback.json",
+      "bytes": 4273,
+      "sha256": "9280cda7706c9a182a46797d2020e3865085056570fb235175f6fa758af95f66"
+    },
+    {
+      "id": "smoke-20261026/final-public.json",
+      "bytes": 1273,
+      "sha256": "e3376cd2d907da3bd99f74a92a6592f39352d0222aaabdc00d12a981717275e5"
+    },
+    {
+      "id": "smoke-20261026/greeting.json",
+      "bytes": 3569,
+      "sha256": "79262a76fcd30dca7a48ffc413fe03fdddfc08550a4fafba56af0535b2c76fb5"
+    },
+    {
+      "id": "smoke-20261026/learning-inspection.json",
+      "bytes": 6540,
+      "sha256": "c45271aa82979e7c66f7f884962443e3e5a0fad9739f3c746caf97ec74deeaf9"
+    },
+    {
+      "id": "smoke-20261026/learning-persisted.json",
+      "bytes": 2063,
+      "sha256": "e41f1d8f6c3f382b0ae8c05076b5294f013ba689fe06aa607a591df239a81110"
+    },
+    {
+      "id": "smoke-20261026/memory-verified.json",
+      "bytes": 4266,
+      "sha256": "264b7a1e3b6b2d316e61ee59ae10e2b463e201d1c010dc28754533947be23c7b"
+    },
+    {
+      "id": "smoke-20261026/memory.json",
+      "bytes": 4395,
+      "sha256": "680f47af9bffedbde761743ee5731e34589300b6642d52c349a71a5cf4c0d3f3"
+    },
+    {
+      "id": "smoke-20261026/operations-progress.json",
+      "bytes": 1007,
+      "sha256": "ca43efb9283ebb14e2dcc3e83e80933890439f8976fe95d682a7addd35a0c62c"
+    },
+    {
+      "id": "smoke-20261026/operations.json",
+      "bytes": 1640,
+      "sha256": "56b412ddb9e15ea6ee1b3b746219bbab5d8c53c8dcbbd8540efb3a7152fd5794"
+    },
+    {
+      "id": "smoke-20261026/post-live-snapshot.json",
+      "bytes": 12358,
+      "sha256": "da3649c3e9cb9bb988a41f6f5b996c227eaec7009910fd77cf36bd18eae86c6e"
+    },
+    {
+      "id": "smoke-20261026/release-ci-835de30.json",
+      "bytes": 443,
+      "sha256": "55d2293b07062196f2a38d51644f00a78dd794da00824e8c83e4a2b5b48d9906"
+    },
+    {
+      "id": "smoke-20261026/reuse-persisted.json",
+      "bytes": 488,
+      "sha256": "6dc29427d95005f919c78d374fa51f1390712b39e3124c16993e2e5707de4ea2"
+    },
+    {
+      "id": "smoke-20261026/reuse.json",
+      "bytes": 5647,
+      "sha256": "f781d29bce7217faa9e0dea5e119b73a7f5ca74eed874e63c29e662737804051"
+    },
+    {
+      "id": "smoke-20261026/task-persisted.json",
+      "bytes": 487,
+      "sha256": "63ee7951ee6468d9a04fddb97109a4db22e35c6220eebde2ed25c6fe7710d4a1"
+    },
+    {
+      "id": "smoke-20261026/task.json",
+      "bytes": 4422,
+      "sha256": "d1b990af517e7ae1bc73253ce4478c67e80cf27825f9073ef2d719e3acb9a2fe"
+    },
+    {
+      "id": "smoke-repair-green-20261026.log",
+      "bytes": 1006,
+      "sha256": "70834ae1911c53347116894a6e937cce7d97119d4ff0d5b1fcdf415d7a78efb9"
+    },
+    {
+      "id": "workflow-pause-red-20261026.log",
+      "bytes": 1267,
+      "sha256": "70336f271cbfbb6a7e90b6b11ff0e4872c0cacf4b79737d6d920faaac3dc3f64"
+    }
+  ]
+}
