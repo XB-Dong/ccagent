@@ -1,5 +1,21 @@
 # P0 前置工作上下文地图
 
+## 2026-10-27 · P4.1 日常任务、工作日历和学习笔记
+
+Leader 于首次定时检查只读读取生产 main 反馈：2 条有效、1 条撤回；本轮采纳清晰的任务编辑、意大利时区/起止选择、完成记录日历和独立学习笔记。已核对最新补验关闭历史公网/浏览器缺口；不修改旧 P0–P3 状态。地图经 Leader 自审冻结。
+
+| 修改文件 | 职责与依赖 |
+| --- | --- |
+| packages/operations/tasks.ts、task-time.ts、time.ts | 任务编辑/显式时刻校验、完成时间和人工实际分钟；旧 dueAt 兼容 |
+| packages/learning/service.ts Task 类型 | Leader 单写新增可选 startAt/endAt/completedAt/actualMinutes，沿用 JSON 实体无需 SQL 迁移 |
+| apps/web/TasksPage.tsx、TaskForm.tsx、WorkCalendarPage.tsx、task-time.ts、display.ts、p41-tasks.css | 一位 UI Agent 单写；中文表单、时区转换与工作记录，不编辑共享 App/api |
+| packages/operations/notes.ts、note-types.ts、apps/web/NotesPage.tsx、p41-notes.css | 一位笔记 Agent 单写；手动学习记录独立于记忆/Skill，不进入模型上下文 |
+| apps/server/business.ts、apps/web/App.tsx、api.ts | Leader 集成领域动作、快照、导航和错误提示，维持鉴权/范围/修订 |
+| tests/task-edit.test.ts、task-time.test.ts、notes.test.ts、p41-api.test.ts | 分别覆盖领域、夏令时/转换、笔记与实际 HTTP/重启持久化 |
+| docs/product/changes/2026-10-27.md、REQUIREMENTS.zh.md、P4.1-PLAN.md、specs/contracts/p41-v1.md、docs/waves/P4.1/ | 先日期采纳，再计划/规格/任务/验收/状态与报告 |
+
+复用 Store 乐观锁、隐私删除、任务状态与现有 CSS。并行作者必须独立 worktree，以精确冻结 SHA 为基准；Leader 单写契约/集成。先领域行为 Red 再 Green，旧 55 测试回归、类型/构建、浏览器和必要真实模型联调；日历计划时长不能伪作实际，未知完成日不臆造。风险为夏令时歧义、旧数据保留、已成功流程被编辑污染、重复完成派生经验和笔记删除恢复；已纳入契约与审核。仅合成测试，不新增业务数据许可或外部平台写入。
+
 ## 2026-10-26 · 必要测试不设 API 消耗额度限制
 
 用户再次明确必要测试不设置 DeepSeek API 额度消耗限制。Leader 自查冻结：同步 AGENTS.md、CONSTITUTION.md、docs/testing/deepseek-budget.md、docs/waves/P4/README.md 和现有定时任务 cc-p4-x，明确费用、请求数、输入/输出/总 token 的累计额度均不作为必要测试的停止条件，也不按日期、波次或 Agent 另设小额度。保留离线优先、真实用量、超时/循环保护和日常 runtime 独立政策；只改研发规则与定时提示，不改业务需求或线上应用。验证采用仓库检查、diff 与定时配置回读，无需真实模型调用。
