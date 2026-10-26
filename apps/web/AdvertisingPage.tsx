@@ -4,6 +4,7 @@ import type { Mutate } from './TasksPage.tsx';
 import type { AdOptions, AdAnalysis } from '../../packages/operations/advertising.ts';
 import { csvCell } from '../../packages/operations/csv.ts';
 import { Badge, Empty } from './components.tsx';
+import { siteLabel } from './display.ts';
 const display = (value: number | null, percent = false) =>
   value === null ? '—' : value.toFixed(2) + (percent ? '%' : '');
 function exportAnalysis(a: AdAnalysis) {
@@ -23,8 +24,24 @@ function exportAnalysis(a: AdAnalysis) {
     'profit',
   ];
   download(
-    `advertising-${a.id.slice(0, 8)}.csv`,
-    columns.map(csvCell).join(',') +
+    `广告分析-${a.asOf}.csv`,
+    [
+      '分析对象',
+      '币种',
+      '展示次数',
+      '点击次数',
+      '广告花费',
+      '订单数',
+      '销售额',
+      '点击率',
+      '每次点击花费',
+      '下单转化率',
+      '广告花费占比',
+      '每元广告带来销售额',
+      '估计利润',
+    ]
+      .map(csvCell)
+      .join(',') +
       '\r\n' +
       a.groups
         .map((g) => columns.map((k) => csvCell(String(g[k as keyof typeof g] ?? '未知'))).join(','))
@@ -62,7 +79,7 @@ export function AdvertisingPage({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">NUMBERS BEFORE DECISIONS</span>
+          <span className="eyebrow">看清数据，再做判断</span>
           <h1>广告分析</h1>
           <p>按报表计算，看清归因、数据日期与利润假设，再由你决定。</p>
         </div>
@@ -77,7 +94,8 @@ export function AdvertisingPage({
               .filter((r) => r.reportKind === 'ads')
               .map((r) => (
                 <option value={r.id} key={r.id}>
-                  {r.store} · {r.site} · 截至{r.asOf} · {r.id.slice(0, 8)}
+                  {r.store} · {siteLabel(r.site)} · 截至{r.asOf} · 第{data.reports.indexOf(r) + 1}
+                  份报表
                 </option>
               ))}
           </select>
@@ -85,9 +103,9 @@ export function AdvertisingPage({
         <label>
           分析维度
           <select name="groupBy">
-            <option value="listing">链接 / SKU</option>
+            <option value="listing">链接或商品编码</option>
             <option value="campaign">广告活动</option>
-            <option value="adGroup">广告组（需adGroup列）</option>
+            <option value="adGroup">广告组（报表需包含广告组）</option>
             <option value="searchTerm">搜索词</option>
           </select>
         </label>
@@ -101,7 +119,7 @@ export function AdvertisingPage({
           <input name="minClicks" type="number" min="0" max="100000" defaultValue="20" required />
         </label>
         <label>
-          人工目标ACOS（%）
+          目标广告花费占销售额（%）
           <input
             name="maxACOS"
             type="number"
@@ -142,7 +160,7 @@ export function AdvertisingPage({
         </p>
         <div className="form-actions wide">
           <button disabled={busy} className="primary">
-            生成只读分析
+            查看分析建议
           </button>
         </div>
       </form>
@@ -150,7 +168,7 @@ export function AdvertisingPage({
         <Empty
           icon="chart"
           title="先看清数据，再决定动作"
-          text="请在数据报表导入广告合成示例。这里不会自动修改预算、出价或否词。"
+          text="先到“数据报表”导入广告示例。这里提供建议，调整仍由你操作。"
         />
       )}
       {data.adAnalyses.map((a) => (
@@ -158,17 +176,16 @@ export function AdvertisingPage({
           <div className="page-heading">
             <div>
               <h2>
-                {a.store} · {a.site}
+                {a.store} · {siteLabel(a.site)}
               </h2>
               <p>
-                截至 {a.asOf} · 来源批次 {a.batchId.slice(0, 8)} · 归因 {a.options.attributionDays}{' '}
-                天
+                截至 {a.asOf} · 归因 {a.options.attributionDays} 天
               </p>
             </div>
             <button onClick={() => exportAnalysis(a)}>导出指标</button>
           </div>
           <p>
-            目标ACOS {a.options.maxACOS}% · 最低点击 {a.options.minClicks} · 维度{' '}
+            目标广告花费占比 {a.options.maxACOS}% · 最低点击 {a.options.minClicks} · 分类{' '}
             {
               { listing: '链接', campaign: '广告活动', adGroup: '广告组', searchTerm: '搜索词' }[
                 a.options.groupBy
@@ -199,15 +216,16 @@ export function AdvertisingPage({
                   </strong>
                 </div>
                 <div>
-                  ACOS<strong>{display(g.acos, true)}</strong>
+                  广告花费占比<strong>{display(g.acos, true)}</strong>
                 </div>
                 <div>
-                  ROAS<strong>{display(g.roas)}</strong>
+                  每元广告带来销售额<strong>{display(g.roas)}</strong>
                 </div>
               </div>
               <p>
-                展示 {g.impressions} · 点击 {g.clicks} · 订单 {g.orders} · CTR{' '}
-                {display(g.ctr, true)} · CPC {display(g.cpc)} · CVR {display(g.cvr, true)}
+                展示 {g.impressions} · 点击 {g.clicks} · 订单 {g.orders} · 点击率{' '}
+                {display(g.ctr, true)} · 每次点击花费 {display(g.cpc)} · 下单转化率{' '}
+                {display(g.cvr, true)}
               </p>
               <p>
                 估计利润：
@@ -217,7 +235,7 @@ export function AdvertisingPage({
               </p>
               <ul>
                 {g.suggestions.map((s) => (
-                  <li key={s}>{s}</li>
+                  <li key={s}>{s.replaceAll('ACOS', '广告花费占比')}</li>
                 ))}
               </ul>
             </div>

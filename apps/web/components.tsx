@@ -111,14 +111,7 @@ export function Badge({ children, tone = '' }: { children: ReactNode; tone?: str
   return <span className={`badge ${tone}`}>{children}</span>;
 }
 export function SourceList({ sources }: { sources: string[] }) {
-  return (
-    <details className="sources">
-      <summary>查看来源 · {sources.length}</summary>
-      {sources.map((id) => (
-        <code key={id}>{id}</code>
-      ))}
-    </details>
-  );
+  return <span className="metadata">已保留 {sources.length} 条来源记录</span>;
 }
 export const states: Record<string, string> = {
   draft: '待确认',

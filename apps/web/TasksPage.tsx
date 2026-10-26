@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import type { Snapshot } from './api.ts';
 import { requestId } from './api.ts';
 import { Badge, Empty, Icon, SourceList, states } from './components.tsx';
+import { timeZones, timeZoneLabel } from './display.ts';
 
 export type Mutate = (action: string, body: object) => Promise<unknown>;
 export function TasksPage({
@@ -34,7 +35,7 @@ export function TasksPage({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">ONE THING AT A TIME</span>
+          <span className="eyebrow">把事情记清楚</span>
           <h1>任务清单</h1>
           <p>准备、确认、检查。每一步都有据可循。</p>
         </div>
@@ -59,20 +60,15 @@ export function TasksPage({
               <option value="" disabled>
                 请选择，避免时间误差
               </option>
-              {[
-                'America/Los_Angeles',
-                'America/New_York',
-                'Europe/London',
-                'Europe/Berlin',
-                'Asia/Tokyo',
-                'Asia/Shanghai',
-              ].map((value) => (
-                <option key={value}>{value}</option>
+              {Object.entries(timeZones).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
               ))}
             </select>
           </label>
           <label>
-            计划时间（可选，含时区偏移）
+            计划时间（可选，按示例填写）
             <input name="dueAt" placeholder="2026-10-26T10:00:00-07:00" />
           </label>
           <label className="wide">
@@ -85,7 +81,7 @@ export function TasksPage({
             />
           </label>
           <div className="wide form-actions">
-            <span>保存为内部任务，不操作 Amazon 或 ERP。</span>
+            <span>先记下待办，平台上的操作仍需你完成。</span>
             <button className="primary" disabled={busy}>
               确认并保存
             </button>
@@ -121,7 +117,7 @@ export function TasksPage({
                 <Badge tone={task.status === 'done' ? 'green' : ''}>{states[task.status]}</Badge>
               </div>
               <p className="metadata">
-                {task.timeZone}
+                {timeZoneLabel(task.timeZone)}
                 {task.dueAt
                   ? ` · ${new Date(task.dueAt).toLocaleString('zh-CN', { timeZone: task.timeZone })}`
                   : ' · 未设计划时间'}
@@ -178,7 +174,7 @@ export function TasksPage({
                           }).catch(() => {})
                         }
                       >
-                        确认完成并沉淀经验
+                        确认完成并保存经验
                       </button>
                     )
                   )}

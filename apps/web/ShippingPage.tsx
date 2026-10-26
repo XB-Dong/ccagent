@@ -47,8 +47,21 @@ function ShipmentCard({ row, mutate, busy }: { row: Shipment; mutate: Mutate; bu
       'erpId',
     ];
     download(
-      `shipment-${row.id.slice(0, 8)}.csv`,
-      columns.map(csvCell).join(',') +
+      `发货资料-${row.shipDate}.csv`,
+      [
+        '店铺',
+        '站点',
+        '链接或商品编码',
+        '实物商品编码',
+        '数量',
+        '发货日期',
+        '目的仓',
+        '负责人',
+        '亚马逊单号',
+        '公司系统单号',
+      ]
+        .map(csvCell)
+        .join(',') +
         '\r\n' +
         columns.map((k) => csvCell(String(row[k as keyof Shipment] ?? ''))).join(','),
       'text/csv;charset=utf-8',
@@ -71,7 +84,7 @@ function ShipmentCard({ row, mutate, busy }: { row: Shipment; mutate: Mutate; bu
         目的仓 {row.destination || '待填写'} · 负责人 {row.owner || '待填写'}
       </p>
       <p>
-        Amazon：{row.amazonId || '尚未关联'} · ERP：{row.erpId || '尚未关联'}
+        亚马逊单号：{row.amazonId || '尚未关联'} · 公司系统单号：{row.erpId || '尚未关联'}
       </p>
       <p>
         累计到货 {row.received} / {row.quantity} 件
@@ -100,11 +113,11 @@ function ShipmentCard({ row, mutate, busy }: { row: Shipment; mutate: Mutate; bu
             <input name="owner" defaultValue={row.owner} maxLength={200} />
           </label>
           <label>
-            Amazon单号
+            亚马逊单号
             <input name="amazonId" defaultValue={row.amazonId} maxLength={200} />
           </label>
           <label>
-            ERP单号
+            公司系统单号
             <input name="erpId" defaultValue={row.erpId} maxLength={200} />
           </label>
           <div className="wide">
@@ -195,7 +208,7 @@ export function ShippingPage({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">ONE PLAN, TWO REFERENCES</span>
+          <span className="eyebrow">发货准备一起看</span>
           <h1>发货协同</h1>
           <p>共享库存只分配一次，共用字段只录入一次。外部操作由你完成。</p>
         </div>
@@ -204,7 +217,7 @@ export function ShippingPage({
       <form className="panel form-grid" onSubmit={(e) => void pool(e).catch(() => {})}>
         <h2 className="wide">登记共享实物库存池</h2>
         <label>
-          实物SKU
+          实物商品编码
           <input name="physicalSku" required maxLength={100} />
         </label>
         <label>
@@ -222,7 +235,7 @@ export function ShippingPage({
         </label>
         <label className="wide">
           店铺可用时间窗（每行：店铺,起始日期,结束日期）
-          <textarea name="windows" required placeholder="合成美店,2026-10-26,2026-11-30" />
+          <textarea name="windows" required placeholder="示例店铺,2026-10-26,2026-11-30" />
         </label>
         <p className="wide">同一物理批次只建一个池。已发出份额不会自动返还；新入库需登记新批次。</p>
         <div className="form-actions wide">
@@ -255,7 +268,7 @@ export function ShippingPage({
             <option value="">请选择</option>
             {data.pools.map((p) => (
               <option key={p.id} value={p.id}>
-                {p.physicalSku} · {p.id.slice(0, 8)}
+                {p.physicalSku} · {p.batchReference || '未填写批次'}
               </option>
             ))}
           </select>
@@ -266,7 +279,7 @@ export function ShippingPage({
             <option value="">请选择</option>
             {data.inventories.map((i) => (
               <option key={i.id} value={i.id}>
-                {i.store} / {i.listing} / {i.physicalSku} / {i.id.slice(0, 8)}
+                {i.store} / {i.listing} / {i.physicalSku} / {i.asOf}
               </option>
             ))}
           </select>

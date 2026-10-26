@@ -1160,3 +1160,18 @@
   margin-top: 8px;
   font-size: 21px;
 }
+.user-guide {
+  max-width: 850px;
+  line-height: 1.9;
+}
+fieldset.panel {
+  min-inline-size: 0;
+  margin-inline: 0;
+}
+.user-guide h2 {
+  margin-top: 24px;
+  font-size: 18px;
+}
+.user-guide h2:first-child {
+  margin-top: 0;
+}

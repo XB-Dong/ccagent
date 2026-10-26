@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { requestId, type Snapshot } from './api.ts';
 import type { Mutate } from './TasksPage.tsx';
 import { Badge, Empty, Icon } from './components.tsx';
+import { timeZones, timeZoneLabel } from './display.ts';
 
 export function ActivitiesPage({
   data,
@@ -28,7 +29,7 @@ export function ActivitiesPage({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">EVERY MOMENT IN ITS PLACE</span>
+          <span className="eyebrow">记好时间，逐步跟进</span>
           <h1>活动日历</h1>
           <p>按站点时间准备、切换、检查和恢复。平台操作由你确认。</p>
         </div>
@@ -44,7 +45,8 @@ export function ActivitiesPage({
             <Badge>到期提醒</Badge>
             <h3>{r.title}</h3>
             <p>
-              {new Date(r.dueAt).toLocaleString('zh-CN', { timeZone: r.timeZone })} · {r.timeZone}
+              {new Date(r.dueAt).toLocaleString('zh-CN', { timeZone: r.timeZone })} ·{' '}
+              {timeZoneLabel(r.timeZone)}
             </p>
             <button
               disabled={busy}
@@ -67,18 +69,17 @@ export function ActivitiesPage({
             <input name="store" required maxLength={100} />
           </label>
           <label>
-            链接 / SKU
+            链接或商品编码
             <input name="listing" required maxLength={100} />
           </label>
           <label>
             站点时区
             <select name="timeZone" defaultValue="America/Los_Angeles">
-              <option>America/Los_Angeles</option>
-              <option>America/New_York</option>
-              <option>Europe/London</option>
-              <option>Europe/Berlin</option>
-              <option>Asia/Tokyo</option>
-              <option>Asia/Shanghai</option>
+              {Object.entries(timeZones).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
             </select>
           </label>
           <label>
@@ -135,7 +136,7 @@ export function ActivitiesPage({
             <div>
               <h2>{a.title}</h2>
               <p>
-                {a.store} · {a.listing} · {a.timeZone}
+                {a.store} · {a.listing} · {timeZoneLabel(a.timeZone)}
               </p>
             </div>
             <Badge>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, type FormEvent } from 'react';
-import { api, empty, modelLabel, type Snapshot, type Status } from './api.ts';
+import { api, empty, modelLabel, assistantHealthy, type Snapshot, type Status } from './api.ts';
 import { Icon } from './components.tsx';
 import { Overview } from './Overview.tsx';
 import { TasksPage } from './TasksPage.tsx';
@@ -13,6 +13,7 @@ import { ReportsPage } from './ReportsPage.tsx';
 import { InventoryPage } from './InventoryPage.tsx';
 import { ShippingPage } from './ShippingPage.tsx';
 import { AdvertisingPage } from './AdvertisingPage.tsx';
+import { HelpPage } from './HelpPage.tsx';
 
 const navigation = [
   { id: 'home', name: '工作台', icon: 'home' },
@@ -25,6 +26,7 @@ const navigation = [
   { id: 'inventory', name: '库存补货', icon: 'box' },
   { id: 'shipping', name: '发货协同', icon: 'box' },
   { id: 'advertising', name: '广告分析', icon: 'chart' },
+  { id: 'help', name: '使用说明', icon: 'book' },
 ];
 export function App() {
   const [page, setPage] = useState('home');
@@ -85,7 +87,7 @@ export function App() {
       await refresh();
       setNotice(
         action === 'export'
-          ? '需求审阅包已生成'
+          ? '已生成建议清单，可以下载保存'
           : action === 'report-preview'
             ? '检查完成，请核对预览'
             : '已保存',
@@ -134,7 +136,7 @@ export function App() {
           </div>
           <div>
             <strong>cc 的工作台</strong>
-            <small>OPERATIONS COMPANION</small>
+            <small>你的专属运营助手</small>
           </div>
         </button>
         <nav aria-label="主要导航">
@@ -194,7 +196,7 @@ export function App() {
           </div>
           <div className="topbar-right">
             <span className="connection">
-              <span className={`status-dot ${status?.live ? '' : 'muted'}`} />
+              <span className={`status-dot ${assistantHealthy(status) ? '' : 'muted'}`} />
               {modelLabel(status)}
             </span>
             <span className="private-label">专属工作台</span>
@@ -230,6 +232,7 @@ export function App() {
           {page === 'inventory' && <InventoryPage data={data} mutate={mutate} busy={busy} />}
           {page === 'shipping' && <ShippingPage data={data} mutate={mutate} busy={busy} />}
           {page === 'advertising' && <AdvertisingPage data={data} mutate={mutate} busy={busy} />}
+          {page === 'help' && <HelpPage />}
           {page === 'settings' && (
             <SettingsPage
               data={data}
