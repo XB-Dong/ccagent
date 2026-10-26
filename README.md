@@ -2,7 +2,9 @@
 
 基于 **DeepSeek Harness**，面向 cc 的亚马逊日常运营：对话入口、活动跟进、库存补货、发货协同、广告分析，以及持续积累的工作经验。
 
-**当前状态：P0–P3 内部验收版已实现；38项离线测试、业务浏览器、云端真实工具、恢复与回退通过。公网HTTPS因云厂商临时域名拦截未通过，不标完整发布。**
+**当前状态：P0–P3 内部功能已实现；42项离线测试、中文界面维护和公网IP HTTPS/登录通过。固定域名、正式资料/接口及助手日常调用额度仍需后续处理，不标全部生产条件完成。**
+
+当前公网入口：**https://203.0.113.10/**。CC直接用浏览器打开并输入已有密码；[免费/正式域名接入步骤](docs/operations/PUBLIC-ACCESS.zh.md)。
 
 [交付报告](docs/audit/FINAL-REPORT.zh.md) · [使用说明](docs/operations/USER-GUIDE.zh.md) · [维护与恢复](docs/operations/runbook.md) · [P1计划](P1-PLAN.md) · [P2计划](P2-PLAN.md) · [P3计划](P3-PLAN.md)
 
