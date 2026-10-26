@@ -13,7 +13,7 @@ export class Auth {
   sessions = new Map<string, number>();
   attempts = new Map<string, { count: number; until: number }>();
   constructor(password: string) {
-    if (password.length < 12) throw new Error('AUTH_PASSWORD_TOO_SHORT');
+    if (password.length < 8) throw new Error('AUTH_PASSWORD_TOO_SHORT');
     this.passwordHash = scryptSync(password, this.salt, 64);
   }
   login(password: unknown, address = 'local'): string {
