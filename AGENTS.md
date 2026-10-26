@@ -2,6 +2,8 @@
 
 ## Current scope
 
+Latest human authorization on 2026-10-26: remove cumulative test call/token ceilings and finish the incomplete real skill reuse and browser checks. This supersedes the historical twelve-request stop rule below. Keep the same smoke account and all usage history; use explicit server-side unbounded limits, never fake a reset or borrow the daily runtime account. Keep timeouts, zero automatic retries, per-turn loop protection, synthetic data, and the single-agent policy. Ordinary CI remains offline; finish the named checks and stop unnecessary paid work.
+
 Latest user direction added on 2026-10-26: iterative development uses a single agent by default. Do not start or reactivate review/development agents unless a concrete need has first been explained to the user. This supersedes the earlier standing preference for autonomous read-only review delegation below. The active audit agent was stopped when this direction arrived; the Leader retains and verifies its already reported findings.
 
 Standing authorization added on 2026-10-26 during execution: the human explicitly permits read-only review subagents and directs the Leader to decide similar review and in-scope execution arrangements autonomously without repeated consultation. Review agents may inspect specifications/code and run offline checks; they do not gain additional paid API, business-data, deployment, or external-write permissions.

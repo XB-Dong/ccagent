@@ -42,7 +42,7 @@ export type Status = {
   scope: string;
   budget: {
     used: { calls: number; inputTokens: number; outputTokens: number };
-    limits: { maxCalls: number; maxTotalTokens: number };
+    limits: { maxCalls: number | null; maxTotalTokens: number | null };
     policy?: { account: string; period: 'daily' | 'lifetime' };
   };
 };
