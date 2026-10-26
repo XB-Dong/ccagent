@@ -28,6 +28,7 @@ export class Chat {
   lastSuccess?: string;
   lastFailure?: string;
   canRun: () => boolean;
+  budgetMessage = '本次使用已达上限。已保存的任务仍在，请先到“任务清单”核对，避免重复创建。';
   constructor(business: Business, live: boolean, canRun = () => true) {
     this.business = business;
     this.live = live;
@@ -179,9 +180,11 @@ export class Chat {
       if (failed) this.lastFailure = new Date().toISOString();
       else this.lastSuccess = new Date().toISOString();
       finish(
-        truncated
-          ? `${result.finalResponse}\n\n回复尚未完整，你可以发送“继续”接着查看。`
-          : result.finalResponse || '助手暂时未能回复，请稍后重试。已保存的记录仍可查看。',
+        failed && !this.canRun()
+          ? this.budgetMessage
+          : truncated
+            ? `${result.finalResponse}\n\n回复尚未完整，你可以发送“继续”接着查看。`
+            : result.finalResponse || '助手暂时未能回复，请稍后重试。已保存的记录仍可查看。',
         failed ? 'error' : 'completed',
         result.sessionId,
       );
@@ -191,7 +194,9 @@ export class Chat {
       finish(
         cancelled
           ? '本次对话已取消，已保存的内部记录仍可查看。'
-          : '助手暂时未能回复，请稍后重试；仍不成功请联系工作台维护者。消息和已保存的记录仍在。',
+          : !this.canRun()
+            ? this.budgetMessage
+            : '助手暂时未能回复，请稍后重试；仍不成功请联系工作台维护者。消息和已保存的记录仍在。',
         cancelled ? 'cancelled' : 'error',
       );
     } finally {
