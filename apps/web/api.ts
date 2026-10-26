@@ -43,6 +43,7 @@ export type Status = {
   budget: {
     used: { calls: number; inputTokens: number; outputTokens: number };
     limits: { maxCalls: number; maxTotalTokens: number };
+    policy?: { account: string; period: 'daily' | 'lifetime' };
   };
 };
 export function modelLabel(status?: Status) {
@@ -50,7 +51,10 @@ export function modelLabel(status?: Status) {
   if (status.syntheticModel) return '示例体验';
   const labels: Record<string, string> = {
     disabled: '助手暂未开放',
-    budget_exhausted: '助手暂时无法回复',
+    budget_exhausted:
+      status.budget.policy?.period === 'daily'
+        ? '今日使用已达上限，明天可继续'
+        : '助手暂时无法回复',
     last_failed: '上次回复未完成，可重试',
     last_succeeded: '可以和助手聊聊',
     enabled_unverified: '可以开始对话',
@@ -71,7 +75,11 @@ const errorLabels: Record<string, string> = {
   CHECKLIST_INCOMPLETE: '先完成清单中的检查项，再确认成功',
   REVISION_CONFLICT: '这条记录刚刚更新，请刷新后重试',
   SENSITIVE_INPUT_BLOCKED: '内容包含疑似凭据，请移除后再保存',
-  MODEL_BUDGET_EXHAUSTED: '助手暂时无法回复，请联系工作台维护者处理。任务和反馈仍可通过页面保存。',
+  MODEL_BUDGET_EXHAUSTED:
+    '本次使用已达保护上限，任务和反馈仍可保存。日常使用上限会在北京时间零点恢复。',
+  MODEL_TURN_LIMIT: '这次处理的步骤较多，请拆成更小的任务再试。',
+  CHAT_REQUEST_ALREADY_ACCEPTED: '上一条消息正在处理，请稍等后查看最近对话。',
+  NOT_FOUND: '这条记录已不存在，请刷新页面；对话可点“新对话”重新开始。',
   MODEL_OFFLINE: '助手暂未开放，请先使用左侧功能记录工作。',
   CHAT_FAILED: '消息未能发送，请稍后重试。',
   ORIGIN_FORBIDDEN: '页面连接已失效，请重新打开工作台后再试。',

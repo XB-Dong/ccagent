@@ -2,7 +2,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { resolve, join, extname } from 'node:path';
 import { Store } from '../../packages/core/store.ts';
-import { ModelBudget, type Limits } from '../../packages/core/budget.ts';
+import { ModelBudget, type Limits, type BudgetPolicy } from '../../packages/core/budget.ts';
 import { forwardModel } from '../../packages/cc-harness-adapter/gateway.ts';
 import { Auth, scopeOf } from './security.ts';
 import { readBody, json, failure } from './http.ts';
@@ -19,6 +19,7 @@ export type AppOptions = {
   secure?: boolean;
   limits: Limits;
   budgetPath?: string;
+  budgetPolicy?: BudgetPolicy;
   modelTransport?: typeof fetch;
 };
 export async function createApp(options: AppOptions) {
@@ -31,10 +32,15 @@ export async function createApp(options: AppOptions) {
   const budget = new ModelBudget(
     options.budgetPath ?? join(options.dataDir, 'model-budget.sqlite'),
     options.limits,
+    options.budgetPolicy,
   );
   const business = new Business(store, options.dataDir);
   const auth = new Auth(options.password);
-  const chat = new Chat(business, options.live === true && !!options.apiKey);
+  const chat = new Chat(
+    business,
+    options.live === true && !!options.apiKey,
+    () => !budget.exhausted(),
+  );
   let maintenance = false;
   const activeChats = new Set<Promise<void>>();
   async function checkpoint() {
@@ -63,6 +69,8 @@ export async function createApp(options: AppOptions) {
       if (req.method !== 'POST') throw new Error('METHOD_FORBIDDEN');
       const body = await readBody(req);
       if (path === '/model/v1/messages') {
+        handle.modelRequests = (handle.modelRequests ?? 0) + 1;
+        if (handle.modelRequests > 8) throw new Error('MODEL_TURN_LIMIT');
         await forwardModel(req, res, body, budget, options.apiKey, options.modelTransport);
         return;
       }
@@ -118,11 +126,7 @@ export async function createApp(options: AppOptions) {
             syntheticModel: !!options.modelTransport,
             modelState: !chat.live
               ? 'disabled'
-              : budget.snapshot().calls >= budget.limits.maxCalls ||
-                  budget.snapshot().inputTokens >= budget.limits.maxInputTokens ||
-                  budget.snapshot().outputTokens >= budget.limits.maxOutputTokens ||
-                  budget.snapshot().inputTokens + budget.snapshot().outputTokens >=
-                    budget.limits.maxTotalTokens
+              : budget.exhausted()
                 ? 'budget_exhausted'
                 : chat.lastFailure && (!chat.lastSuccess || chat.lastFailure > chat.lastSuccess)
                   ? 'last_failed'
@@ -132,7 +136,13 @@ export async function createApp(options: AppOptions) {
             lastSuccess: chat.lastSuccess,
             lastFailure: chat.lastFailure,
             scope,
-            budget: { used: budget.snapshot(), limits: budget.limits },
+            budget: {
+              used: budget.snapshot(),
+              limits: budget.limits,
+              policy: budget.policy,
+              account: budget.account(),
+              lifetime: budget.lifetimeSnapshot(),
+            },
             version: '0.1.0',
           });
           return;

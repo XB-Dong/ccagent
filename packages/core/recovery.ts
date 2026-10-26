@@ -13,6 +13,7 @@ import { join, relative, resolve, dirname } from 'node:path';
 import { randomUUID, createHash } from 'node:crypto';
 import { Store } from './store.ts';
 import type { ModelBudget } from './budget.ts';
+import { ensureBudgetSchema } from './budget.ts';
 
 type Manifest = {
   schemaVersion: string;
@@ -105,11 +106,12 @@ export function restoreRecoveryPoint(
   const current = new DatabaseSync(currentBudget, { readOnly: true });
   const merged = new DatabaseSync(join(destination, 'model-budget.sqlite'));
   try {
+    ensureBudgetSchema(merged);
     merged.exec('BEGIN IMMEDIATE');
     for (const row of current.prepare('SELECT * FROM model_requests').all()) {
       merged
         .prepare(
-          `INSERT INTO model_requests (id,input_tokens,output_tokens,settled,usage_verified,created_at) VALUES (?,?,?,?,?,?)
+          `INSERT INTO model_requests (id,input_tokens,output_tokens,settled,usage_verified,created_at,budget_account) VALUES (?,?,?,?,?,?,?)
         ON CONFLICT(id) DO UPDATE SET input_tokens=MAX(input_tokens,excluded.input_tokens),output_tokens=MAX(output_tokens,excluded.output_tokens),settled=MAX(settled,excluded.settled),usage_verified=MIN(usage_verified,excluded.usage_verified)`,
         )
         .run(
@@ -119,6 +121,7 @@ export function restoreRecoveryPoint(
           row.settled,
           row.usage_verified,
           row.created_at,
+          row.budget_account ?? 'legacy',
         );
     }
     merged.exec('COMMIT');
