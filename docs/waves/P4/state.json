@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "series": "P4",
+  "timeZone": "Asia/Shanghai",
+  "scheduledLocalTime": "01:00",
+  "automationId": "cc-p4-x",
+  "automationKind": "heartbeat",
+  "automationStatus": "ACTIVE",
+  "authorizationDate": "2026-10-26",
+  "executionStatus": "awaiting_first_scheduled_check",
+  "nextIteration": 1,
+  "activeWaveId": null,
+  "lastCheckedAt": null,
+  "lastAllocatedLocalDate": null,
+  "iterations": [],
+  "feedbackRevisions": [],
+  "policyRef": "README.md"
+}

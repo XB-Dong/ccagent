@@ -1,5 +1,23 @@
 # P0 前置工作上下文地图
 
+## 2026-10-26 · 必要测试不设 API 消耗额度限制
+
+用户再次明确必要测试不设置 DeepSeek API 额度消耗限制。Leader 自查冻结：同步 AGENTS.md、CONSTITUTION.md、docs/testing/deepseek-budget.md、docs/waves/P4/README.md 和现有定时任务 cc-p4-x，明确费用、请求数、输入/输出/总 token 的累计额度均不作为必要测试的停止条件，也不按日期、波次或 Agent 另设小额度。保留离线优先、真实用量、超时/循环保护和日常 runtime 独立政策；只改研发规则与定时提示，不改业务需求或线上应用。验证采用仓库检查、diff 与定时配置回读，无需真实模型调用。
+
+## 2026-10-26 · 凌晨建议检查与 P4.x 持续迭代
+
+Leader 已自查并冻结本次配置范围：用户明确要求每天北京时间 01:00 检查 cc 建议，先计划再按规范多 Agent 开发，以 P4.1、P4.2 递增。本次仅沉淀规则并创建当前聊天的定时任务，首轮业务实施留待定时触发。
+
+| Files to Modify | Purpose / Changes Needed |
+| --- | --- |
+| AGENTS.md / CONSTITUTION.md | 记录本次对每日迭代的多 Agent 授权与 Leader 需求分流权限，明确覆盖此前单 Agent 限制的范围 |
+| NEXT-WAVES.md / docs/waves/P4/README.md / docs/waves/P4/state.json | 每日流程、顺序编号、续跑/去重、计划工件和报告，初始化待检查状态而非虚构 P4.1 已执行 |
+| docs/product/changes/2026-10-26.md / REQUIREMENTS.zh.md | 先追加授权来源，再同步 CC-FEEDBACK-001 版本 2；不将开发编排混入业务需求 |
+| README.md / docs/product/changes/README.md | 更新导航和授权说明，保持需求与工程规则分开 |
+| 当前聊天定时任务（仓库外） | 每日 01:00 Asia/Shanghai，附带现行规则与项目绝对路径，不改云端定时器 |
+
+依赖：已有 P0–P3 计划、最新补验报告、受限运维索引与 main 工作区只读反馈读取脚本；历史 state 的旧发布缺口必须结合最新证据核对，不抹改历史。原始反馈仅保留仓库外；无需业务代码、接口或数据库改动。验证使用 scripts/verify.py、Markdown/JSON 格式检查、diff 和定时任务回读，不调用 DeepSeek、不新开审核 Agent。风险为重复波次、并行写入冲突、撤回项被误采纳、未经授权外部写入；由串行领队、来源修订去重、工作树隔离与既有权限边界约束。地图已由 Leader 审阅，可执行本次文档和定时配置。
+
 ## 2026-10-26 · 更新项目入口并合并main
 
 用户明确要求合并到main并更新README。Leader自查冻结：只修改`README.md`与本地图，按当前已验证事实整理功能、使用入口、技术结构、本地启动、55项离线及真实/浏览器验收、日常与测试额度区别、文档导航和未接入范围。链接依赖既有补验报告、使用/运维说明、package.json、vite.config.ts和服务启动配置；不改业务需求、应用代码、云端配置或运行数据。
