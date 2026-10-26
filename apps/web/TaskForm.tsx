@@ -161,7 +161,7 @@ export function TaskForm({
         value={start}
         onChange={(value) => {
           setStart(value);
-          changedDraft();
+          if (value.date !== start.date || value.time !== start.time) changedDraft();
         }}
         disabled={busy}
       />
@@ -170,7 +170,7 @@ export function TaskForm({
         value={end}
         onChange={(value) => {
           setEnd(value);
-          changedDraft();
+          if (value.date !== end.date || value.time !== end.time) changedDraft();
         }}
         disabled={busy}
       />
