@@ -1,60 +1,120 @@
 # ccagent · cc 的运营工作台
 
-基于 **DeepSeek Harness**，面向 cc 的亚马逊日常运营：对话入口、活动跟进、库存补货、发货协同、广告分析，以及持续积累的工作经验。
+给 cc 使用的中文运营工作台：整理亚马逊运营任务、跟进活动、分析库存和广告，并逐步积累她确认过的业务习惯与成功经验。
 
-**当前状态：P0–P3 内部功能已实现；42项离线测试、中文界面维护和公网IP HTTPS/登录通过。固定域名、正式资料/接口及助手日常调用额度仍需后续处理，不标全部生产条件完成。**
+**当前状态（2026-10-26）：P0–P3 已实现约定的内部工作流程，公网 HTTPS、真实助手工具调用及浏览器操作已验证。55 项离线测试通过，前次经验复用回复和浏览器操作两项遗留已补验通过。** 实际公司数据、外部平台接口和业务效果仍需后续验证。
 
-当前公网入口：**https://203.0.113.10/**。CC直接用浏览器打开并输入已有密码；[免费/正式域名接入步骤](docs/operations/PUBLIC-ACCESS.zh.md)。
+## 打开使用
 
-[交付报告](docs/audit/FINAL-REPORT.zh.md) · [使用说明](docs/operations/USER-GUIDE.zh.md) · [维护与恢复](docs/operations/runbook.md) · [P1计划](P1-PLAN.md) · [P2计划](P2-PLAN.md) · [P3计划](P3-PLAN.md)
+**[打开 cc 的工作台](https://203.0.113.10/)**，输入已有访问密码即可。建议将地址加入浏览器收藏；密码不保存在仓库中。
 
-仓库为私密仓库：[XB-Dong/ccagent](https://github.com/XB-Dong/ccagent)。本地目录：`.`。
+第一次使用，从左侧“使用说明”开始，先试任务、反馈和业务记忆。完整步骤见[简明使用说明](docs/operations/USER-GUIDE.zh.md)。域名接入及备案相关事项见[公网访问说明](docs/operations/PUBLIC-ACCESS.zh.md)。
 
-## 从这里阅读
+## 已有功能
 
-| 想了解什么 | 入口 |
-| --- | --- |
-| cc 要解决哪些问题，后来增加了什么 | [业务需求总览](docs/product/REQUIREMENTS.zh.md) · [按日期追加记录](docs/product/changes/README.md) |
-| P0 准备做什么，什么还没确定 | [P0 计划](P0-PLAN.md) · [待确认清单](docs/discovery/open-questions.md) |
-| 后续波次与自主推进、最终验收 | [P1/P2/P3 规划规则](NEXT-WAVES.md) |
-| 如何开发、验证与交付 | [AI Coding 宪法](CONSTITUTION.md) · [Agent 规则](AGENTS.md) |
-| 工作台怎样复用 Harness | [架构](specs/architecture.md) · [上游调研](docs/references/deepseek-harness.md) |
-| 同类项目哪些值得参考、哪些技术可迁移 | [同类项目调研](docs/references/同类项目.md) |
-| 怎样记住反馈、压缩经验和生成 Skill | [自适应机制](specs/adaptive-learning.md) |
-| 行为怎样被验收 | [验收矩阵](specs/acceptance.md) · [领域契约](specs/contracts/domain.md) |
-| 当前波次的真实状态 | [P0 状态](docs/waves/P0/state.json) · [前置交接](docs/waves/P0/handoffs/preparation.md) |
-| 本轮结果、证据与尚未运行项 | [前置交付报告](docs/audit/reports/report-20261026T004638+0800.md) |
+| 功能           | 可以做什么                                                                             |
+| -------------- | -------------------------------------------------------------------------------------- |
+| 运营助手与任务 | 中文问候、示例说法、自然语言对话、历史回读；助手创建待确认清单，确认后逐项推进         |
+| 改进反馈       | 记录哪里不好用、期望怎样改；支持补充、确认和撤回，保留来源与日期                       |
+| 业务记忆与经验 | 保存明确确认的习惯；确认成功的清单可整理为经验，后续检索并复用，也可停用               |
+| 活动日历       | 按站点时区安排准备、切换、检查、恢复四阶段，显示工作台内提醒                           |
+| 数据报表       | 用中文列名预览和导入销量、广告 CSV，保存批次、日期和来源                               |
+| 库存补货       | 连续七日销量均值或有依据的人工修正；结合库存、在途、提前期和活动假设给出缺货及补货建议 |
+| 发货协同       | 共享库存批次、数量分配、发货前置检查、亚马逊与公司系统单号、分批到货记录               |
+| 广告分析       | 按维度、币种与归因窗口计算指标，提供人工核对建议；成本不完整时不推断利润               |
 
-## 项目方向
+任务草稿需要 cc 确认。活动生效、价格调整、广告修改以及亚马逊和公司系统建单仍由人工完成；当前工作台不执行这些外部操作。通用 Excel 分析、任意代码分析和未确认的候选需求不属于已交付功能。
 
-工作台打开先向 cc 问好，展示当前实际可用的功能及示例说法。对话与结构化任务相连，结果显示数据依据、状态和待确认项。
+业务反馈先形成候选需求，不能直接授权修改代码。成功流程经验有来源、适用范围和版本；撤销、删除及暂停学习的规则见[自适应机制](specs/adaptive-learning.md)。
 
-自适应分两路：使用反馈形成迭代需求；成功工作流程形成有来源、适用条件和版本的 Skill。会话压缩、长期业务记忆与研发记录分别管理。官方Harness与业务学习两条路径已实现并分层验证，详见各波报告；发布遗留单独保留。
+## 当前验证与部署
 
-## 准备阶段的交付范围（历史）
+- **55 项离线测试**、类型检查、生产构建和仓库检查通过；普通 CI 不配置真实模型凭据。
+- 真实 DeepSeek 已验证问答、任务工具、业务记忆、反馈和经验复用；最后补验新增 5 个模型请求，包含浏览器实际聊天。
+- 浏览器实际验证登录、发送消息、新对话、历史回读、任务页、报表示例预览、说明页，以及维护重启后用原密码重新登录。
+- 26 项合成公网检查覆盖主要运营流程；最新 37 文件一致备份已在云端隔离恢复，业务记录、调用账本及数据库完整性一致。
 
-业务需求与日期记录、工程规范、上游版本基线、P0 提案、任务包、验收设计和轻量仓库检查。本轮没有产品代码、依赖安装、API 调用或服务器操作。
+详见[最新补验报告](docs/audit/reports/SMOKE-COMPLETION-20261026.zh.md)、[项目交付报告](docs/audit/FINAL-REPORT.zh.md)及[波次报告索引](docs/audit/reports/README.md)。这些结果基于合成数据，不代表真实公司运营效果已经验收。
 
-运行仓库检查（Python 3.12+，仅标准库）：
+当前已验证云端应用源码为 `8a63477289ed229f8e1c51d6770f308c3a33fe7f`。README、报告及主分支合并提交单独追踪；应用部署版本以服务健康信息和发布记录为准。服务使用 systemd，公网经 Caddy 提供 HTTPS；维护、备份和恢复步骤见[运维手册](docs/operations/runbook.md)。
 
-```sh
-python scripts/verify.py
+## 技术结构
+
+| 部分         | 实现                                                                                      |
+| ------------ | ----------------------------------------------------------------------------------------- |
+| 前端         | React、TypeScript、Vite，中文业务界面                                                     |
+| 服务端       | Node.js HTTP 服务，鉴权、任务状态与运营规则                                               |
+| 助手运行框架 | 官方 DeepSeek Harness / SDK `0.2.1-rc.3`，通过受控插件提供业务工具和经验                  |
+| 存储         | SQLite WAL 保存业务记录和调用账本；官方原生会话日志保存会话，仓库外文件保存导出与运行数据 |
+| 云端运行     | 单主机、专用服务用户、systemd、Caddy HTTPS                                                |
+
+```text
+apps/web/                      中文工作台
+apps/server/                   HTTP、鉴权与业务入口
+packages/core/                 持久化、调用记账和恢复
+packages/operations/           活动、报表、库存、发货和广告规则
+packages/learning/             反馈、来源记忆与成功流程经验
+packages/cc-harness-adapter/    官方运行框架接入、模型网关与业务工具
+tests/                         离线行为、接口及运行框架集成测试
+deploy/                        服务与反向代理配置示例
+docs/                          业务需求、工程规范、计划、运维与验收记录
 ```
 
-GitHub Actions 使用同一检查入口。它检查文档链接、结构、追踪记录和常见凭据风险，**不证明产品功能或部署通过**。
+## 本地运行
 
-## 开发运行
+环境固定为 **Node.js 24.19.0、pnpm 11.25.0**。在项目根目录执行：
 
-Node 24.19.0、pnpm 11.25.0。安装 `pnpm install --frozen-lockfile --ignore-scripts`，检查 `pnpm check` / `pnpm test`，构建 `pnpm build` 后执行 `pnpm server`。默认地址 `http://127.0.0.1:4310`，默认离线，不加载真实模型 Key。
+```sh
+pnpm install --frozen-lockfile --ignore-scripts
+pnpm check
+pnpm test
+pnpm build
+python scripts/verify.py
+pnpm server
+```
 
-`CC_DATA_DIR` 默认为仓库外的 `../.ccagent-support/product-data`；首次运行的访问密码保存在该目录 `access.json`，不要提交或公开。配置及维护说明会随发布验收补齐。开发 Vite 使用 `pnpm dev`，后端相应设置 `CC_ORIGIN=http://127.0.0.1:4311`。
+打开 `http://127.0.0.1:4310`。默认不启用真实模型，仍可操作基础记录页面。运行数据默认放在仓库外 `../.ccagent-support/product-data`；首次生成的本地访问密码位于该目录的 `access.json`，不要提交或公开。
 
-当前实测与未验项见 [R0 运行事实](docs/waves/P0/R0-evidence.md)。CI 已增加类型检查、离线测试和构建，真实 DeepSeek 探针不在 CI 中运行。
+开发前端时，在一个 PowerShell 终端启动后端：
+
+```powershell
+$env:CC_ORIGIN = "http://127.0.0.1:4311"
+pnpm server
+```
+
+另一个终端执行 `pnpm dev`，通过 `http://127.0.0.1:4311` 访问。前端地址须与后端 `CC_ORIGIN` 一致。
+
+真实助手由维护者在仓库外配置 `DEEPSEEK_API_KEY` 并设置 `CC_MODEL_LIVE=1`；参考[配置示例](deploy/service.env.example)和[运维手册](docs/operations/runbook.md)。不要将 Key、服务器密码或访问密码填写到已跟踪文件中。
+
+## 日常使用与测试记账
+
+日常使用和开发测试共用持久账本，使用不同账户：
+
+- 日常 `runtime` 按北京时间自然日统计，当前默认保护值为 **100 个模型请求/日**。一次对话可能包含多个工具后续请求，因此不等于 100 条消息。
+- 按用户要求，本项目测试不再设置人为累计请求或 token 上限；服务器显式配置 `unlimited`，所有历史用量仍保留。完成必要测试后停止调用。
+- 每请求超时、单轮循环保护及零自动重试保留；重启、备份恢复和切换账户不会清空已有请求记录。普通检查与 CI 保持离线。
+
+详见[模型使用与测试策略](docs/testing/deepseek-budget.md)。
+
+## 文档导航
+
+| 想了解什么                     | 入口                                                                                                                 |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| cc 怎样使用工作台              | [简明说明](docs/operations/USER-GUIDE.zh.md)                                                                         |
+| 当前真实验证结果               | [最新补验报告](docs/audit/reports/SMOKE-COMPLETION-20261026.zh.md) · [项目报告](docs/audit/FINAL-REPORT.zh.md)       |
+| cc 需要什么、后来增加了什么    | [业务需求](docs/product/REQUIREMENTS.zh.md) · [按日期追加记录](docs/product/changes/README.md)                       |
+| 怎样开发、验证和交付           | [AI Coding 宪法](CONSTITUTION.md) · [Agent 规则](AGENTS.md)                                                          |
+| 架构与反馈、记忆、经验机制     | [架构](specs/architecture.md) · [自适应机制](specs/adaptive-learning.md)                                             |
+| 怎样维护、备份、恢复和配置域名 | [运维手册](docs/operations/runbook.md) · [公网访问](docs/operations/PUBLIC-ACCESS.zh.md)                             |
+| 如何节约模型调用               | [测试策略](docs/testing/deepseek-budget.md)                                                                          |
+| 功能契约与原始验收设计         | [验收矩阵](specs/acceptance.md) · [领域契约](specs/contracts/domain.md)                                              |
+| 波次计划与历史过程             | [P0](P0-PLAN.md) · [P1](P1-PLAN.md) · [P2](P2-PLAN.md) · [P3](P3-PLAN.md) · [报告索引](docs/audit/reports/README.md) |
+| 上游与同类项目参考             | [官方运行框架调研](docs/references/deepseek-harness.md) · [同类项目](docs/references/同类项目.md)                    |
+
+历史计划和早期状态保留当时事实；当前部署与验证结果以最新维护报告为准。业务需求文档与工程宪法分开维护，新增需求按日期追加。
 
 ## 仓库约定
 
-业务文档和审阅材料使用中文；源码标识符、注释、接口字段、提交信息和 Agent 执行指令使用英文。按职责组织文件，先写可检查的行为与验收，再实现；核心规则采用真实 TDD，审核与验收保留证据。
+本仓库为[私密仓库](https://github.com/XB-Dong/ccagent)。业务文档使用中文；代码标识符、注释、接口字段与提交信息使用英文，模块按实际职责组织。迭代开发默认由单 Agent 执行，确有需要采用多 Agent 时先说明。
 
-凭据、真实运营报表、会话原文、数据库、日志、运行时 Skill 和上游源码缓存放在仓库外。已有服务器与模型凭据继续使用原受限配置，项目不保存副本。暂不指定项目源码许可证；上游 MIT 许可与第三方声明在引入实际代码时保留。
-
-本机运维交接索引：`../.ccagent-local/LOCAL-OPERATIONS.md`（仓库外，仅记录既有配置位置，不含密码或 Key 正文）。后续接手按此定位，不重复索取已有凭据。
+凭据、真实报表、会话原文、数据库、日志、运行时经验和原始验收载荷放在仓库外。维护者按既有受限配置索引定位凭据，不在文档中保存正文。项目源码暂未指定许可证；上游许可和归属见[第三方声明](THIRD-PARTY-NOTICES.md)。
