@@ -47,3 +47,39 @@ test('task draft confirmation, idempotency and successful workflow promotion are
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('pausing learning preserves pending successful workflows until learning resumes', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'cc-workflow-pause-'));
+  const store = new Store(join(dir, 'business.sqlite'));
+  const learning = new Learning(store);
+  const tasks = new Tasks(store, learning);
+  try {
+    const source = store.source('a', 'Synthetic successful flow');
+    const task = store.create('a', 'task', {
+      title: 'Synthetic flow',
+      status: 'done',
+      checklist: ['Check one'],
+      checked: [true],
+      confirmedSuccess: true,
+      timeZone: 'Asia/Shanghai',
+      sources: [source.id],
+    });
+    const job = store.create('a', 'job', {
+      taskId: task.id,
+      type: 'workflow',
+      status: 'pending',
+      attempts: 0,
+    });
+    learning.setEnabled('a', false);
+    tasks.drain('a');
+    assert.equal(store.get<typeof job>('a', job.id).status, 'pending');
+    assert.equal(learning.activeSkills('a').length, 0);
+    learning.setEnabled('a', true);
+    tasks.drain('a');
+    assert.equal(store.get<typeof job>('a', job.id).status, 'completed');
+    assert.equal(learning.activeSkills('a').length, 1);
+  } finally {
+    store.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

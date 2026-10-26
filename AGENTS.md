@@ -2,6 +2,8 @@
 
 ## Current scope
 
+Latest user direction added on 2026-10-26: iterative development uses a single agent by default. Do not start or reactivate review/development agents unless a concrete need has first been explained to the user. This supersedes the earlier standing preference for autonomous read-only review delegation below. The active audit agent was stopped when this direction arrived; the Leader retains and verifies its already reported findings.
+
 Standing authorization added on 2026-10-26 during execution: the human explicitly permits read-only review subagents and directs the Leader to decide similar review and in-scope execution arrangements autonomously without repeated consultation. Review agents may inspect specifications/code and run offline checks; they do not gain additional paid API, business-data, deployment, or external-write permissions.
 
 The human explicitly started the project on 2026-10-26 with “启动”. Execute P0/R0 and the planned full-stack implementation, integration and authorized deployment, then autonomously progress under the standing policy below. The previous documentation-only restriction is historical and no longer active. Use synthetic data until business-data permission is established; do not perform real Amazon/ERP business writes.
@@ -24,6 +26,8 @@ The current business view is docs/product/REQUIREMENTS.zh.md. Append dated chang
 - Run python scripts/verify.py for preparation changes. This is repository verification, not product acceptance.
 
 ## Continuous execution after the project starts
+
+User authorization added on 2026-10-26: perform a comprehensive audit and real DeepSeek API smoke test before handing the workbench back. Follow docs/testing/SMOKE-20261026-PLAN.zh.md. Preserve the exhausted legacy six-call ledger; this new smoke allocation is independently capped at twelve actual requests, including tools/compaction/failures, without retries or account renaming to add quota. Runtime use must have a separate, server-configured daily account. This explicit request supersedes the earlier no-addition restriction only for the bounded new allocation and restoring normal use; conserve quota and retain all historical usage.
 
 Conserve DeepSeek API quota in prototyping, tests, debugging, review and repeated verification. Follow docs/testing/deepseek-budget.md: offline by default, no production key in ordinary CI, synthetic fixtures and sanitized replay first, minimal bounded live probes only. Configure shared call/token limits before enabling paid tests; include tool loops, learning/compaction and failed attempts. Stop at the limit, retain valid evidence and rerun only affected live cases. Never represent replay as live verification or treat missing usage as zero. The shared durable budget guard is implemented; preserve its tested boundaries and do not expand the recorded development allowance.
 

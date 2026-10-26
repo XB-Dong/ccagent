@@ -8,22 +8,65 @@ export type Limits = {
   maxTotalTokens: number;
 };
 export type Usage = { inputTokens: number; outputTokens: number };
+export type BudgetPolicy = { account: string; period: 'daily' | 'lifetime' };
+
+export function ensureBudgetSchema(db: DatabaseSync): void {
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    db.exec(`CREATE TABLE IF NOT EXISTS model_requests (
+    id TEXT PRIMARY KEY, input_tokens INTEGER NOT NULL, output_tokens INTEGER NOT NULL,
+    settled INTEGER NOT NULL DEFAULT 0, usage_verified INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, budget_account TEXT NOT NULL DEFAULT 'legacy'
+  );`);
+    if (
+      !db
+        .prepare('PRAGMA table_info(model_requests)')
+        .all()
+        .some((row) => row.name === 'budget_account')
+    )
+      db.exec(
+        "ALTER TABLE model_requests ADD COLUMN budget_account TEXT NOT NULL DEFAULT 'legacy'",
+      );
+    db.exec(
+      'CREATE INDEX IF NOT EXISTS model_requests_by_account ON model_requests(budget_account)',
+    );
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
+}
 
 export class ModelBudget {
   db: DatabaseSync;
   limits: Limits;
-  constructor(path: string, limits: Limits) {
+  policy: BudgetPolicy;
+  now: () => number;
+  constructor(
+    path: string,
+    limits: Limits,
+    policy: BudgetPolicy = { account: 'legacy', period: 'lifetime' },
+    now = Date.now,
+  ) {
     if (Object.values(limits).some((value) => !Number.isSafeInteger(value) || value <= 0)) {
       throw new Error('INVALID_MODEL_BUDGET');
     }
+    if (
+      !/^[a-z][a-z0-9-]{0,63}$/.test(policy.account) ||
+      !['daily', 'lifetime'].includes(policy.period)
+    )
+      throw new Error('INVALID_BUDGET_POLICY');
     this.db = new DatabaseSync(path);
     this.limits = limits;
-    this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
-      CREATE TABLE IF NOT EXISTS model_requests (
-        id TEXT PRIMARY KEY, input_tokens INTEGER NOT NULL, output_tokens INTEGER NOT NULL,
-        settled INTEGER NOT NULL DEFAULT 0, usage_verified INTEGER NOT NULL DEFAULT 0,
-        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-      );`);
+    this.policy = { ...policy };
+    this.now = now;
+    this.db.exec('PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;');
+    ensureBudgetSchema(this.db);
+  }
+  account(): string {
+    return this.policy.period === 'daily'
+      ? `${this.policy.account}@${new Date(this.now() + 8 * 3600000).toISOString().slice(0, 10)}`
+      : this.policy.account;
   }
   reserve(inputTokens: number, outputTokens: number): string {
     if (
@@ -34,7 +77,8 @@ export class ModelBudget {
     }
     this.db.exec('BEGIN IMMEDIATE');
     try {
-      const used = this.snapshot();
+      const account = this.account();
+      const used = this.readSnapshot(account);
       if (
         used.calls + 1 > this.limits.maxCalls ||
         used.inputTokens + inputTokens > this.limits.maxInputTokens ||
@@ -46,8 +90,10 @@ export class ModelBudget {
       }
       const id = randomUUID();
       this.db
-        .prepare('INSERT INTO model_requests (id,input_tokens,output_tokens) VALUES (?,?,?)')
-        .run(id, inputTokens, outputTokens);
+        .prepare(
+          'INSERT INTO model_requests (id,input_tokens,output_tokens,budget_account) VALUES (?,?,?,?)',
+        )
+        .run(id, inputTokens, outputTokens, account);
       this.db.exec('COMMIT');
       return id;
     } catch (error) {
@@ -74,12 +120,27 @@ export class ModelBudget {
     }
   }
   snapshot(): Usage & { calls: number } {
+    return this.readSnapshot(this.account());
+  }
+  lifetimeSnapshot(): Usage & { calls: number } {
+    return this.readSnapshot();
+  }
+  exhausted(): boolean {
+    const used = this.snapshot();
+    return (
+      used.calls >= this.limits.maxCalls ||
+      used.inputTokens >= this.limits.maxInputTokens ||
+      used.outputTokens >= this.limits.maxOutputTokens ||
+      used.inputTokens + used.outputTokens >= this.limits.maxTotalTokens
+    );
+  }
+  private readSnapshot(account?: string): Usage & { calls: number } {
+    const query =
+      'SELECT COUNT(*) AS calls, COALESCE(SUM(input_tokens),0) AS inputTokens, COALESCE(SUM(output_tokens),0) AS outputTokens FROM model_requests';
     return {
-      ...this.db
-        .prepare(
-          'SELECT COUNT(*) AS calls, COALESCE(SUM(input_tokens),0) AS inputTokens, COALESCE(SUM(output_tokens),0) AS outputTokens FROM model_requests',
-        )
-        .get(),
+      ...(account === undefined
+        ? this.db.prepare(query).get()
+        : this.db.prepare(query + ' WHERE budget_account=?').get(account)),
     } as Usage & { calls: number };
   }
   close(): void {

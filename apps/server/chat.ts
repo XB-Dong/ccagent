@@ -18,6 +18,7 @@ export type RuntimeHandle = {
   sourceId?: string;
   cancelReason?: string;
   closing?: Promise<void>;
+  modelRequests?: number;
 };
 export class Chat {
   business: Business;
@@ -26,9 +27,32 @@ export class Chat {
   live: boolean;
   lastSuccess?: string;
   lastFailure?: string;
-  constructor(business: Business, live: boolean) {
+  canRun: () => boolean;
+  constructor(business: Business, live: boolean, canRun = () => true) {
     this.business = business;
     this.live = live;
+    this.canRun = canRun;
+    const store = business.store;
+    const interrupted = store.db
+      .prepare("SELECT payload FROM entities WHERE kind='chat-receipt'")
+      .all()
+      .map((row) => JSON.parse(String(row.payload)) as Receipt)
+      .filter((row) => row.status === 'accepted');
+    for (const receipt of interrupted)
+      store.transaction(() => {
+        const text = '上次对话因服务重启中断，已保存的记录仍在。请核对任务后，再发送新消息。';
+        const row = store.db
+          .prepare('SELECT payload FROM entities WHERE scope=? AND id=?')
+          .get(receipt.scope, receipt.conversationId);
+        if (row) {
+          const conversation = JSON.parse(String(row.payload)) as Conversation;
+          if (conversation.kind === 'conversation')
+            store.update(conversation, {
+              messages: [...conversation.messages, { role: 'assistant', text, status: 'error' }],
+            });
+        }
+        store.update(receipt, { status: 'error', text });
+      });
   }
   handle(scope: string): RuntimeHandle {
     let handle = this.handles.get(scope);
@@ -72,12 +96,14 @@ export class Chat {
       res.end();
       return;
     }
+    if (this.live && !this.canRun()) throw new Error('MODEL_BUDGET_EXHAUSTED');
     const existing = body.conversationId
       ? store.get<Conversation>(scope, safeText(body.conversationId, 100))
       : undefined;
     if (existing && existing.kind !== 'conversation') throw new Error('NOT_FOUND');
     const handle = this.live ? this.handle(scope) : undefined;
     if (handle?.runtime.running) throw new Error('SESSION_BUSY');
+    if (handle) handle.modelRequests = 0;
     const source = this.business.capture.enqueue(scope, text, requestId, existing?.id);
     this.business.capture.drain(scope);
     const accepted = store.transaction(() => {
@@ -139,7 +165,13 @@ export class Chat {
         finish('本次对话已取消，已保存的内部记录仍可查看。', 'cancelled', result.sessionId);
         return;
       }
+      const truncated = result.events.some(
+        (event) =>
+          event.type === 'turn/end' &&
+          (event.data as { reason?: { kind?: string } } | undefined)?.reason?.kind === 'max-tokens',
+      );
       const failed =
+        truncated ||
         !result.finalResponse ||
         result.events.some(
           (event) => event.type.includes('failed') || event.type.includes('error'),
@@ -147,7 +179,9 @@ export class Chat {
       if (failed) this.lastFailure = new Date().toISOString();
       else this.lastSuccess = new Date().toISOString();
       finish(
-        result.finalResponse || '助手暂时未能回复，请稍后重试。已保存的记录仍可查看。',
+        truncated
+          ? `${result.finalResponse}\n\n回复尚未完整，你可以发送“继续”接着查看。`
+          : result.finalResponse || '助手暂时未能回复，请稍后重试。已保存的记录仍可查看。',
         failed ? 'error' : 'completed',
         result.sessionId,
       );

@@ -109,3 +109,42 @@ test('complete recovery point detects tampering and retains current privacy deci
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('restoring an earlier point preserves separate runtime and smoke accounting', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'cc-policy-restore-'));
+  const data = join(dir, 'data');
+  const store = new Store(join(data, 'business.sqlite'));
+  const limits = { maxCalls: 1, maxInputTokens: 1000, maxOutputTokens: 100, maxTotalTokens: 1100 };
+  const budgetPath = join(data, 'model-budget.sqlite');
+  const legacy = new ModelBudget(budgetPath, limits);
+  const runtime = new ModelBudget(budgetPath, limits, { account: 'runtime', period: 'daily' });
+  const smoke = new ModelBudget(budgetPath, limits, {
+    account: 'smoke-20261026-release',
+    period: 'lifetime',
+  });
+  try {
+    writeFileSync(store.ledgerPath, '');
+    legacy.reserve(10, 5);
+    const point = await createRecoveryPoint(store, legacy, data, join(dir, 'points'));
+    runtime.reserve(20, 10);
+    smoke.reserve(30, 15);
+    const restoredPath = join(dir, 'restored');
+    restoreRecoveryPoint(point.directory, restoredPath, store.ledgerPath, budgetPath);
+    for (const policy of [legacy.policy, runtime.policy, smoke.policy]) {
+      const restored = new ModelBudget(join(restoredPath, 'model-budget.sqlite'), limits, policy);
+      try {
+        assert.equal(restored.snapshot().calls, 1);
+        assert.equal(restored.lifetimeSnapshot().calls, 3);
+        assert.throws(() => restored.reserve(1, 1), /MODEL_BUDGET_EXHAUSTED/);
+      } finally {
+        restored.close();
+      }
+    }
+  } finally {
+    legacy.close();
+    runtime.close();
+    smoke.close();
+    store.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

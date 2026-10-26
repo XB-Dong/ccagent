@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
 import { join, resolve } from 'node:path';
 import { createApp } from './app.ts';
+import type { BudgetPolicy } from '../../packages/core/budget.ts';
 
 const dataDir = resolve(process.env.CC_DATA_DIR ?? '../.ccagent-support/product-data');
 mkdirSync(dataDir, { recursive: true });
@@ -26,11 +27,15 @@ const app = await createApp({
   apiKey: process.env.DEEPSEEK_API_KEY,
   live: process.env.CC_MODEL_LIVE === '1',
   budgetPath: process.env.CC_BUDGET_PATH,
+  budgetPolicy: {
+    account: process.env.CC_BUDGET_ACCOUNT ?? 'runtime',
+    period: (process.env.CC_BUDGET_PERIOD ?? 'daily') as BudgetPolicy['period'],
+  },
   limits: {
-    maxCalls: Number(process.env.CC_MAX_CALLS ?? 6),
-    maxInputTokens: Number(process.env.CC_MAX_INPUT_TOKENS ?? 24000),
-    maxOutputTokens: Number(process.env.CC_MAX_OUTPUT_TOKENS ?? 4096),
-    maxTotalTokens: Number(process.env.CC_MAX_TOTAL_TOKENS ?? 28096),
+    maxCalls: Number(process.env.CC_MAX_CALLS ?? 100),
+    maxInputTokens: Number(process.env.CC_MAX_INPUT_TOKENS ?? 1000000),
+    maxOutputTokens: Number(process.env.CC_MAX_OUTPUT_TOKENS ?? 65536),
+    maxTotalTokens: Number(process.env.CC_MAX_TOTAL_TOKENS ?? 1065536),
   },
 });
 app.server.listen(port, host, () =>

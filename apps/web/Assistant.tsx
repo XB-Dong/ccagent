@@ -155,7 +155,9 @@ export function Assistant({
         </div>
         {!canChat(status) && (
           <p className="notice" role="status">
-            助手暂时无法回复，请联系工作台维护者处理。你仍可在左侧新建任务、记录反馈和查看经验。
+            {status?.modelState === 'budget_exhausted' && status.budget.policy?.period === 'daily'
+              ? '今天的助手使用已达保护上限，北京时间零点后可继续。你仍可在左侧新建任务、记录反馈和查看经验。'
+              : '助手暂时无法回复，请联系工作台维护者处理。你仍可在左侧新建任务、记录反馈和查看经验。'}
           </p>
         )}
         <form className="composer" onSubmit={(event) => void submit(event)}>
@@ -224,7 +226,9 @@ export function Assistant({
         <section className="assistant-tip">
           <Icon name="book" size={22} />
           <h3>慢慢懂你，步步有据</h3>
-          <p>已确认的记忆可以在下次对话中使用。成功清单会整理成经验，相关来源会保留，方便后续核对。</p>
+          <p>
+            已确认的记忆可以在下次对话中使用。成功清单会整理成经验，相关来源会保留，方便后续核对。
+          </p>
         </section>
       </aside>
     </div>

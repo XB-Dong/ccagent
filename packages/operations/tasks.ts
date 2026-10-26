@@ -109,6 +109,7 @@ export class Tasks {
     return result;
   }
   drain(scope: string): void {
+    if (!this.learning.enabled(scope)) return;
     const jobs = this.store.list<
       import('../core/store.ts').Base & {
         type: string;
