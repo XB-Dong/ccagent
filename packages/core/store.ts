@@ -43,7 +43,7 @@ export class Store {
       PRAGMA user_version=1;`);
     this.applyPrivacyLedger();
   }
-  privacyIntent(scope: string, id: string, action: 'delete' | 'revoke'): void {
+  privacyIntent(scope: string, id: string, action: 'delete' | 'delete-note' | 'revoke'): void {
     // Persist fail-closed intent before changing a recoverable projection.
     appendFileSync(this.ledgerPath, `${JSON.stringify({ scope, id, action, at: now() })}\n`, {
       mode: 0o600,
@@ -130,8 +130,10 @@ export class Store {
   isDeleted(scope: string, id: string): boolean {
     return !!this.db.prepare('SELECT id FROM tombstones WHERE scope=? AND id=?').get(scope, id);
   }
-  remove(scope: string, id: string): void {
-    this.privacyIntent(scope, id, 'delete');
+  remove(scope: string, id: string, action: 'delete' | 'delete-note' = 'delete'): void {
+    if (action === 'delete-note' && this.get(scope, id).kind !== 'note')
+      throw new Error('INVALID_NOTE');
+    this.privacyIntent(scope, id, action);
     this.applyPrivacyLedger();
   }
   close(): void {

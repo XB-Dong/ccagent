@@ -7,12 +7,38 @@
   "automationKind": "heartbeat",
   "automationStatus": "ACTIVE",
   "authorizationDate": "2026-10-26",
-  "executionStatus": "awaiting_first_scheduled_check",
-  "nextIteration": 1,
-  "activeWaveId": null,
-  "lastCheckedAt": null,
-  "lastAllocatedLocalDate": null,
-  "iterations": [],
-  "feedbackRevisions": [],
+  "executionStatus": "executing",
+  "nextIteration": 2,
+  "activeWaveId": "P4.1",
+  "lastCheckedAt": "2026-10-26T16:59:49.263357+00:00",
+  "lastAllocatedLocalDate": "2026-10-27",
+  "iterations": [
+    {
+      "waveId": "P4.1",
+      "createdLocalDate": "2026-10-27",
+      "status": "executing",
+      "plan": "P4.1-PLAN.md"
+    }
+  ],
+  "feedbackRevisions": [
+    {
+      "id": "58bcd935-1a8a-4fed-8f37-db41d0a1f04b",
+      "updatedAt": "2026-10-26T06:40:09.087Z",
+      "waveId": "P4.1",
+      "decision": "accepted"
+    },
+    {
+      "id": "233cf8b8-8025-4e74-91be-db5a284cf45b",
+      "updatedAt": "2026-10-26T09:03:49.958Z",
+      "waveId": "P4.1",
+      "decision": "accepted"
+    },
+    {
+      "id": "919e84ea-2e3b-4f1a-b6a7-fa8f2034b0fb",
+      "updatedAt": "2026-10-26T09:04:39.231Z",
+      "waveId": null,
+      "decision": "withdrawn_excluded"
+    }
+  ],
   "policyRef": "README.md"
 }

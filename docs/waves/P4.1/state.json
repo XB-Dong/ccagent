@@ -1,0 +1,41 @@
+{
+  "waveId": "P4.1",
+  "baselineSha": "d878c0e97ab64663d81965fbc2977c9ecfb908a8",
+  "specVersion": "p41-v1",
+  "planStatus": "frozen",
+  "executionStatus": "executing",
+  "owner": "Leader",
+  "entryDecision": "leader_reviewed_scope_and_latest_release_evidence",
+  "entryAt": "2026-10-27T01:03:44.5760159+08:00",
+  "tasks": {
+    "P41-TASK": "integrated_verified",
+    "P41-TASK-UI": "integrated_verified",
+    "P41-NOTES": "integrated_verified",
+    "P41-INTEGRATION": "release_pending",
+    "P41-REVIEW": "three_findings_fixed_reverified"
+  },
+  "testAllowance": {
+    "maxCost": null,
+    "maxCalls": null,
+    "maxInputTokens": null,
+    "maxOutputTokens": null,
+    "maxTotalTokens": null
+  },
+  "perRootRepairLimitBeforeRediagnosis": 2,
+  "repairCounts": {
+    "task-null-timezone": 1,
+    "note-history-isolation": 1,
+    "note-old-reader-marker": 1,
+    "task-create-retry": 1,
+    "actual-minutes-revision": 1
+  },
+  "verification": {
+    "offline": "82_pass_types_build_verify",
+    "browser": "local_actual_task_calendar_notes_and_two_tab_conflict_passed",
+    "model": "not_run",
+    "github": "not_run",
+    "deployment": "not_run",
+    "recovery": "not_run"
+  },
+  "updatedAt": "2026-10-26T17:26:15.353294+00:00"
+}

@@ -14,11 +14,15 @@ import { InventoryPage } from './InventoryPage.tsx';
 import { ShippingPage } from './ShippingPage.tsx';
 import { AdvertisingPage } from './AdvertisingPage.tsx';
 import { HelpPage } from './HelpPage.tsx';
+import { NotesPage } from './NotesPage.tsx';
+import { WorkCalendarPage } from './WorkCalendarPage.tsx';
 
 const navigation = [
   { id: 'home', name: '工作台', icon: 'home' },
   { id: 'assistant', name: '运营助手', icon: 'chat' },
   { id: 'tasks', name: '任务清单', icon: 'tasks' },
+  { id: 'work-calendar', name: '工作日历', icon: 'calendar' },
+  { id: 'notes', name: '学习笔记', icon: 'book' },
   { id: 'feedback', name: '改进反馈', icon: 'feedback' },
   { id: 'knowledge', name: '经验与记忆', icon: 'book' },
   { id: 'activities', name: '活动日历', icon: 'calendar' },
@@ -225,6 +229,8 @@ export function App() {
             />
           )}{' '}
           {page === 'tasks' && <TasksPage data={data} mutate={mutate} busy={busy} />}{' '}
+          {page === 'work-calendar' && <WorkCalendarPage data={data} mutate={mutate} busy={busy} />}
+          {page === 'notes' && <NotesPage data={data} mutate={mutate} busy={busy} />}
           {page === 'feedback' && <FeedbackPage data={data} mutate={mutate} busy={busy} />}{' '}
           {page === 'knowledge' && <KnowledgePage data={data} mutate={mutate} busy={busy} />}
           {page === 'activities' && <ActivitiesPage data={data} mutate={mutate} busy={busy} />}
