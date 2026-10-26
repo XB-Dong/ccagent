@@ -11,13 +11,15 @@ function ScheduleField({
   name,
   value,
   onChange,
+  disabled,
 }: {
   name: string;
   value: Schedule;
   onChange: (value: Schedule) => void;
+  disabled: boolean;
 }) {
   return (
-    <fieldset className="p41-schedule">
+    <fieldset className="p41-schedule" disabled={disabled}>
       <legend>{name}（可选）</legend>
       <label>
         {name}日期
@@ -63,7 +65,7 @@ export function TaskForm({
   onClose: () => void;
 }) {
   const [initial] = useState(task);
-  const [key] = useState(requestId);
+  const [key, setKey] = useState(requestId);
   const [title, setTitle] = useState(task?.title ?? '');
   const [checklist, setChecklist] = useState(task?.checklist.join('\n') ?? '');
   const [zone, setZone] = useState(task?.timeZone ?? '');
@@ -77,8 +79,12 @@ export function TaskForm({
   const [error, setError] = useState('');
   const zoneChanged = !!initial && zone !== initial.timeZone;
   const needsConfirmation = zoneChanged && !!(initial.startAt || initial.endAt || initial.dueAt);
+  function changedDraft() {
+    if (!initial) setKey(requestId());
+  }
   async function submit(event: FormEvent) {
     event.preventDefault();
+    if (busy) return;
     setError('');
     try {
       if (needsConfirmation && !zoneConfirmed) throw new Error('请先确认修改时区后的计划时间。');
@@ -114,7 +120,11 @@ export function TaskForm({
         任务名称
         <input
           value={title}
-          onChange={(event) => setTitle(event.target.value)}
+          disabled={busy}
+          onChange={(event) => {
+            setTitle(event.target.value);
+            changedDraft();
+          }}
           required
           maxLength={200}
           placeholder="例如：整理本周广告数据"
@@ -124,9 +134,11 @@ export function TaskForm({
         任务时区
         <select
           value={zone}
+          disabled={busy}
           required
           onChange={(event) => {
             setZone(event.target.value);
+            changedDraft();
             setZoneConfirmed(false);
           }}
         >
@@ -144,13 +156,30 @@ export function TaskForm({
         </select>
       </label>
       <p className="metadata wide">以下日期和时间均按所选任务时区填写。计划时间不等于实际用时。</p>
-      <ScheduleField name="计划开始" value={start} onChange={setStart} />
-      <ScheduleField name="计划结束" value={end} onChange={setEnd} />
+      <ScheduleField
+        name="计划开始"
+        value={start}
+        onChange={(value) => {
+          setStart(value);
+          changedDraft();
+        }}
+        disabled={busy}
+      />
+      <ScheduleField
+        name="计划结束"
+        value={end}
+        onChange={(value) => {
+          setEnd(value);
+          changedDraft();
+        }}
+        disabled={busy}
+      />
       {needsConfirmation && (
         <label className="wide p41-confirm">
           <input
             type="checkbox"
             checked={zoneConfirmed}
+            disabled={busy}
             onChange={(event) => setZoneConfirmed(event.target.checked)}
           />
           我已核对：上方计划时间将按新时区重新保存，实际时刻可能改变。
@@ -161,7 +190,11 @@ export function TaskForm({
         <textarea
           rows={4}
           value={checklist}
-          onChange={(event) => setChecklist(event.target.value)}
+          disabled={busy}
+          onChange={(event) => {
+            setChecklist(event.target.value);
+            changedDraft();
+          }}
           required
           placeholder={'检查活动信息\n核对最终结果'}
         />
@@ -201,10 +234,12 @@ export function ActualMinutesForm({
   onCancel?: () => void;
 }) {
   const id = useId();
+  const [initial] = useState(task);
   const [value, setValue] = useState(task.actualMinutes?.toString() ?? '');
   const [error, setError] = useState('');
   async function submit(event: FormEvent) {
     event.preventDefault();
+    if (busy) return;
     setError('');
     try {
       const actualMinutes = value === '' ? null : Number(value);
@@ -214,8 +249,8 @@ export function ActualMinutesForm({
       )
         throw new Error('实际用时请填写 0 到 1440 之间的整数分钟。');
       await mutate('task-update', {
-        id: task.id,
-        revision: task.revision,
+        id: initial.id,
+        revision: initial.revision,
         actualMinutes,
         ...(completion ? { status: 'done', confirmedSuccess: true } : {}),
       });
@@ -240,6 +275,7 @@ export function ActualMinutesForm({
           max={1440}
           step={1}
           value={value}
+          disabled={busy}
           onChange={(event) => setValue(event.target.value)}
           placeholder="未记录"
         />
