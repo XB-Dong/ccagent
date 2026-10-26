@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
-  "recordedAt": "2026-10-26T13:12:36.142239+08:00",
+  "recordedAt": "2026-10-26T13:17:26.924671+08:00",
   "storage": "outside-git: ../.ccagent-local/evidence",
-  "applicationSha": "835de30c5716343db21870831eb80c783a9fa4e0",
+  "applicationSha": "8deb658b15b7c6098a8e0b56bf2533f6a4786ec1",
   "liveModelSha": "b7a0e179836a24056f7d81a16bef9c3ac844e014",
   "items": [
     {
@@ -36,6 +36,11 @@
       "sha256": "b6279c4b2c71711735950cdcab9fb995c2d7576828f01e476160766c0e5efd4c"
     },
     {
+      "id": "deployment/cloud-final-release-8deb658b15b7c6098a8e0b56bf2533f6a4786ec1.json",
+      "bytes": 1397,
+      "sha256": "01f04bd5707da3a1fed669b2a74feeb965d32136dda8422af530b76d51241b1d"
+    },
+    {
       "id": "deployment/cloud-runtime-release-835de30c5716343db21870831eb80c783a9fa4e0.json",
       "bytes": 1402,
       "sha256": "866b44e8b968cc55738278d33b3e953a00f67fcafb3c3aa443fbc281acb3a0a0"
@@ -66,6 +71,11 @@
       "sha256": "bcfa11015341ed8e6add38844ef74ee384366705fed596dd5c6a967bc1f8d57d"
     },
     {
+      "id": "final-offline-tests-52-20261026.log",
+      "bytes": 5629,
+      "sha256": "1675e6002ea0492ed64083993c6930e251b76164d9cc8e0774b12dc9ab3f6c80"
+    },
+    {
       "id": "smoke-20261026/cloud-checkpoint.json",
       "bytes": 7631,
       "sha256": "e5c08e30049c250c115b3007233c7e7a0fd648bea8cd63982a13cb59cced47b2"
@@ -79,6 +89,11 @@
       "id": "smoke-20261026/feedback.json",
       "bytes": 4273,
       "sha256": "9280cda7706c9a182a46797d2020e3865085056570fb235175f6fa758af95f66"
+    },
+    {
+      "id": "smoke-20261026/final-public-8deb658.json",
+      "bytes": 1273,
+      "sha256": "a9e2338b301632a0fcee66d2348626c495e737b3d8ecccbaa6802dd719c865ba"
     },
     {
       "id": "smoke-20261026/final-public.json",
@@ -131,6 +146,11 @@
       "sha256": "55d2293b07062196f2a38d51644f00a78dd794da00824e8c83e4a2b5b48d9906"
     },
     {
+      "id": "smoke-20261026/release-ci-8deb658.json",
+      "bytes": 443,
+      "sha256": "1fac991bcc121e93c5ed1ea4de7fafc487c86ca7aaee9a5415419d3fc6ac5180"
+    },
+    {
       "id": "smoke-20261026/reuse-persisted.json",
       "bytes": 488,
       "sha256": "6dc29427d95005f919c78d374fa51f1390712b39e3124c16993e2e5707de4ea2"
@@ -154,6 +174,16 @@
       "id": "smoke-repair-green-20261026.log",
       "bytes": 1006,
       "sha256": "70834ae1911c53347116894a6e937cce7d97119d4ff0d5b1fcdf415d7a78efb9"
+    },
+    {
+      "id": "truncated-budget-green-20261026.log",
+      "bytes": 400,
+      "sha256": "da9063c128d40ce752ee36f56c30c8f4a79f5e59fbb3b1b9869c1e48d7dd4ec1"
+    },
+    {
+      "id": "truncated-budget-red-20261026.log",
+      "bytes": 1622,
+      "sha256": "3f126274d7c9a4494f8cb18808875374ead840a5319a8ff757e45bd9ef4ddba1"
     },
     {
       "id": "workflow-pause-red-20261026.log",
