@@ -1,8 +1,11 @@
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
+import type { Task } from '../../packages/learning/service.ts';
 import type { Snapshot } from './api.ts';
-import { requestId } from './api.ts';
 import { Badge, Empty, Icon, SourceList, states } from './components.tsx';
-import { timeZones, timeZoneLabel } from './display.ts';
+import { timeZoneLabel } from './display.ts';
+import { TaskForm, ActualMinutesForm } from './TaskForm.tsx';
+import { plannedLabel } from './task-time.ts';
+import './p41-tasks.css';
 
 export type Mutate = (action: string, body: object) => Promise<unknown>;
 export function TasksPage({
@@ -14,20 +17,8 @@ export function TasksPage({
   mutate: Mutate;
   busy: boolean;
 }) {
-  const [form, setForm] = useState(false);
+  const [editor, setEditor] = useState<{ task?: Task } | null>(null);
   const [filter, setFilter] = useState('active');
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const values = new FormData(event.currentTarget);
-    await mutate('task', {
-      title: values.get('title'),
-      timeZone: values.get('timeZone'),
-      dueAt: values.get('dueAt') || undefined,
-      checklist: String(values.get('checklist')).split('\n').filter(Boolean),
-      requestId: requestId(),
-    });
-    setForm(false);
-  }
   const rows = data.tasks.filter(
     (row) => filter === 'all' || !['done', 'cancelled'].includes(row.status),
   );
@@ -37,56 +28,20 @@ export function TasksPage({
         <div>
           <span className="eyebrow">把事情记清楚</span>
           <h1>任务清单</h1>
-          <p>准备、确认、检查。每一步都有据可循。</p>
+          <p>准备、确认、检查，也可以随时调整待办。</p>
         </div>
-        <button className="primary" onClick={() => setForm(!form)}>
+        <button className="primary" disabled={busy || !!editor} onClick={() => setEditor({})}>
           <Icon name="plus" size={17} /> 新建任务
         </button>
       </div>
-      {form && (
-        <form
-          className="panel form-grid"
-          onSubmit={(event) => {
-            void submit(event).catch(() => {});
-          }}
-        >
-          <label className="wide">
-            任务名称
-            <input name="title" placeholder="例如：美站周末活动准备" required maxLength={200} />
-          </label>
-          <label>
-            站点时区
-            <select name="timeZone" required defaultValue="">
-              <option value="" disabled>
-                请选择，避免时间误差
-              </option>
-              {Object.entries(timeZones).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            计划时间（可选，按示例填写）
-            <input name="dueAt" placeholder="2026-10-26T10:00:00-07:00" />
-          </label>
-          <label className="wide">
-            检查清单（每行一项）
-            <textarea
-              name="checklist"
-              rows={4}
-              required
-              placeholder={'核对活动起止和站点时区\n检查旧优惠是否需要关闭\n活动开始后核验生效情况'}
-            />
-          </label>
-          <div className="wide form-actions">
-            <span>先记下待办，平台上的操作仍需你完成。</span>
-            <button className="primary" disabled={busy}>
-              确认并保存
-            </button>
-          </div>
-        </form>
+      {editor && (
+        <TaskForm
+          key={editor.task?.id ?? 'new'}
+          task={editor.task}
+          mutate={mutate}
+          busy={busy}
+          onClose={() => setEditor(null)}
+        />
       )}
       <div className="tabs">
         <button
@@ -111,94 +66,140 @@ export function TasksPage({
       ) : (
         <div className="card-list">
           {rows.map((task) => (
-            <article className="panel task-card" key={task.id}>
-              <div className="card-heading">
-                <h2>{task.title}</h2>
-                <Badge tone={task.status === 'done' ? 'green' : ''}>{states[task.status]}</Badge>
-              </div>
-              <p className="metadata">
-                {timeZoneLabel(task.timeZone)}
-                {task.dueAt
-                  ? ` · ${new Date(task.dueAt).toLocaleString('zh-CN', { timeZone: task.timeZone })}`
-                  : ' · 未设计划时间'}
-              </p>
-              <div className="checklist">
-                {task.checklist.map((text, index) => (
-                  <label key={index}>
-                    <input
-                      type="checkbox"
-                      checked={task.checked[index]}
-                      disabled={busy || ['done', 'cancelled', 'draft'].includes(task.status)}
-                      onChange={() => {
-                        const checked = [...task.checked];
-                        checked[index] = !checked[index];
-                        void mutate('task-update', {
-                          id: task.id,
-                          revision: task.revision,
-                          checked,
-                        }).catch(() => {});
-                      }}
-                    />
-                    <span>{text}</span>
-                  </label>
-                ))}
-              </div>
-              <div className="card-footer">
-                <SourceList sources={task.sources} />
-                <div>
-                  {task.status === 'draft' ? (
-                    <button
-                      className="primary small"
-                      disabled={busy}
-                      onClick={() =>
-                        void mutate('task-update', {
-                          id: task.id,
-                          revision: task.revision,
-                          status: 'open',
-                        }).catch(() => {})
-                      }
-                    >
-                      确认这份任务
-                    </button>
-                  ) : (
-                    !['done', 'cancelled'].includes(task.status) && (
-                      <button
-                        className="secondary small"
-                        disabled={busy || !task.checked.every(Boolean)}
-                        onClick={() =>
-                          void mutate('task-update', {
-                            id: task.id,
-                            revision: task.revision,
-                            status: 'done',
-                            confirmedSuccess: true,
-                          }).catch(() => {})
-                        }
-                      >
-                        确认完成并保存经验
-                      </button>
-                    )
-                  )}
-                  {!['done', 'cancelled'].includes(task.status) && (
-                    <button
-                      className="text-button"
-                      disabled={busy}
-                      onClick={() =>
-                        void mutate('task-update', {
-                          id: task.id,
-                          revision: task.revision,
-                          status: 'cancelled',
-                        }).catch(() => {})
-                      }
-                    >
-                      取消任务
-                    </button>
-                  )}
-                </div>
-              </div>
-            </article>
+            <TaskCard
+              key={task.id}
+              task={task}
+              mutate={mutate}
+              busy={busy}
+              editDisabled={!!editor}
+              onEdit={() => setEditor({ task })}
+            />
           ))}
         </div>
       )}
     </>
+  );
+}
+function TaskCard({
+  task,
+  mutate,
+  busy,
+  editDisabled,
+  onEdit,
+}: {
+  task: Task;
+  mutate: Mutate;
+  busy: boolean;
+  editDisabled: boolean;
+  onEdit: () => void;
+}) {
+  const [minutesOpen, setMinutesOpen] = useState(false);
+  const active = !['done', 'cancelled'].includes(task.status);
+  return (
+    <article className="panel task-card">
+      <div className="card-heading">
+        <h2>{task.title}</h2>
+        <Badge tone={task.status === 'done' ? 'green' : ''}>{states[task.status]}</Badge>
+      </div>
+      <p className="metadata">
+        {timeZoneLabel(task.timeZone)} · {plannedLabel(task)}
+      </p>
+      {task.status === 'done' && (
+        <p className="metadata">
+          {task.completedAt
+            ? `完成于 ${new Date(task.completedAt).toLocaleString('zh-CN', { timeZone: task.timeZone, hour12: false })}`
+            : '历史完成记录，日期未记录'}{' '}
+          · 实际用时：{task.actualMinutes == null ? '未记录' : `${task.actualMinutes} 分钟`}
+        </p>
+      )}
+      <div className="checklist">
+        {task.checklist.map((text, index) => (
+          <label key={index}>
+            <input
+              type="checkbox"
+              checked={task.checked[index]}
+              disabled={busy || !active || task.status === 'draft'}
+              onChange={() => {
+                const checked = [...task.checked];
+                checked[index] = !checked[index];
+                void mutate('task-update', { id: task.id, revision: task.revision, checked }).catch(
+                  () => {},
+                );
+              }}
+            />
+            <span>{text}</span>
+          </label>
+        ))}
+      </div>
+      <div className="card-footer">
+        <SourceList sources={task.sources} />
+        <div className="p41-actions">
+          {active && (
+            <button className="secondary small" disabled={busy || editDisabled} onClick={onEdit}>
+              编辑任务
+            </button>
+          )}
+          {task.status === 'draft' ? (
+            <button
+              className="primary small"
+              disabled={busy}
+              onClick={() =>
+                void mutate('task-update', {
+                  id: task.id,
+                  revision: task.revision,
+                  status: 'open',
+                }).catch(() => {})
+              }
+            >
+              确认这份任务
+            </button>
+          ) : (
+            active && (
+              <button
+                className="secondary small"
+                disabled={busy || !task.checked.every(Boolean)}
+                onClick={() => setMinutesOpen(true)}
+              >
+                记录完成
+              </button>
+            )
+          )}
+          {task.status === 'done' && (
+            <button
+              className="text-button"
+              disabled={busy}
+              onClick={() => setMinutesOpen(!minutesOpen)}
+            >
+              补记或修改实际用时
+            </button>
+          )}
+          {active && (
+            <button
+              className="text-button"
+              disabled={busy}
+              onClick={() =>
+                void mutate('task-update', {
+                  id: task.id,
+                  revision: task.revision,
+                  status: 'cancelled',
+                }).catch(() => {})
+              }
+            >
+              取消任务
+            </button>
+          )}
+        </div>
+      </div>
+      {minutesOpen && (task.status === 'done' || (active && task.status !== 'draft')) && (
+        <ActualMinutesForm
+          task={task}
+          mutate={mutate}
+          busy={busy || (active && !task.checked.every(Boolean))}
+          completion={task.status !== 'done'}
+          onSaved={() => setMinutesOpen(false)}
+          onCancel={() => setMinutesOpen(false)}
+        />
+      )}
+    </article>
   );
 }
