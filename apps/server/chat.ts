@@ -180,7 +180,7 @@ export class Chat {
       if (failed) this.lastFailure = new Date().toISOString();
       else this.lastSuccess = new Date().toISOString();
       finish(
-        failed && !this.canRun()
+        failed && !truncated && !this.canRun()
           ? this.budgetMessage
           : truncated
             ? `${result.finalResponse}\n\n回复尚未完整，你可以发送“继续”接着查看。`
