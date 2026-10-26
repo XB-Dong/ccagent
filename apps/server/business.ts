@@ -8,7 +8,8 @@ import {
   type Task,
 } from '../../packages/learning/service.ts';
 import { Capture } from '../../packages/learning/capture.ts';
-import { Tasks, type TaskInput } from '../../packages/operations/tasks.ts';
+import { Tasks, type TaskChanges } from '../../packages/operations/tasks.ts';
+import { Notes } from '../../packages/operations/notes.ts';
 import { confirmChange, exportChanges, withdrawFeedback } from '../../packages/learning/export.ts';
 import { safeText } from './security.ts';
 import { Activities, type Activity } from '../../packages/operations/activities.ts';
@@ -23,6 +24,7 @@ export class Business {
   dataDir: string;
   activities: Activities;
   reports: Reports;
+  notes: Notes;
   constructor(store: Store, dataDir: string) {
     this.store = store;
     this.dataDir = dataDir;
@@ -31,6 +33,7 @@ export class Business {
     this.tasks = new Tasks(store, this.learning);
     this.activities = new Activities(store);
     this.reports = new Reports(store);
+    this.notes = new Notes(store);
   }
   snapshot(scope: string) {
     this.capture.drain(scope);
@@ -47,6 +50,7 @@ export class Business {
       reminders: this.store.list(scope, 'reminder'),
       reports: this.store.list(scope, 'report'),
       tasks: this.store.list(scope, 'task'),
+      notes: this.store.list(scope, 'note'),
       feedback: this.store.list(scope, 'feedback'),
       memories: this.store.list(scope, 'memory'),
       skills: this.store.list(scope, 'skill'),
@@ -57,6 +61,21 @@ export class Business {
     };
   }
   mutate(scope: string, action: string, body: Record<string, unknown>) {
+    if (action === 'note')
+      return this.notes.create(scope, safeText(body.requestId, 100), {
+        title: safeText(body.title, 200),
+        content: safeText(body.content, 10000),
+      });
+    if (action === 'note-update')
+      return this.notes.update(scope, safeText(body.id, 100), Number(body.revision), {
+        title: safeText(body.title, 200),
+        content: safeText(body.content, 10000),
+      });
+    if (action === 'note-delete') {
+      const id = safeText(body.id, 100);
+      this.notes.remove(scope, id, Number(body.revision));
+      return { deleted: id };
+    }
     const result = operate(this.store, scope, action, body);
     if (result !== undefined) return result;
     if (action === 'report-preview' || action === 'report-import') {
@@ -107,16 +126,36 @@ export class Business {
         checklist,
         timeZone: String(body.timeZone ?? ''),
         dueAt: body.dueAt ? String(body.dueAt) : undefined,
+        startAt: body.startAt === undefined ? undefined : safeText(body.startAt, 40),
+        endAt: body.endAt === undefined ? undefined : safeText(body.endAt, 40),
         sourceId: source.id,
         confirmed: true,
       });
     }
-    if (action === 'task-update')
-      return this.tasks.update(scope, safeText(body.id, 100), Number(body.revision), {
-        status: typeof body.status === 'string' ? body.status : undefined,
-        checked: Array.isArray(body.checked) ? (body.checked as boolean[]) : undefined,
-        confirmedSuccess: body.confirmedSuccess === true,
-      });
+    if (action === 'task-update') {
+      const changes: TaskChanges = {};
+      if (body.title !== undefined) changes.title = safeText(body.title, 200);
+      if (body.timeZone !== undefined) changes.timeZone = safeText(body.timeZone, 100);
+      if (body.checklist !== undefined) {
+        if (!Array.isArray(body.checklist)) throw new Error('INVALID_CHECKLIST');
+        changes.checklist = body.checklist.map((value) => safeText(value, 300));
+      }
+      for (const field of ['dueAt', 'startAt', 'endAt'] as const)
+        if (body[field] !== undefined)
+          changes[field] = body[field] === null ? null : safeText(body[field], 40);
+      if (body.status !== undefined) changes.status = safeText(body.status, 30);
+      if (body.checked !== undefined) {
+        if (!Array.isArray(body.checked)) throw new Error('INVALID_CHECKLIST');
+        changes.checked = body.checked as boolean[];
+      }
+      if (body.confirmedSuccess !== undefined) {
+        if (typeof body.confirmedSuccess !== 'boolean') throw new Error('INVALID_TASK');
+        changes.confirmedSuccess = body.confirmedSuccess;
+      }
+      if (body.actualMinutes !== undefined)
+        changes.actualMinutes = body.actualMinutes as number | null;
+      return this.tasks.update(scope, safeText(body.id, 100), Number(body.revision), changes);
+    }
     if (action === 'feedback') {
       const text = safeText(body.text);
       const source = this.capture.enqueue(scope, text, safeText(body.requestId, 100));

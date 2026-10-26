@@ -29,7 +29,7 @@ export class Notes {
     this.store.transaction(() => {
       this.current(scope, id, revision);
       // Use the durable privacy intent so older database backups cannot revive the note.
-      this.store.remove(scope, id);
+      this.store.remove(scope, id, 'delete-note');
     });
   }
   private current(scope: string, id: string, revision: number): Note {

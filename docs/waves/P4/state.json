@@ -7,12 +7,19 @@
   "automationKind": "heartbeat",
   "automationStatus": "ACTIVE",
   "authorizationDate": "2026-10-26",
-  "executionStatus": "awaiting_first_scheduled_check",
-  "nextIteration": 1,
-  "activeWaveId": null,
-  "lastCheckedAt": null,
-  "lastAllocatedLocalDate": null,
-  "iterations": [],
+  "executionStatus": "executing",
+  "nextIteration": 2,
+  "activeWaveId": "P4.1",
+  "lastCheckedAt": "2026-10-26T16:59:49.263357+00:00",
+  "lastAllocatedLocalDate": "2026-10-27",
+  "iterations": [
+    {
+      "waveId": "P4.1",
+      "createdLocalDate": "2026-10-27",
+      "status": "executing",
+      "plan": "P4.1-PLAN.md"
+    }
+  ],
   "feedbackRevisions": [],
   "policyRef": "README.md",
   "feedbackRegistry": "operator_private_storage",
