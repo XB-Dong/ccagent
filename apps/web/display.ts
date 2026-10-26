@@ -3,6 +3,7 @@ export const timeZones: Record<string, string> = {
   'America/New_York': '美国东部时间',
   'Europe/London': '英国时间',
   'Europe/Berlin': '德国时间',
+  'Europe/Rome': '意大利时间',
   'Asia/Tokyo': '日本时间',
   'Asia/Shanghai': '北京时间',
 };
