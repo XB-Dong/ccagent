@@ -2,6 +2,10 @@
 
 日期：2026-10-26｜范围：仓库初始化、规格与计划，不实现产品。
 
+## 2026-10-26 · 用户指定访问密码更新
+
+Leader已审阅：用户明确要求8位访问密码，需要调整`apps/server/security.ts`的最短长度为8，保留scrypt/会话/限流；`tests/auth.test.ts`验证8位登录、短值拒绝及限流。凭据只更新仓库外本机与云端`access.json`，不在源码或文档写密码。发布固定提交并验证新密码登录、旧密码失效，普通检查不调用模型；无数据库迁移。
+
 ## Files to Modify
 
 | File | Purpose | Changes Needed |
