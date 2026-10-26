@@ -1,0 +1,37 @@
+{
+  "waveId": "P2",
+  "baselineSha": "27567670a3b863b299db361c7bd25dd0ac84a5ff",
+  "specVersion": "inventory-v1.1",
+  "owner": "Leader",
+  "planStatus": "frozen",
+  "executionStatus": "partial",
+  "entryDecision": "P1 synthetic prerequisites verified; P0 release gap retained",
+  "tasks": {
+    "P2-FORECAST": "synthetic_verified",
+    "P2-INVENTORY": "synthetic_verified",
+    "P2-SHIP": "browser_ready_verified",
+    "P2-INTEGRATION": "review_followup"
+  },
+  "cumulativeRepairsRef": "../P1/state.json",
+  "perRootRepairLimit": 2,
+  "paidCallsPlanned": 0,
+  "carriedRoots": {
+    "P0-RELEASE": "partial"
+  },
+  "repairCounts": {
+    "fractional-demand": 1,
+    "late-arrival-gap": 1,
+    "zero-partial-receipt": 1,
+    "external-id-normalization": 1,
+    "forecast-intent": 1,
+    "physical-batch": 1,
+    "pool-sku-normalization": 2,
+    "pool-key-collision": 1
+  },
+  "reportRef": "../../audit/reports/P2-execution-20261026.md",
+  "independentReviewStatus": "all_findings_reverified",
+  "latestStatusAt": "2026-10-26T03:11:11+08:00",
+  "deployedSourceSha": "3a37ec5fbc160b24f744a7285356cee6e2360734",
+  "projectReportRef": "../../audit/FINAL-REPORT.zh.md",
+  "remainingReleaseGate": "public_https_requires_permitted_domain_dns_provider_configuration"
+}

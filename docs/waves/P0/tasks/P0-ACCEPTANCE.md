@@ -1,8 +1,13 @@
 # P0-ACCEPTANCE
 
-Status: draft, not dispatchable. waveId=P0; roundId=R0-R2; taskId=rootTaskId=P0-ACCEPTANCE.
-Owner, exact baselineSha, start/deadline, total budget and remaining repair allowance: unresolved; populate before dispatch.
-Spec version: 0.1.0 draft, to be replaced by the frozen R0 revision.
+Status: executing under Leader ownership. waveId=P0; taskId=rootTaskId=P0-ACCEPTANCE.
+Owner: Leader. Exact baselineSha: ebed58c062604249051ef48b1f122a0c34298e22.
+Spec: runtime-v0.2 frozen; P0 architecture/adaptive/acceptance targets retain all mandatory gates.
+Start: 2026-10-26T02:06:11+08:00. No human deadline; reassess focused work every 45 minutes.
+Shared live budget: 6 calls / 24000 input / 4096 output / 28096 total tokens; already used 2 calls / 2206 input / 36 output. Zero retries.
+Repair limit: two directed attempts per diagnosed root cause, with cumulative counts in state.
+Leader-assigned current paths: tests/**; scripts/**; own audit/evidence summaries. Prior proposed paths below are superseded where different.
+R0 interfaces have runtime evidence; prototype implementation exists, this packet now governs hardening and final acceptance. Independent review findings must be fixed and reverified before release.
 
 Requirements: CC-ENTRY-001, CC-HARNESS-001, CC-ACT-001 subset, CC-FEEDBACK-001, CC-MEMORY-001, CC-SKILL-001, CC-HISTORY-001.
 Read all active specifications, requirement changes and specs/acceptance.md. Design independently from implementation details and start scenario design during R0; execute against exact candidate commits as capabilities become available.

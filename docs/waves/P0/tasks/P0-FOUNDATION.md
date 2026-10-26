@@ -1,8 +1,10 @@
 # P0-FOUNDATION
 
-Status: draft, not dispatchable. waveId=P0; roundId=R0; taskId=rootTaskId=P0-FOUNDATION.
-Owner, baselineSha, start/deadline, total budget and remaining repair allowance: unresolved; Leader must fill before dispatch.
-Spec version: 0.1.0 draft; freeze the reviewed version before behavior implementation.
+Status: executing. waveId=P0; roundId=R0; taskId=rootTaskId=P0-FOUNDATION.
+Owner: Leader. baselineSha: 3a198f0b6e07bc31021df9d73d3cfe30e3f1c469.
+Start: 2026-10-26T01:23:56+08:00. No human deadline. Focused diagnosis window: 45 minutes; preserve state and reassess rather than reset a failed root.
+Repair allowance: two directed repairs per diagnosed cause, cumulative across waves. Shared live budget: 6 calls, 24000 input tokens, 4096 output tokens, 28096 total; 45-second timeout; zero retries.
+Spec version: 0.2.0 R0 contract frozen by Leader for budget and controlled SDK integration; ADR 0004 defines the selected seam. Other business behavior remains gated by its packet and reviewed contract.
 
 Requirements: CC-HARNESS-001, CC-ENTRY-001, CC-MEMORY-001, CC-SKILL-001.
 Read P0-PLAN.md, specs/architecture.md, specs/adaptive-learning.md, specs/contracts/domain.md, specs/acceptance.md and docs/references/upstream-baseline.json.

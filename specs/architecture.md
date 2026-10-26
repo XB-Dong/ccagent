@@ -2,6 +2,8 @@
 
 版本：0.1.1｜状态：待 R0 技术验证和契约冻结；补充技术栈与存储说明
 
+执行更新（2026-10-26）：运行契约 [v0.2](contracts/runtime-v0.2.md) 已冻结，具体选型以 [ADR 0004](../docs/decisions/0004-harness-sdk.md) 为准。官方 SDK + `sdk-minimal` + cc Cordis 插件已验证启动、真实工具调用和恢复；React/Vite 工作台和 Node 内置 SQLite 已实现。下文保留准备阶段方案供追溯，不能将旧“未安装”视为当前事实。定制浏览器与后端使用 HTTP/SSE，官方 SDK 与原生进程使用 stdio JSON-RPC；没有另启 WebSocket 管理端口。
+
 需求依据：[业务需求](../docs/product/REQUIREMENTS.zh.md)。上游事实依据：[Harness 调研](../docs/references/deepseek-harness.md)。本文件的模块名和选型建议尚不是已经运行的架构。
 
 ## 1. 复用与边界

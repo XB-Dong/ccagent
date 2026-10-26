@@ -1,0 +1,31 @@
+{
+  "waveId": "P1",
+  "specVersion": "operations-v1.1",
+  "baselineSha": "9124665c76dc8ff8d706b4d5ea12e5b0682b74ff",
+  "owner": "Leader",
+  "planStatus": "frozen",
+  "executionStatus": "partial",
+  "entryDecision": "nonblocking-business-development-with-P0-release-gap-retained",
+  "carriedRoots": {
+    "P0-RELEASE": "partial-public-https-and-real-recovery-rollback"
+  },
+  "tasks": {
+    "P1-ACTIVITY": "synthetic_verified",
+    "P1-DATA": "synthetic_verified",
+    "P1-INTEGRATION": "browser_verified"
+  },
+  "paidCallsPlanned": 0,
+  "perRootRepairLimit": 2,
+  "cumulativeRepairsRef": "../P0/state.json",
+  "repairCounts": {
+    "report-kind": 2,
+    "report-row-order": 1,
+    "report-blank-row": 1,
+    "activity-short-duration": 1
+  },
+  "reportRef": "../../audit/reports/P1-execution-20261026.md",
+  "latestStatusAt": "2026-10-26T03:11:11+08:00",
+  "deployedSourceSha": "3a37ec5fbc160b24f744a7285356cee6e2360734",
+  "projectReportRef": "../../audit/FINAL-REPORT.zh.md",
+  "remainingReleaseGate": "public_https_requires_permitted_domain_dns_provider_configuration"
+}
