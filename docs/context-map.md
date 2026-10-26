@@ -1,5 +1,27 @@
 # P0 前置工作上下文地图
 
+## 2026-10-26 · 面向 cc 的中文界面与简明说明书
+
+### Files to Modify
+
+| File                                                      | Purpose            | Changes Needed                                                                |
+| --------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------- |
+| apps/web/{App,Assistant,Overview,SettingsPage,api}.tsx/ts | 日常入口与服务提示 | 移除技术栈、累计测试额度与整理队列；保留真实不可用状态和处理办法              |
+| apps/web/{ReportsPage,KnowledgePage,components}.tsx       | 报表与经验         | 中文字段填写替代 JSON；移除校验哈希、风险代码和来源编号展示，保留底层追踪记录 |
+| apps/web/*Page.tsx                                        | 业务页面           | 英文装饰标题、站点/时区选项、指标说明改为中文；接口标识及用户数据不改写       |
+| apps/web/HelpPage.tsx, docs/operations/USER-GUIDE.zh.md   | 小白使用说明       | 页面内入口、简短步骤、可下载说明；不泄露密码，不承诺自动操作外部平台          |
+| docs/product/{REQUIREMENTS.zh.md,changes/2026-10-26.md}   | 用户需求追踪       | 先追加来源，再同步中文易用性要求                                              |
+
+### Dependencies / Test Files / Reference Patterns
+
+依赖既有鉴权 API、后端预算守卫、报表 mapping 契约、React/Vite 与现有样式。使用类型检查、构建、仓库检查及离线浏览器核验；报表映射改变输入行为，针对预览/确认及可选广告组做行为验证。复用已有表单、下载函数和状态呈现，不引入依赖。
+
+审核修正补充：`SitePicker.tsx` 保留旧站点代码及自定义输入，`display.ts` 集中中文业务标签；`tests/ui-status.test.ts` 覆盖不可用时禁发、指示灯及网络/非 JSON 错误。`apps/server/chat.ts` 仅替换用户可见失败文案。独立审核与处置见[维护审核记录](audit/reviews/UI-20261026.md)。
+
+### Risk Assessment / Review
+
+Leader 已审阅：无数据库迁移、无服务端权限扩展、无付费预算增加。不能用隐藏提示伪装助手可用；输入字段改变后旧预览必须失效。保留必要的业务编码、币种、文件扩展名和完整底层来源，去掉开发展示。真实业务数据权限仍未建立，示例必须清楚标记。发布到现有云服务并验证静态页面/登录/预算账本不变；本轮不调用模型。
+
 日期：2026-10-26｜范围：仓库初始化、规格与计划，不实现产品。
 
 ## 2026-10-26 · 用户指定访问密码更新
@@ -8,42 +30,42 @@ Leader已审阅：用户明确要求8位访问密码，需要调整`apps/server/
 
 ## Files to Modify
 
-| File | Purpose | Changes Needed |
-| --- | --- | --- |
-| README.md / CONSTITUTION.md / AGENTS.md | 入口、长期约束、当前执行规则 | 新建 cc 项目专用内容 |
-| P0-PLAN.md / NEXT-WAVES.md | P0 提案与后续依赖 | 分开准备状态与实施状态 |
-| specs/product.md / specs/acceptance.md | 需求与验收追踪 | 纳入既有业务及新增自适应要求 |
-| specs/architecture.md / specs/adaptive-learning.md | Harness 扩展与沉淀架构 | 标明复用、扩展和待验证点 |
-| specs/contracts/domain.md | 状态、数据、错误和幂等契约 | 先定领域约束，不编造上游接口 |
-| docs/decisions/ / docs/references/ / docs/discovery/ | 决定、参考依据和待确认项 | 钉住来源版本，保留未知 |
-| docs/waves/P0/ | 任务包、状态与交接 | 未派发任务不伪填基准 SHA |
-| scripts/verify.py / .github/workflows/verify.yml | 仓库检查 | 文档链接、结构、脱敏与记录检查 |
-| .gitignore / .gitattributes / .editorconfig | 仓库卫生 | 统一 LF，排除凭据、业务数据、缓存 |
+| File                                                 | Purpose                      | Changes Needed                    |
+| ---------------------------------------------------- | ---------------------------- | --------------------------------- |
+| README.md / CONSTITUTION.md / AGENTS.md              | 入口、长期约束、当前执行规则 | 新建 cc 项目专用内容              |
+| P0-PLAN.md / NEXT-WAVES.md                           | P0 提案与后续依赖            | 分开准备状态与实施状态            |
+| specs/product.md / specs/acceptance.md               | 需求与验收追踪               | 纳入既有业务及新增自适应要求      |
+| specs/architecture.md / specs/adaptive-learning.md   | Harness 扩展与沉淀架构       | 标明复用、扩展和待验证点          |
+| specs/contracts/domain.md                            | 状态、数据、错误和幂等契约   | 先定领域约束，不编造上游接口      |
+| docs/decisions/ / docs/references/ / docs/discovery/ | 决定、参考依据和待确认项     | 钉住来源版本，保留未知            |
+| docs/waves/P0/                                       | 任务包、状态与交接           | 未派发任务不伪填基准 SHA          |
+| scripts/verify.py / .github/workflows/verify.yml     | 仓库检查                     | 文档链接、结构、脱敏与记录检查    |
+| .gitignore / .gitattributes / .editorconfig          | 仓库卫生                     | 统一 LF，排除凭据、业务数据、缓存 |
 
 ## Dependencies (may need updates)
 
-| File | Relationship |
-| --- | --- |
-| 外部 AI-CODING-PARADIGM.zh.md v1.0 | SDD/TDD、任务包、证据和波次交付的方法参考 |
+| File                                                           | Relationship                                       |
+| -------------------------------------------------------------- | -------------------------------------------------- |
+| 外部 AI-CODING-PARADIGM.zh.md v1.0                             | SDD/TDD、任务包、证据和波次交付的方法参考          |
 | classroom-annotator @ d31971124cfcbad19e9b56efd54f6f963d618310 | 参考规范组织，不继承旧项目授权、技术栈、凭据、预算 |
-| deepseek-harness @ 22ddee3792402c3e70ec5f86a63c3e3e895a2f60 | 指定底座；本轮只读取资料，不安装或启动 |
-| 仓库外现有服务器及 DeepSeek 配置 | 留在原受限路径，后续需要时读取，本轮不连接服务器 |
+| deepseek-harness @ 22ddee3792402c3e70ec5f86a63c3e3e895a2f60    | 指定底座；本轮只读取资料，不安装或启动             |
+| 仓库外现有服务器及 DeepSeek 配置                               | 留在原受限路径，后续需要时读取，本轮不连接服务器   |
 
 ## Test Files
 
-| Test | Coverage |
-| --- | --- |
-| scripts/verify.py | 本轮文档与仓库检查；不证明业务功能已实现 |
+| Test                | Coverage                                            |
+| ------------------- | --------------------------------------------------- |
+| scripts/verify.py   | 本轮文档与仓库检查；不证明业务功能已实现            |
 | specs/acceptance.md | 后续产品行为、集成、E2E、部署验收设计，当前 not_run |
 
 ## Reference Patterns
 
-| File | Pattern |
-| --- | --- |
-| 参考仓库 CONSTITUTION.md / AGENTS.md | 中文审阅资料、英文执行指令；明确现行规则 |
-| 参考仓库 specs/ / docs/waves/ | 契约单写、任务交接、状态与原始证据分离 |
-| Harness docs/architecture.md | profile / bundle / plugin 扩展 |
-| Harness docs/subsystems/compaction.md / skills.md | 复用原生会话压缩与 Skill seam |
+| File                                              | Pattern                                  |
+| ------------------------------------------------- | ---------------------------------------- |
+| 参考仓库 CONSTITUTION.md / AGENTS.md              | 中文审阅资料、英文执行指令；明确现行规则 |
+| 参考仓库 specs/ / docs/waves/                     | 契约单写、任务交接、状态与原始证据分离   |
+| Harness docs/architecture.md                      | profile / bundle / plugin 扩展           |
+| Harness docs/subsystems/compaction.md / skills.md | 复用原生会话压缩与 Skill seam            |
 
 ## Risk Assessment
 

@@ -21,13 +21,13 @@ export function FeedbackPage({
   }
   async function exportPack() {
     const pack = (await mutate('export', {})) as { markdown: string; date: string };
-    download(`cc-需求审阅-${pack.date}.md`, pack.markdown);
+    download(`工作台改进建议-${pack.date}.md`, pack.markdown);
   }
   return (
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">YOUR VOICE MATTERS</span>
+          <span className="eyebrow">你的建议会被记住</span>
           <h1>改进反馈</h1>
           <p>不顺手的地方，值得被认真记下来。</p>
         </div>
@@ -36,7 +36,7 @@ export function FeedbackPage({
           onClick={() => void exportPack().catch(() => {})}
           disabled={busy}
         >
-          导出已确认需求
+          下载已确认建议
         </button>
       </div>
       <form
@@ -54,7 +54,7 @@ export function FeedbackPage({
           placeholder="比如：库存页面希望能按预计缺货时间排序……"
         />
         <div className="form-actions">
-          <span>保留你的原意；需求确认后可按日期导出。</span>
+          <span>写下你的想法；确认后的建议可按日期下载。</span>
           <button className="primary" disabled={busy || !data.learningEnabled}>
             记下这条建议 <Icon name="arrow" size={16} />
           </button>
@@ -65,7 +65,7 @@ export function FeedbackPage({
         <h2>
           已记录的声音 <small>{data.feedback.length}</small>
         </h2>
-        <span className="metadata">自动采集为候选，不会自动改动系统</span>
+        <span className="metadata">先记下建议，确认后再安排改进</span>
       </div>
       {!data.feedback.length ? (
         <section className="panel">
@@ -137,7 +137,7 @@ export function FeedbackPage({
                       }).catch(() => {})
                     }
                   >
-                    确认为迭代需求
+                    确认需要改进
                   </button>
                   <button
                     className="text-button muted-text"

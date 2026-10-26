@@ -29,7 +29,7 @@ export function KnowledgePage({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">LEARNING HOW YOU WORK</span>
+          <span className="eyebrow">让下次更省力</span>
           <h1>经验与记忆</h1>
           <p>记住经过确认的事，让成功流程下次更省力。</p>
         </div>
@@ -68,7 +68,7 @@ export function KnowledgePage({
           <section className="panel">
             <Empty
               title="第一条经验，来自一次成功"
-              text="完成并确认任务清单后，工作台会自动整理为内部草稿经验。"
+              text="完成任务、确认流程成功后，工作台会整理成下次可用的经验。"
               icon="book"
             />
           </section>
@@ -82,16 +82,14 @@ export function KnowledgePage({
                     {states[skill.status]}
                   </Badge>
                 </div>
-                <p className="metadata">
-                  {skill.risk} · 版本 {skill.revision} · 仅适用于当前工作范围
-                </p>
+                <p className="metadata">适用于当前工作范围</p>
                 <ol className="skill-steps">
                   {skill.steps.map((step, index) => (
                     <li key={index}>{step}</li>
                   ))}
                 </ol>
                 {skill.validation.length > 0 && (
-                  <p className="notice">校验待处理：{skill.validation.join('、')}</p>
+                  <p className="notice">这条经验还需核对，暂时无法启用。请联系工作台维护者。</p>
                 )}
                 <div className="card-footer">
                   <SourceList sources={skill.sources} />
@@ -107,7 +105,7 @@ export function KnowledgePage({
                           }).catch(() => {})
                         }
                       >
-                        确认启用该版本
+                        确认使用这条经验
                       </button>
                     )}
                     {skill.status === 'active' && (
@@ -170,9 +168,9 @@ export function KnowledgePage({
           )}
           {data.summary && (
             <div className="memory-summary">
-              <span className="eyebrow">整理后的摘要 · v{data.summary.revision}</span>
+              <span className="eyebrow">记忆小结</span>
               <p>{data.summary.summary || '暂无有效的已确认记忆'}</p>
-              <small>原始结构化事实与来源保留，摘要不是事实的替代品。</small>
+              <small>这里只是简要整理，具体内容请看下方记忆。</small>
             </div>
           )}
           {!data.memories.length ? (

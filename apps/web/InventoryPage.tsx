@@ -2,6 +2,8 @@ import { useState, type FormEvent } from 'react';
 import { type Snapshot, requestId } from './api.ts';
 import type { Mutate } from './TasksPage.tsx';
 import { Badge, Empty } from './components.tsx';
+import { siteLabel } from './display.ts';
+import { SitePicker } from './SitePicker.tsx';
 
 const pairs = (value: FormDataEntryValue | null) =>
   String(value ?? '')
@@ -19,6 +21,7 @@ export function InventoryPage({
 }) {
   const [forecastId, setForecast] = useState('');
   const [localError, setLocalError] = useState('');
+  const [site, setSite] = useState('US');
   async function forecast(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const v = new FormData(event.currentTarget);
@@ -66,7 +69,7 @@ export function InventoryPage({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">SEE THE DAYS AHEAD</span>
+          <span className="eyebrow">提前安排，心里有数</span>
           <h1>库存补货</h1>
           <p>先确认预测与口径，再推演到货、缺货和补货时间。</p>
         </div>
@@ -78,12 +81,9 @@ export function InventoryPage({
           店铺
           <input name="store" required maxLength={100} />
         </label>
+        <SitePicker value={site} onChange={setSite} name="site" />
         <label>
-          站点
-          <input name="site" defaultValue="US" required maxLength={30} />
-        </label>
-        <label>
-          链接 / SKU
+          链接或商品编码
           <input name="listing" required maxLength={200} />
         </label>
         <label>
@@ -98,7 +98,7 @@ export function InventoryPage({
               .filter((r) => r.reportKind === 'sales')
               .map((r) => (
                 <option value={r.id} key={r.id}>
-                  {r.store} · {r.site} · {r.asOf} · {r.id.slice(0, 8)}
+                  {r.store} · {siteLabel(r.site)} · {r.asOf} · 第{data.reports.indexOf(r) + 1}份报表
                 </option>
               ))}
           </select>
@@ -128,7 +128,7 @@ export function InventoryPage({
                 {f.store} · {f.listing}
               </h3>
               <p>
-                {f.site} · 截至 {f.asOf} · v{f.version}
+                {siteLabel(f.site)} · 截至 {f.asOf} · 第{f.version}版
               </p>
             </div>
             <Badge>
@@ -150,13 +150,13 @@ export function InventoryPage({
             <option value="">请选择</option>
             {data.forecasts.map((f) => (
               <option value={f.id} key={f.id}>
-                {f.store} / {f.listing} / v{f.version} / {f.asOf}
+                {f.store} / {f.listing} / 第{f.version}版 / {f.asOf}
               </option>
             ))}
           </select>
         </label>
         <label>
-          实物SKU
+          实物商品编码
           <input name="physicalSku" required maxLength={100} />
         </label>
         <label>

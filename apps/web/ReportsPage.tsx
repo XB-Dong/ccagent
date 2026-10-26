@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReportInput } from '../../packages/operations/reports.ts';
 import type { Snapshot } from './api.ts';
 import type { Mutate } from './TasksPage.tsx';
 import { Badge, Empty } from './components.tsx';
+import { reportLabels, siteLabel } from './display.ts';
+import { SitePicker } from './SitePicker.tsx';
 
 const columns = {
   sales: ['date', 'listing', 'units'],
@@ -30,7 +32,9 @@ export function ReportsPage({
 }) {
   const [kind, setKind] = useState<'sales' | 'ads'>('sales');
   const [csv, setCSV] = useState('');
-  const [mapping, setMapping] = useState('{}');
+  const [mapping, setMapping] = useState<Record<string, string>>(
+    Object.fromEntries(columns.sales.map((key) => [key, reportLabels[key]])),
+  );
   const [store, setStore] = useState('');
   const [site, setSite] = useState('US');
   const [asOf, setAsOf] = useState('');
@@ -40,11 +44,26 @@ export function ReportsPage({
   }>();
   const [pending, setPending] = useState<ReportInput>();
   const [localError, setLocalError] = useState('');
+  const latestInput = useRef('');
+  latestInput.current = JSON.stringify({ kind, csv, mapping, store, site, asOf });
+  useEffect(() => {
+    setPreview(undefined);
+    setPending(undefined);
+  }, [kind, csv, mapping, store, site, asOf]);
   async function inspect() {
     setLocalError('');
+    const signature = latestInput.current;
     try {
-      const input = { kind, csv, mapping: JSON.parse(mapping), store, site, asOf };
+      const input = {
+        kind,
+        csv,
+        mapping: Object.fromEntries(Object.entries(mapping).filter(([, value]) => value.trim())),
+        store,
+        site,
+        asOf,
+      };
       const result = await mutate('report-preview', input);
+      if (latestInput.current !== signature) return;
       setPreview(result as typeof preview);
       setPending(input);
     } catch (error) {
@@ -55,14 +74,14 @@ export function ReportsPage({
   }
   function sample() {
     const fields = columns[kind];
-    setStore('合成示例店');
+    setStore('示例店铺');
     setAsOf('2026-10-25');
     setCSV(
       kind === 'sales'
-        ? 'date,listing,units\n2026-10-25,DEMO-A,5'
-        : 'date,listing,campaign,searchTerm,impressions,clicks,spend,orders,revenue,currency\n2026-10-25,DEMO-A,合成广告,合成搜索词,1000,20,15,2,60,USD',
+        ? '日期,商品编码,销量\n2026-10-25,示例商品,5'
+        : '日期,商品编码,广告活动,搜索词,展示次数,点击次数,广告花费,订单数,销售额,币种\n2026-10-25,示例商品,示例广告,示例词,1000,20,15,2,60,USD',
     );
-    setMapping(JSON.stringify(Object.fromEntries(fields.map((f) => [f, f])), null, 2));
+    setMapping(Object.fromEntries(fields.map((key) => [key, reportLabels[key]])));
     setPreview(undefined);
     setPending(undefined);
   }
@@ -70,19 +89,26 @@ export function ReportsPage({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">KNOW YOUR INPUTS</span>
+          <span className="eyebrow">先核对，再使用</span>
           <h1>数据报表</h1>
-          <p>预览、核对列映射，再确认导入。当前请使用合成数据。</p>
+          <p>先用示例练习。公司资料确认允许上传后，再导入实际报表。</p>
         </div>
-        <button onClick={sample}>填入合成示例</button>
+        <button onClick={sample} disabled={busy}>
+          填入示例
+        </button>
       </div>
-      <section className="panel form-grid">
+      <fieldset className="panel form-grid" disabled={busy}>
         <label>
           报表类型
           <select
             value={kind}
             onChange={(e) => {
               setKind(e.target.value as 'sales' | 'ads');
+              setMapping(
+                Object.fromEntries(
+                  columns[e.target.value as 'sales' | 'ads'].map((key) => [key, reportLabels[key]]),
+                ),
+              );
               setPreview(undefined);
               setPending(undefined);
             }}
@@ -95,16 +121,13 @@ export function ReportsPage({
           店铺
           <input value={store} onChange={(e) => setStore(e.target.value)} maxLength={100} />
         </label>
-        <label>
-          站点
-          <input value={site} onChange={(e) => setSite(e.target.value)} maxLength={30} />
-        </label>
+        <SitePicker value={site} onChange={setSite} />
         <label>
           数据截至日期
           <input type="date" value={asOf} onChange={(e) => setAsOf(e.target.value)} />
         </label>
         <label className="wide">
-          选择 CSV
+          选择报表文件（.csv）
           <input
             type="file"
             accept=".csv,text/csv"
@@ -115,16 +138,19 @@ export function ReportsPage({
                 setLocalError('文件超过100KB');
                 return;
               }
-              void f.text().then((text) => {
-                setCSV(text);
-                setPreview(undefined);
-                setPending(undefined);
-              });
+              void f
+                .text()
+                .then((text) => {
+                  setCSV(text);
+                  setPreview(undefined);
+                  setPending(undefined);
+                })
+                .catch(() => setLocalError('文件没有读取成功，请重新选择。'));
             }}
           />
         </label>
         <label className="wide">
-          CSV 内容
+          报表内容（也可以直接粘贴）
           <textarea
             rows={7}
             value={csv}
@@ -133,31 +159,33 @@ export function ReportsPage({
               setPreview(undefined);
               setPending(undefined);
             }}
-            placeholder={columns[kind].join(',')}
+            placeholder="可以先点击上方“填入示例”，熟悉报表格式。"
           />
         </label>
-        <label className="wide">
-          列映射（规范名 → CSV标题）
-          <textarea
-            rows={5}
-            value={mapping}
-            onChange={(e) => {
-              setMapping(e.target.value);
-              setPreview(undefined);
-              setPending(undefined);
-            }}
-          />
-          <small>
-            规范列：{columns[kind].join('、')}。空值、负数和重复记录不会被自动修补。
-            {kind === 'ads' ? '如需广告组分析，在映射中添加 adGroup → 对应CSV标题。' : ''}
-          </small>
-        </label>
+        <div className="wide">
+          <h3>核对报表列名</h3>
+          <p>填写你的报表第一行中，对应每项内容的列名。示例已经填好；“广告组”没有时可留空。</p>
+          <div className="form-grid">
+            {[...columns[kind], ...(kind === 'ads' ? ['adGroup'] : [])].map((key) => (
+              <label key={key}>
+                {reportLabels[key]}
+                {key === 'adGroup' ? '（可选）' : ''}
+                <input
+                  value={mapping[key] ?? ''}
+                  placeholder={reportLabels[key]}
+                  onChange={(e) => setMapping((old) => ({ ...old, [key]: e.target.value }))}
+                  maxLength={200}
+                />
+              </label>
+            ))}
+          </div>
+        </div>
         <div className="form-actions wide">
           <button disabled={busy} className="primary" onClick={() => void inspect()}>
             检查并预览
           </button>
         </div>
-      </section>
+      </fieldset>
       {localError && (
         <p role="alert" className="error-message">
           {localError}
@@ -167,17 +195,17 @@ export function ReportsPage({
         <section className="panel">
           <h2>预览 · {preview.rows.length} 行</h2>
           <p>
-            {pending.store} / {pending.site} / 截至 {pending.asOf}
+            {pending.store} / {siteLabel(pending.site)} / 截至 {pending.asOf}
           </p>
           {preview.warnings.map((w) => (
-            <p key={w}>{w}</p>
+            <p key={w}>{w.replace('仅使用已确认规范列', '只使用你已核对的报表列')}</p>
           ))}
           <div className="table-scroll">
             <table>
               <thead>
                 <tr>
                   {Object.keys(preview.rows[0]).map((k) => (
-                    <th key={k}>{k}</th>
+                    <th key={k}>{reportLabels[k] ?? k}</th>
                   ))}
                 </tr>
               </thead>
@@ -217,16 +245,15 @@ export function ReportsPage({
           />
         </section>
       )}
-      {data.reports.map((r) => (
+      {data.reports.map((r, index) => (
         <section className="panel" key={r.id}>
           <Badge>{r.reportKind === 'sales' ? '销量' : '广告'}</Badge>
           <h3>
-            {r.store} · {r.site}
+            {r.store} · {siteLabel(r.site)}
           </h3>
           <p>
-            截至 {r.asOf} · {r.rows.length} 行 · 批次 {r.id.slice(0, 8)}
+            截至 {r.asOf} · {r.rows.length} 行 · 第{index + 1}份报表
           </p>
-          <small>校验摘要 {r.contentHash.slice(0, 16)}</small>
         </section>
       ))}
     </>

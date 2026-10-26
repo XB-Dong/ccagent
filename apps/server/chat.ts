@@ -113,7 +113,7 @@ export class Chat {
       res.end();
     };
     if (!handle) {
-      finish('已保存这条消息。模型当前未启用；你仍可在任务、反馈和经验页面继续操作。', 'offline');
+      finish('已保存这条消息。助手暂未开放；你仍可在任务、反馈和经验页面继续操作。', 'offline');
       return;
     }
     handle.sourceId = source.id;
@@ -147,7 +147,7 @@ export class Chat {
       if (failed) this.lastFailure = new Date().toISOString();
       else this.lastSuccess = new Date().toISOString();
       finish(
-        result.finalResponse || '本次模型未给出有效结果，请查看连接状态后重试。',
+        result.finalResponse || '助手暂时未能回复，请稍后重试。已保存的记录仍可查看。',
         failed ? 'error' : 'completed',
         result.sessionId,
       );
@@ -157,7 +157,7 @@ export class Chat {
       finish(
         cancelled
           ? '本次对话已取消，已保存的内部记录仍可查看。'
-          : '模型请求未完成，消息和已保存的记录仍在。请检查连接与剩余额度。',
+          : '助手暂时未能回复，请稍后重试；仍不成功请联系工作台维护者。消息和已保存的记录仍在。',
         cancelled ? 'cancelled' : 'error',
       );
     } finally {

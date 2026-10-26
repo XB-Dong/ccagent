@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, type FormEvent } from 'react';
 import type { Snapshot, Status } from './api.ts';
-import { api, requestId, modelLabel } from './api.ts';
+import { api, requestId, modelLabel, canChat, assistantHealthy, errorMessage } from './api.ts';
 import { Icon } from './components.tsx';
 
 type Message = { role: string; text: string; status?: string };
@@ -31,7 +31,7 @@ export function Assistant({
   }, [messages.length, busy]);
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if (!text.trim() || busy) return;
+    if (!text.trim() || busy || !canChat(status)) return;
     const value = text.trim();
     setText('');
     setMessages((old) => [...old, { role: 'user', text: value }]);
@@ -44,7 +44,7 @@ export function Assistant({
       });
       if (!response.ok || !response.body) {
         const error = await response.json();
-        throw new Error(error.error ?? 'CHAT_FAILED');
+        throw new Error(errorMessage(error.error ?? 'CHAT_FAILED'));
       }
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -69,13 +69,18 @@ export function Assistant({
             ]);
             finished = true;
           }
-          if (eventName === 'error') throw new Error(event.error);
+          if (eventName === 'error') throw new Error(errorMessage(event.error));
         }
       }
       if (!finished) throw new Error('对话连接已中断，已保存的记录可在历史中查看。');
       await refresh();
     } catch (error) {
-      reportError(error instanceof Error ? error.message : '对话未完成');
+      reportError(
+        error instanceof Error && /[\u4e00-\u9fff]/.test(error.message)
+          ? error.message
+          : '消息未能发送，请检查网络后重试。',
+      );
+      await refresh().catch(() => {});
     } finally {
       setBusy(false);
     }
@@ -90,8 +95,8 @@ export function Assistant({
           <div>
             <h2>cc 的运营助手</h2>
             <p>
-              <span className={`status-dot ${status?.live ? '' : 'muted'}`} />
-              {modelLabel(status)} · 官方 DeepSeek Harness
+              <span className={`status-dot ${assistantHealthy(status) ? '' : 'muted'}`} />
+              {modelLabel(status)}
             </p>
           </div>
           <button
@@ -148,6 +153,11 @@ export function Assistant({
             </div>
           )}
         </div>
+        {!canChat(status) && (
+          <p className="notice" role="status">
+            助手暂时无法回复，请联系工作台维护者处理。你仍可在左侧新建任务、记录反馈和查看经验。
+          </p>
+        )}
         <form className="composer" onSubmit={(event) => void submit(event)}>
           <textarea
             aria-label="给助手的消息"
@@ -164,7 +174,7 @@ export function Assistant({
             }}
           />
           <div>
-            <span>Enter 发送 · Shift + Enter 换行</span>
+            <span>按回车发送，也可点右侧按钮</span>
             {busy ? (
               <button
                 type="button"
@@ -174,17 +184,23 @@ export function Assistant({
                 停止
               </button>
             ) : (
-              <button className="send-button" aria-label="发送消息" disabled={!text.trim()}>
+              <button
+                className="send-button"
+                aria-label="发送消息"
+                disabled={!text.trim() || !canChat(status)}
+              >
                 <Icon name="send" size={20} />
               </button>
             )}
           </div>
         </form>
-        <p className="chat-footnote">内部任务须确认；外部建单、调价和广告调整由你决定。</p>
+        <p className="chat-footnote">
+          助手拟好清单后，请到“任务清单”确认。平台上的建单、改价和广告调整仍需你操作。
+        </p>
       </section>
       <aside className="chat-aside">
         <section className="panel">
-          <span className="eyebrow">CONVERSATIONS</span>
+          <span className="eyebrow">继续上次的话题</span>
           <h3>最近对话</h3>
           {data.sessions.length ? (
             data.sessions.slice(0, 12).map((session) => (
@@ -208,7 +224,7 @@ export function Assistant({
         <section className="assistant-tip">
           <Icon name="book" size={22} />
           <h3>慢慢懂你，步步有据</h3>
-          <p>已确认的记忆可以跨对话使用。成功清单才会变成可复用经验，所有来源都能回看。</p>
+          <p>已确认的记忆可以在下次对话中使用。成功清单会整理成经验，相关来源会保留，方便后续核对。</p>
         </section>
       </aside>
     </div>

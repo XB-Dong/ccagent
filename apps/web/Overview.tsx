@@ -1,4 +1,5 @@
-import { modelLabel, type Snapshot, type Status } from './api.ts';
+import { modelLabel, assistantHealthy, type Snapshot, type Status } from './api.ts';
+import { timeZoneLabel } from './display.ts';
 import { Badge, Empty, Icon, states } from './components.tsx';
 
 export function Overview({
@@ -40,7 +41,7 @@ export function Overview({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">YOUR OPERATIONS, A LITTLE LIGHTER</span>
+          <span className="eyebrow">从这里开始今天的工作</span>
           <h1>今天，也从容一点。</h1>
           <p>把重复的事交给工作台，把精力留给判断。</p>
         </div>
@@ -89,7 +90,7 @@ export function Overview({
         <section className="panel">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">DUE IN YOUR WORKSPACE</span>
+              <span className="eyebrow">别忘了这些事</span>
               <h2>有活动事项到期了</h2>
             </div>
             <button onClick={() => navigate('activities')}>
@@ -102,7 +103,7 @@ export function Overview({
             .map((r) => (
               <p key={r.id}>
                 {r.title} · {new Date(r.dueAt).toLocaleString('zh-CN', { timeZone: r.timeZone })} ·{' '}
-                {r.timeZone}
+                {timeZoneLabel(r.timeZone)}
               </p>
             ))}
         </section>
@@ -131,7 +132,7 @@ export function Overview({
         <section className="panel">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">TODAY’S FOCUS</span>
+              <span className="eyebrow">一件一件来</span>
               <h2>接下来做什么</h2>
             </div>
             <button className="text-button" onClick={() => navigate('tasks')}>
@@ -146,7 +147,7 @@ export function Overview({
                   <div>
                     <strong>{task.title}</strong>
                     <p>
-                      {task.timeZone}{' '}
+                      {timeZoneLabel(task.timeZone)}{' '}
                       {task.dueAt
                         ? ` · ${new Intl.DateTimeFormat('zh-CN', { timeZone: task.timeZone, month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(task.dueAt))}`
                         : ' · 未设时间'}
@@ -168,7 +169,7 @@ export function Overview({
           </button>
         </section>
         <aside className="panel inspiration">
-          <span className="eyebrow">YOU CAN SAY</span>
+          <span className="eyebrow">不知道怎么开口？</span>
           <h2>试着对我说</h2>
           {[
             '帮我整理明天活动前的准备清单',
@@ -182,7 +183,7 @@ export function Overview({
             </button>
           ))}
           <div className="quiet-note">
-            <span className={`status-dot ${status?.live ? '' : 'muted'}`} />
+            <span className={`status-dot ${assistantHealthy(status) ? '' : 'muted'}`} />
             {modelLabel(status)} · 基础记录随时可用
           </div>
         </aside>

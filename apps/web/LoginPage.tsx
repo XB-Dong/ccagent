@@ -20,10 +20,10 @@ export function LoginPage({
           </div>
           <div>
             <strong>cc 的工作台</strong>
-            <small>OPERATIONS COMPANION</small>
+            <small>你的专属运营助手</small>
           </div>
         </div>
-        <span className="eyebrow">A CALMER WAY TO WORK</span>
+        <span className="eyebrow">让工作轻一点</span>
         <h1>cc，你好！</h1>
         <p>
           整理任务，积累经验。
@@ -51,7 +51,7 @@ export function LoginPage({
             进入工作台 <Icon name="arrow" size={17} />
           </button>
         </form>
-        <small>登录后可整理任务、反馈和经验；模型连接状态会单独显示。</small>
+        <small>登录后，从左侧选择功能。不知道怎么用，可以先看“使用说明”。</small>
       </section>
       <div className="login-caption">少一些重复，多一些从容。</div>
     </main>
