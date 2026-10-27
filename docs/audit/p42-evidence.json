@@ -1,6 +1,7 @@
 {
-  "createdAt": "2026-10-27T17:20:11.736826+00:00",
-  "candidateImplementationSha": "1b51249",
+  "createdAt": "2026-10-27T17:23:34.857675+00:00",
+  "candidateImplementationSha": "1b5124955097702bb8f64177b3511f45060a6eff",
+  "verifiedCandidateHeadSha": "16b0391a199da44f959ce06204f61c6b1bf4fe26",
   "productionSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e",
   "root": "../.ccagent-local",
   "rawPayloadsOutsideGit": true,
@@ -15,6 +16,26 @@
       "path": "evidence/p42/browser-gate.txt",
       "bytes": 807,
       "sha256": "0e016e57dd24dba4d73dc08e20730039a479009cbb56148427509ee51902764e"
+    },
+    {
+      "path": "evidence/p42/github-ci-16b0391a199da44f959ce06204f61c6b1bf4fe26.json",
+      "bytes": 304,
+      "sha256": "38578b392f57819cde329855555215fbc5bbe786c9491911e388b92409d0c5e8"
+    },
+    {
+      "path": "evidence/p42/github-metadata.json",
+      "bytes": 538,
+      "sha256": "d7cde777f1e86261064977fafdd8332b05bb4c0dd6c6a980ba1e765aab032eec"
+    },
+    {
+      "path": "evidence/p42/github-pr-16b0391a199da44f959ce06204f61c6b1bf4fe26.json",
+      "bytes": 164,
+      "sha256": "c6c987bb630447434791b568e00062d14cc2bade0f80b3c261a1b186255524e2"
+    },
+    {
+      "path": "evidence/p42/github-publish-16b0391a199da44f959ce06204f61c6b1bf4fe26.json",
+      "bytes": 179,
+      "sha256": "3c0c341db700d04f5d976c276aca1eb2cdea4672b2e4837df21d2f27641a5200"
     },
     {
       "path": "evidence/p42/offline-all.txt",

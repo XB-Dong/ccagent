@@ -24,15 +24,15 @@
   "verification": {
     "offline": "88_tests_types_build_verify_passed",
     "browser": "stopped_by_tool_safety_gate_current_browser_url_unverified",
-    "github": "not_run",
+    "github": "exact_candidate_pushed_ci_40549684757_success_stacked_draft_pr3",
     "deployment": "not_attempted_browser_gate_unmet",
     "staticRender": "react_ssr_red_green_passed_not_browser"
   },
   "releaseGate": "actual_browser_verification_required_before_deployment",
   "branchCreatedAt": "2026-10-28T01:08:55.5211339+08:00",
   "frozenAt": "2026-10-28T01:10:22+08:00",
-  "updatedAt": "2026-10-27T17:20:11.736826+00:00",
-  "candidateImplementationSha": "1b51249",
+  "updatedAt": "2026-10-27T17:23:34.857675+00:00",
+  "candidateImplementationSha": "1b5124955097702bb8f64177b3511f45060a6eff",
   "deployed": false,
   "productionSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e",
   "reportRef": "../../audit/reports/P4.2.zh.md",
@@ -46,5 +46,9 @@
     "actual_browser_verification",
     "user_guide_after_verification",
     "exact_artifact_authorized_deployment_and_health"
-  ]
+  ],
+  "pullRequest": "https://github.com/XB-Dong/ccagent/pull/3",
+  "pullRequestDraft": true,
+  "pullRequestBase": "codex/p4.1",
+  "verifiedCandidateHeadSha": "16b0391a199da44f959ce06204f61c6b1bf4fe26"
 }
