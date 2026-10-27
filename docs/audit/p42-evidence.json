@@ -1,0 +1,85 @@
+{
+  "createdAt": "2026-10-27T17:20:11.736826+00:00",
+  "candidateImplementationSha": "1b51249",
+  "productionSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e",
+  "root": "D:/project/.ccagent-support",
+  "rawPayloadsOutsideGit": true,
+  "browser": "not_passed",
+  "files": [
+    {
+      "path": "evidence/deployment/read_cc_feedback_20261028_p4.json",
+      "bytes": 3502,
+      "sha256": "5fc0ec38c066afdb1f64086f045b2beb286b46301ca9b6a71ad6048b75411b15"
+    },
+    {
+      "path": "evidence/p42/browser-gate.txt",
+      "bytes": 807,
+      "sha256": "0e016e57dd24dba4d73dc08e20730039a479009cbb56148427509ee51902764e"
+    },
+    {
+      "path": "evidence/p42/offline-all.txt",
+      "bytes": 9102,
+      "sha256": "80a884234ee7c747cceffa878634e8dacfe2dad8871c20e59db9ba29be8185f2"
+    },
+    {
+      "path": "evidence/p42/production-health.json",
+      "bytes": 269,
+      "sha256": "69985d950c0867577977ae08d26babfd41341f924929f7664423b922e6b972e2"
+    },
+    {
+      "path": "evidence/p42/review-summary.json",
+      "bytes": 565,
+      "sha256": "f98c3ef6221ca65e735abd78c125079e647760fdc369840e8751da7e79dc9d7b"
+    },
+    {
+      "path": "evidence/p42/review-targeted.txt",
+      "bytes": 2329,
+      "sha256": "68c9e553de89460bea7bcd7a159528c0348399fcef39eb0c33590af665cf4828"
+    },
+    {
+      "path": "evidence/p42/ssr-green.html",
+      "bytes": 3433,
+      "sha256": "50aaae65c9c42e7b9ee17dc7540b2865efa9bb38e0f9a6dff719b6258891bf3a"
+    },
+    {
+      "path": "evidence/p42/ssr-green.json",
+      "bytes": 217,
+      "sha256": "67a7a0b85908bc720c61317cc87e172305b858f9bbc47f827675f52be5149e97"
+    },
+    {
+      "path": "evidence/p42/ssr-green.txt",
+      "bytes": 202,
+      "sha256": "4ed597862806fa0a410f8256e75a96a88a6a1fdd1fb556987d644933759d7e07"
+    },
+    {
+      "path": "evidence/p42/ssr-red.html",
+      "bytes": 2363,
+      "sha256": "cb3ec6c15420d7ff904ecf00a46a5a2fd2c77afb32245501e25772c079144ef3"
+    },
+    {
+      "path": "evidence/p42/ssr-red.json",
+      "bytes": 246,
+      "sha256": "89ce7c22f54882a0d204f2d7dc580b2bfd0965e0427ba7b2675a10b03326b2f5"
+    },
+    {
+      "path": "evidence/p42/ssr-red.txt",
+      "bytes": 381,
+      "sha256": "76193680c05ae5f24689aa79de74d0dc8a1b05dfd8baab5b2a7d51e20738c1ce"
+    },
+    {
+      "path": "evidence/p42/ui-final-checks.txt",
+      "bytes": 2890,
+      "sha256": "612c7ced08f263e09507eea2ec1477d424ce1d41ff5103d21c452065e1a834c3"
+    },
+    {
+      "path": "evidence/p42/ui-green.txt",
+      "bytes": 2454,
+      "sha256": "5259fbd1a979a23e0cf550a40ec9a1e6e137fd304886151bb93abf54697b639c"
+    },
+    {
+      "path": "evidence/p42/ui-red.txt",
+      "bytes": 5426,
+      "sha256": "61dd9772af37eedc0c00abec41c27ab44f905f09948c6be882bb9c056ee348d3"
+    }
+  ]
+}
