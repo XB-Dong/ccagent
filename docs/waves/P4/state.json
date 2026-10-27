@@ -7,11 +7,11 @@
   "automationKind": "heartbeat",
   "automationStatus": "ACTIVE",
   "authorizationDate": "2026-10-26",
-  "executionStatus": "awaiting_next_scheduled_check",
-  "nextIteration": 2,
-  "activeWaveId": null,
-  "lastCheckedAt": "2026-10-26T16:59:49.263357+00:00",
-  "lastAllocatedLocalDate": "2026-10-27",
+  "executionStatus": "partial_waiting_browser_verification",
+  "nextIteration": 3,
+  "activeWaveId": "P4.2",
+  "lastCheckedAt": "2026-10-27T17:06:54.798118+00:00",
+  "lastAllocatedLocalDate": "2026-10-28",
   "iterations": [
     {
       "waveId": "P4.1",
@@ -20,6 +20,14 @@
       "plan": "P4.1-PLAN.md",
       "report": "docs/audit/reports/P4.1.zh.md",
       "deployedSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e"
+    },
+    {
+      "waveId": "P4.2",
+      "createdLocalDate": "2026-10-28",
+      "status": "partial",
+      "plan": "P4.2-PLAN.md",
+      "report": "docs/audit/reports/P4.2.zh.md",
+      "blocker": "browser_url_safety_gate"
     }
   ],
   "feedbackRevisions": [],

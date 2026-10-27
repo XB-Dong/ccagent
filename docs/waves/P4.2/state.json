@@ -1,0 +1,50 @@
+{
+  "waveId": "P4.2",
+  "baselineSha": "57c1798f5deece4ab7e20e98e35bb54d0617370a",
+  "specVersion": "p42-v1",
+  "planStatus": "frozen",
+  "executionStatus": "partial",
+  "owner": "Leader",
+  "entryDecision": "leader_accepted_creation_date_grouping_in_task_list_only",
+  "tasks": {
+    "P42-TASK-GROUPS": "integrated_offline_verified",
+    "P42-REVIEW": "no_actionable_findings_23_tests_passed",
+    "P42-INTEGRATION": "offline_verified_browser_pending"
+  },
+  "testAllowance": {
+    "maxCost": null,
+    "maxCalls": null,
+    "maxInputTokens": null,
+    "maxOutputTokens": null,
+    "maxTotalTokens": null
+  },
+  "modelValidationDecision": "not_required_for_display_only_change_no_model_contract_change",
+  "perRootRepairLimitBeforeRediagnosis": 2,
+  "repairCounts": {},
+  "verification": {
+    "offline": "88_tests_types_build_verify_passed",
+    "browser": "stopped_by_tool_safety_gate_current_browser_url_unverified",
+    "github": "not_run",
+    "deployment": "not_attempted_browser_gate_unmet",
+    "staticRender": "react_ssr_red_green_passed_not_browser"
+  },
+  "releaseGate": "actual_browser_verification_required_before_deployment",
+  "branchCreatedAt": "2026-10-28T01:08:55.5211339+08:00",
+  "frozenAt": "2026-10-28T01:10:22+08:00",
+  "updatedAt": "2026-10-27T17:20:11.736826+00:00",
+  "candidateImplementationSha": "1b51249",
+  "deployed": false,
+  "productionSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e",
+  "reportRef": "../../audit/reports/P4.2.zh.md",
+  "realModelUsageAdded": {
+    "calls": 0,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "remainingChecks": [
+    "actual_browser_verification",
+    "user_guide_after_verification",
+    "exact_artifact_authorized_deployment_and_health"
+  ]
+}
