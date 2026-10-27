@@ -1,5 +1,19 @@
 # P0 前置工作上下文地图
 
+## 2026-10-28 · P4.2 任务按创建日期归组
+
+本轮只读检查生产 main：新增一条任务清单按创建日期归组的反馈；P4.1 两条已交付反馈内容哈希未变，撤回项不采纳。Leader 将新建议解释为任务清单展示归组，不改既有工作日历的完成日期口径。地图自审冻结后才派发。
+
+| 文件 | 职责与修改 |
+| --- | --- |
+| apps/web/TasksPage.tsx、task-groups.ts、p42-tasks.css | 单开发 Agent：按 createdAt 在明确查看时区归组，日期新到旧；保留状态筛选和所有任务操作 |
+| tests/task-groups.test.ts | 行为 Red/Green：跨日/时区、Rome 夏令时、完成/编辑不改创建归属、组内实际时刻排序、无有效日期独立归组、不修改原数据 |
+| docs/product/changes/2026-10-28.md、REQUIREMENTS.zh.md | Leader 先日期采纳再更新 CC-TASK-001 版本2，保留版本1 |
+| P4.2-PLAN.md、specs/contracts/p42-v1.md、docs/waves/P4.2/、P4/state.json | Leader 计划/冻结/精确派发基准、验收、状态、独立审核和报告 |
+| README.md、USER-GUIDE、报告及索引 | Leader 说明创建归组与完成日历的区别，精确发布版本与真实证据 |
+
+依赖 Task.createdAt（服务端创建后不可改）、既有 calendarDay/timeZones、TaskForm/ActualMinutesForm、Snapshot；不改接口、数据库、模型提示/工具或权限。不能用 dueAt、updatedAt、completedAt 替代创建日期，未知日期单列。单开发 worktree 隔离，另设只读审核，Leader 集成与发布；无多写者冲突。纯展示变更不需要新增 DeepSeek 请求，必要测试无累计额度上限但不做无意义付费。验证为相关行为/全离线、类型/构建、实际浏览器、精确 CI、既有主机备份/固定产物发布和回退准备。Windows 界面改用当前 Computer Use 工具，原 CUA 不可用不冒称已操作。
+
 ## 2026-10-27 · P4.1 日常任务、工作日历和学习笔记
 
 Leader 于首次定时检查只读读取生产 main 反馈：2 条有效、1 条撤回；本轮采纳清晰的任务编辑、意大利时区/起止选择、完成记录日历和独立学习笔记。已核对最新补验关闭历史公网/浏览器缺口；不修改旧 P0–P3 状态。地图经 Leader 自审冻结。
