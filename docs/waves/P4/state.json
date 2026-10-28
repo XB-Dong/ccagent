@@ -7,11 +7,11 @@
   "automationKind": "heartbeat",
   "automationStatus": "ACTIVE",
   "authorizationDate": "2026-10-26",
-  "executionStatus": "awaiting_next_scheduled_check",
-  "nextIteration": 3,
-  "activeWaveId": null,
-  "lastCheckedAt": "2026-10-27T17:06:54.798118+00:00",
-  "lastAllocatedLocalDate": "2026-10-28",
+  "executionStatus": "executing",
+  "nextIteration": 4,
+  "activeWaveId": "P4.3",
+  "lastCheckedAt": "2026-10-28T17:00:36.877335+00:00",
+  "lastAllocatedLocalDate": "2026-10-29",
   "iterations": [
     {
       "waveId": "P4.1",
@@ -32,6 +32,12 @@
       "deployedSourceSha": "e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f",
       "pullRequestMerged": true,
       "mergeCommitSha": "bd6f4ca84f94ed53a63b13d0700f136dbb5c742d"
+    },
+    {
+      "waveId": "P4.3",
+      "createdLocalDate": "2026-10-29",
+      "status": "executing",
+      "plan": "P4.3-PLAN.md"
     }
   ],
   "feedbackRevisions": [],

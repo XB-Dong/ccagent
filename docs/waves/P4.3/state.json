@@ -1,0 +1,37 @@
+{
+  "waveId": "P4.3",
+  "baselineSha": "49590bec0e24bd689d107aeb289c0492e51aff84",
+  "specVersion": "p43-v1",
+  "planStatus": "frozen",
+  "executionStatus": "executing",
+  "owner": "Leader",
+  "createdLocalDate": "2026-10-29",
+  "frozenAt": "2026-10-28T17:08:36.581386+00:00",
+  "entryDecision": "leader_accepted_scoped_copy_and_beijing_list_deferred_personal_ordering",
+  "tasks": {
+    "P43-SERVICE": "ready",
+    "P43-UI": "ready",
+    "P43-REVIEW": "ready",
+    "P43-INTEGRATION": "pending"
+  },
+  "testAllowance": {
+    "maxCost": null,
+    "maxCalls": null,
+    "maxInputTokens": null,
+    "maxOutputTokens": null,
+    "maxTotalTokens": null
+  },
+  "perRootRepairLimitBeforeRediagnosis": 2,
+  "repairCounts": {},
+  "verification": {},
+  "deployed": false,
+  "remainingChecks": [
+    "offline",
+    "independent_review",
+    "browser",
+    "live_model",
+    "ci",
+    "backup_restore",
+    "deployment"
+  ]
+}
