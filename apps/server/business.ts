@@ -10,6 +10,7 @@ import {
 import { Capture } from '../../packages/learning/capture.ts';
 import { Tasks, type TaskChanges } from '../../packages/operations/tasks.ts';
 import { Notes } from '../../packages/operations/notes.ts';
+import { TaskCopies } from '../../packages/operations/task-copy.ts';
 import { confirmChange, exportChanges, withdrawFeedback } from '../../packages/learning/export.ts';
 import { safeText } from './security.ts';
 import { Activities, type Activity } from '../../packages/operations/activities.ts';
@@ -61,6 +62,7 @@ export class Business {
     };
   }
   mutate(scope: string, action: string, body: Record<string, unknown>) {
+    if (action === 'task-copy') return new TaskCopies(this.store).copy(scope, body);
     if (action === 'note')
       return this.notes.create(scope, safeText(body.requestId, 100), {
         title: safeText(body.title, 200),
@@ -249,6 +251,19 @@ export class Business {
     throw new Error('NOT_FOUND');
   }
   tool(scope: string, sourceId: string | undefined, action: string, body: Record<string, unknown>) {
+    if (action === 'get_task') return new TaskCopies(this.store).detail(scope, body);
+    if (action === 'copy_task') {
+      if (!sourceId) throw new Error('SOURCE_REQUIRED');
+      const task = new TaskCopies(this.store).copy(scope, body, sourceId);
+      return {
+        id: task.id,
+        revision: task.revision,
+        title: task.title,
+        status: task.status,
+        timeZone: task.timeZone,
+        totalItems: task.checklist.length,
+      };
+    }
     if (action === 'read_operations') return readOperations(this.store, scope, body);
     if (action === 'find_skills') {
       const query = safeText(body.query, 100).toLowerCase();

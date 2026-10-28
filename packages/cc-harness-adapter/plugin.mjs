@@ -38,6 +38,24 @@ export function apply(ctx) {
       { offset: { type: 'number' } },
     ],
     [
+      'cc_get_task',
+      '只读查看当前工作区任务的完整清单，每页4步；用nextOffset继续读取。复制前先读取真实任务及revision，不能用不存在的经验模板代替。',
+      'get_task',
+      { taskId: { type: 'string', required: true }, offset: { type: 'number' } },
+    ],
+    [
+      'cc_copy_task',
+      '将已有任务复制成新的待确认草稿，原任务不变。可按大小写敏感的字面规则替换标题和全部步骤中的标识；不保留原勾选、完成状态、用时或排期。先使用cc_get_task读取任务revision；用户在任务清单确认后执行。',
+      'copy_task',
+      {
+        taskId: { type: 'string', required: true },
+        revision: { type: 'number', required: true },
+        title: { type: 'string' },
+        replaceFrom: { type: 'string' },
+        replaceTo: { type: 'string' },
+      },
+    ],
+    [
       'cc_prepare_task',
       '创建内部任务草稿，须由 cc 确认；不能执行外部操作。',
       'prepare_task',
