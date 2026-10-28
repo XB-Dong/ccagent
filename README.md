@@ -41,6 +41,8 @@ P4.2 已上线：任务清单按创建日期归组，可切换查看时区，保
 
 详见[最新 P4.2 报告](docs/audit/reports/P4.2.zh.md)、[此前补验](docs/audit/reports/SMOKE-COMPLETION-20261026.zh.md)、[项目交付报告](docs/audit/FINAL-REPORT.zh.md)及[波次报告索引](docs/audit/reports/README.md)。这些结果基于合成数据，不代表真实公司运营效果已经验收。
 
+P4.1（PR#2）和 P4.2（PR#3）已合并到 `main`，P4.2 合并提交为 `bd6f4ca84f94ed53a63b13d0700f136dbb5c742d`，main 自动检查通过。
+
 当前已验证云端应用源码为 `e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f`。README、报告及主分支合并提交单独追踪；应用部署版本以服务健康信息和发布记录为准。服务使用 systemd，公网经 Caddy 提供 HTTPS；维护、备份和恢复步骤见[运维手册](docs/operations/runbook.md)。
 
 ## 技术结构

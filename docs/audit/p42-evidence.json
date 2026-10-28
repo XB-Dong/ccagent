@@ -181,8 +181,45 @@
       "path": "evidence/p42/github-publish-e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f.json",
       "bytes": 179,
       "sha256": "b7319ce7b49bf967d935f47210f6a5de6ebe2c2ef34bb75747ae769d66a4ab2f"
+    },
+    {
+      "path": "evidence/p42/main-integration-merge-20261028T025025902424.json",
+      "bytes": 246,
+      "sha256": "81b31a0352e88ac3bef42d6991239f94f1b1adb8c0ab4916100bc8c8929e8466"
+    },
+    {
+      "path": "evidence/p42/main-integration-merge-20261028T025139562873.json",
+      "bytes": 246,
+      "sha256": "5f2421f7f32f5c3f72b7fbdf3ca83d4e0386f229fd246096789cecc33bf76bdf"
+    },
+    {
+      "path": "evidence/p42/main-integration-ready3-20261028T025133813443.json",
+      "bytes": 752,
+      "sha256": "2b9a09bd2c43ad2e694127f629bc221e4c9f37289a8979586e0e6be2907161b4"
+    },
+    {
+      "path": "evidence/p42/main-integration-retarget3-20261028T025039873478.json",
+      "bytes": 748,
+      "sha256": "71b338f5624b34c94325bc21b0761198207f54c8e8eea324b12db987325294f8"
+    },
+    {
+      "path": "evidence/p42/main-integration-status-20261028T024932407550.json",
+      "bytes": 1760,
+      "sha256": "48098e6e684316e8f33860050dc9b3bbdf77fbf17b1bc7f7d89b14dbab42372e"
+    },
+    {
+      "path": "evidence/p42/main-integration-verify-20261028T025228449372.json",
+      "bytes": 449,
+      "sha256": "7dfd2d0576b956adf1d4e0d02596777294b088923b0088e48ba832b1a427648c"
+    },
+    {
+      "path": "evidence/p42/main-local-sync.json",
+      "bytes": 261,
+      "sha256": "eb109830949caca06a3e302d70b0004eb4450c54c04b7aeac9e9e480416478bf"
     }
   ],
-  "updatedAt": "2026-10-28",
-  "releaseStatus": "deployed"
+  "updatedAt": "2026-10-28T02:52:52.736741+00:00",
+  "releaseStatus": "deployed",
+  "mainMergeSha": "bd6f4ca84f94ed53a63b13d0700f136dbb5c742d",
+  "mainMergeChecks": "40623383794_success"
 }

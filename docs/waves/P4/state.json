@@ -19,7 +19,9 @@
       "status": "completed",
       "plan": "P4.1-PLAN.md",
       "report": "docs/audit/reports/P4.1.zh.md",
-      "deployedSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e"
+      "deployedSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e",
+      "pullRequestMerged": true,
+      "mergeCommitSha": "b0d41a21b342a4a5390d8350df5bc5ed61c9e732"
     },
     {
       "waveId": "P4.2",
@@ -27,7 +29,9 @@
       "status": "completed",
       "plan": "P4.2-PLAN.md",
       "report": "docs/audit/reports/P4.2.zh.md",
-      "deployedSourceSha": "e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f"
+      "deployedSourceSha": "e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f",
+      "pullRequestMerged": true,
+      "mergeCommitSha": "bd6f4ca84f94ed53a63b13d0700f136dbb5c742d"
     }
   ],
   "feedbackRevisions": [],
