@@ -7,9 +7,9 @@
   "automationKind": "heartbeat",
   "automationStatus": "ACTIVE",
   "authorizationDate": "2026-10-26",
-  "executionStatus": "verified_awaiting_release",
+  "executionStatus": "awaiting_next_scheduled_check",
   "nextIteration": 3,
-  "activeWaveId": "P4.2",
+  "activeWaveId": null,
   "lastCheckedAt": "2026-10-27T17:06:54.798118+00:00",
   "lastAllocatedLocalDate": "2026-10-28",
   "iterations": [
@@ -24,15 +24,15 @@
     {
       "waveId": "P4.2",
       "createdLocalDate": "2026-10-28",
-      "status": "verified_awaiting_release",
+      "status": "completed",
       "plan": "P4.2-PLAN.md",
       "report": "docs/audit/reports/P4.2.zh.md",
-      "blocker": null
+      "deployedSourceSha": "e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f"
     }
   ],
   "feedbackRevisions": [],
   "policyRef": "README.md",
-  "lastCompletedAt": "2026-10-26T17:38:44.767586+00:00",
+  "lastCompletedAt": "2026-10-28",
   "feedbackRegistry": "operator_private_storage",
   "publicStateContainsBusinessFeedback": false
 }

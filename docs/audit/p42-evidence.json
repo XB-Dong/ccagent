@@ -1,8 +1,8 @@
 {
   "createdAt": "2026-10-27T17:23:34.857675+00:00",
   "candidateImplementationSha": "1b5124955097702bb8f64177b3511f45060a6eff",
-  "verifiedCandidateHeadSha": "16b0391a199da44f959ce06204f61c6b1bf4fe26",
-  "productionSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e",
+  "verifiedCandidateHeadSha": "e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f",
+  "productionSourceSha": "e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f",
   "root": "../.ccagent-local",
   "rawPayloadsOutsideGit": true,
   "browser": "passed_gpt_chrome_synthetic_actual_ui",
@@ -146,7 +146,43 @@
       "path": "evidence/p42/browser/07-unknown-last.txt",
       "bytes": 6511,
       "sha256": "92a516e5509e414ad78ad5ffaa0038a8b669304146076a1de615d6e76151d82a"
+    },
+    {
+      "path": "evidence/deployment/cloud-p42-stage.json",
+      "bytes": 2479,
+      "sha256": "14aa0b7b085b64b51f14bc16a623acf681e85e168df5450b151867ab9b573d4e"
+    },
+    {
+      "path": "evidence/deployment/cloud-p42-deploy.json",
+      "bytes": 741,
+      "sha256": "90613515b9c352ac86f4feec6ade32885bb8259a15057aa4ef4b8701580ae4e7"
+    },
+    {
+      "path": "evidence/deployment/cloud-p42-feedback-closeout.json",
+      "bytes": 271,
+      "sha256": "32be4c4ec2d8ada27b951216d441e69161f8327bc0b83996291467afadcee6fa"
+    },
+    {
+      "path": "evidence/deployment/cloud-p42-feedback-recheck.json",
+      "bytes": 1047,
+      "sha256": "cde2fbd5197100ad7533e6ed954eece86be45a4b07e36129f049e740419ad100"
+    },
+    {
+      "path": "evidence/p42/public-release-check.json",
+      "bytes": 758,
+      "sha256": "a1f9c8bb3442b74bc1bf2e7c7daaab7d1ab0fe80caacaad9d0193ea8af5663b8"
+    },
+    {
+      "path": "evidence/p42/github-ci-e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f.json",
+      "bytes": 483,
+      "sha256": "b2cf685f40cbd67bf07d41fa9dca3c2192f101fbd0be4385d8bb3ae0bb1e1aa7"
+    },
+    {
+      "path": "evidence/p42/github-publish-e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f.json",
+      "bytes": 179,
+      "sha256": "b7319ce7b49bf967d935f47210f6a5de6ebe2c2ef34bb75747ae769d66a4ab2f"
     }
   ],
-  "updatedAt": "2026-10-28T02:42:53.314060+00:00"
+  "updatedAt": "2026-10-28",
+  "releaseStatus": "deployed"
 }
