@@ -5,7 +5,7 @@
   "productionSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e",
   "root": "../.ccagent-local",
   "rawPayloadsOutsideGit": true,
-  "browser": "not_passed",
+  "browser": "passed_gpt_chrome_synthetic_actual_ui",
   "files": [
     {
       "path": "evidence/deployment/read_cc_feedback_20261028_p4.json",
@@ -101,6 +101,52 @@
       "path": "evidence/p42/ui-red.txt",
       "bytes": 5426,
       "sha256": "61dd9772af37eedc0c00abec41c27ab44f905f09948c6be882bb9c056ee348d3"
+    },
+    {
+      "path": "evidence/p42/browser/01-beijing.txt",
+      "bytes": 7481,
+      "sha256": "562b4fed3a88c6372be853a8979c84872f7f872d2f21d21aa0827d8c7fc12263"
+    },
+    {
+      "path": "evidence/p42/browser/02-rome.png",
+      "bytes": 116290,
+      "sha256": "3f6a0b7c3f5aeb64764fc00ac19397792f508818b4b5029539f446a2f9483932"
+    },
+    {
+      "path": "evidence/p42/browser/02-rome.txt",
+      "bytes": 5862,
+      "sha256": "ca02d0ab4bde1e519f98e6b08350cf2c94070d68c55b33f6424a0e3b11414d65"
+    },
+    {
+      "path": "evidence/p42/browser/03-all.txt",
+      "bytes": 6376,
+      "sha256": "fe53a28b41fe77c832dbd4389a4c93d83012883e36f60d6099ce7bd39fd8f41f"
+    },
+    {
+      "path": "evidence/p42/browser/04-input-preserved.png",
+      "bytes": 116214,
+      "sha256": "8a48df864c62f14c63522febd5e8ebd52690c8c3341d676de7d9d4f1d3e042ed"
+    },
+    {
+      "path": "evidence/p42/browser/05-completed.txt",
+      "bytes": 6511,
+      "sha256": "a7769a979fd1973a4afdbb33cf4186d9a523e12a322a84941671b13288c96332"
+    },
+    {
+      "path": "evidence/p42/browser/06-edited.png",
+      "bytes": 111576,
+      "sha256": "9cc743e88a149d73d4c5fdaab37d601420910b46a9af62a4508454bb9ce739ea"
+    },
+    {
+      "path": "evidence/p42/browser/07-unknown-last.png",
+      "bytes": 111834,
+      "sha256": "522544f007df9b749283259732e6813d53fb0bfe3c967b51fca7dd36620b29b5"
+    },
+    {
+      "path": "evidence/p42/browser/07-unknown-last.txt",
+      "bytes": 6511,
+      "sha256": "92a516e5509e414ad78ad5ffaa0038a8b669304146076a1de615d6e76151d82a"
     }
-  ]
+  ],
+  "updatedAt": "2026-10-28T02:42:53.314060+00:00"
 }
