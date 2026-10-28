@@ -23,6 +23,8 @@ jobs:
           persist-credentials: false
       - name: Verify repository
         run: python3 scripts/verify.py
+      - name: Check public-source privacy
+        run: python3 scripts/verify_public.py
       - name: Use pinned Node runtime
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:

@@ -2,6 +2,8 @@
 
 ## Current scope
 
+Open-source privacy maintenance authorized on 2026-10-28: public documentation and deployment files contain examples only. Locate private operations and feedback state via `git config --local --get ccagent.operationsIndex` and `git config --local --get ccagent.feedbackState`, or the operator's private handoff. Never commit their contents or resolved paths. Use that private feedback registry for ID/revision deduplication; public wave state contains no production feedback records. Preserve real deployment identities and original evidence outside Git when history is redacted. Use the maintainer's GitHub no-reply identity for commits and local merge commits; do not create server-side merges that expose a personal email. Do not restore pre-cleanup history or push old worktrees.
+
 Latest human clarification on 2026-10-26: necessary DeepSeek API tests have no artificial consumption allowance, including cumulative monetary cost, request count, input tokens, output tokens or total tokens. Do not introduce daily, per-wave, per-agent or project-wide test allowances or stop required validation because of such self-imposed ceilings. This applies to P4.x and subsequent necessary project tests. Keep offline-first cost conservation, actual usage accounting, timeouts, loop protection, zero automatic retries and separate runtime policy. Preserve historical numerical limits as history only; do not import them into new plans or task packets. This clarification does not itself trigger new paid tests.
 
 Latest human authorization on 2026-10-26: every day at 01:00 Asia/Shanghai, the Leader checks cc's current suggestions and autonomously plans and executes post-P3 iterations as P4.1, P4.2, and so on. Follow docs/waves/P4/README.md and NEXT-WAVES.md. This explicitly authorizes multi-agent development and independent review for those daily iterations, superseding the earlier single-agent restriction within that scope; no repeated staffing or wave-entry approval is needed. Use isolated worktrees for concurrent writers and precise task packets. The present setup does not start P4.1 immediately.
@@ -32,7 +34,7 @@ The current business view is docs/product/REQUIREMENTS.zh.md. Append dated chang
 - Organize actual modules by capability. Separate UI, domain rules, persistence and external adapters. Inspect responsibilities around 300 handwritten lines; do not split mechanically.
 - Prefer explicit boundaries over speculative frameworks. Pin dependencies and preserve upstream licenses when importing code.
 - Keep secrets, business files, raw sessions, databases, generated skills, tools, caches, evidence payloads and worktrees outside the repository. Never print credentials or authenticated URLs.
-- Existing protected configuration locations are indexed by ../.ccagent-local/LOCAL-OPERATIONS.md outside Git. Read that index when later authorized work needs authentication; do not ask the user to resend existing credentials.
+- Resolve protected operations and feedback registry locations from the local-only Git configuration above when authorized work needs them; do not ask the user to resend existing credentials or publish those locations.
 - Run python scripts/verify.py for preparation changes. This is repository verification, not product acceptance.
 
 ## Continuous execution after the project starts
