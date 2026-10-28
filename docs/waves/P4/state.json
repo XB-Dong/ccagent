@@ -40,7 +40,10 @@
       "plan": "P4.3-PLAN.md",
       "report": "docs/audit/reports/P4.3.zh.md",
       "deployedSourceSha": "1378d2c8328fbfe4603df4dada4420f95ec34a3b",
-      "pullRequestMerged": false
+      "pullRequestMerged": false,
+      "pullRequest": "https://github.com/XB-Dong/ccagent/pull/4",
+      "pullRequestDraft": false,
+      "pullRequestBase": "main"
     }
   ],
   "feedbackRevisions": [],

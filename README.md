@@ -43,7 +43,7 @@ P4.3另完成53文件最新备份恢复，215实体/95模型请求一致，原20
 
 详见[最新 P4.3 报告](docs/audit/reports/P4.3.zh.md)、[此前补验](docs/audit/reports/SMOKE-COMPLETION-20261026.zh.md)、[项目交付报告](docs/audit/FINAL-REPORT.zh.md)及[波次报告索引](docs/audit/reports/README.md)。这些结果基于合成数据，不代表真实公司运营效果已经验收。
 
-P4.1（PR#2）和P4.2（PR#3）已合并main，随后公开隐私清理已同步。P4.3在codex/p4.3分支发布并通过精确CI，合并main状态另行记录；应用上线与Git合并分别追踪。
+P4.1（PR#2）和P4.2（PR#3）已合并main，随后公开隐私清理已同步。P4.3在codex/p4.3分支发布并通过精确CI，[PR#4](https://github.com/XB-Dong/ccagent/pull/4)已打开、尚未合并main；应用上线与Git合并分别追踪。
 
 当前已验证云端应用源码为 `1378d2c8328fbfe4603df4dada4420f95ec34a3b`。README、报告及主分支合并提交单独追踪；应用部署版本以服务健康信息和发布记录为准。服务使用 systemd，公网经 Caddy 提供 HTTPS；维护、备份和恢复步骤见[运维手册](docs/operations/runbook.md)。
 

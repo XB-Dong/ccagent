@@ -64,5 +64,8 @@
   },
   "deferred": [
     "personal_identity_and_manual_ordering_scope"
-  ]
+  ],
+  "pullRequest": "https://github.com/XB-Dong/ccagent/pull/4",
+  "pullRequestDraft": false,
+  "pullRequestBase": "main"
 }
