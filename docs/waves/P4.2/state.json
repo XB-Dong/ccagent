@@ -3,13 +3,13 @@
   "baselineSha": "57c1798f5deece4ab7e20e98e35bb54d0617370a",
   "specVersion": "p42-v1",
   "planStatus": "frozen",
-  "executionStatus": "partial",
+  "executionStatus": "verified_awaiting_release",
   "owner": "Leader",
   "entryDecision": "leader_accepted_creation_date_grouping_in_task_list_only",
   "tasks": {
     "P42-TASK-GROUPS": "integrated_offline_verified",
     "P42-REVIEW": "no_actionable_findings_23_tests_passed",
-    "P42-INTEGRATION": "offline_verified_browser_pending"
+    "P42-INTEGRATION": "browser_verified_release_pending"
   },
   "testAllowance": {
     "maxCost": null,
@@ -23,15 +23,15 @@
   "repairCounts": {},
   "verification": {
     "offline": "88_tests_types_build_verify_passed",
-    "browser": "stopped_by_tool_safety_gate_current_browser_url_unverified",
+    "browser": "passed_gpt_chrome_synthetic_actual_ui_20261028",
     "github": "exact_candidate_pushed_ci_40549684757_success_stacked_draft_pr3",
-    "deployment": "not_attempted_browser_gate_unmet",
+    "deployment": "pending_after_browser_passed",
     "staticRender": "react_ssr_red_green_passed_not_browser"
   },
-  "releaseGate": "actual_browser_verification_required_before_deployment",
+  "releaseGate": "browser_verified_ready_for_pinned_release",
   "branchCreatedAt": "2026-10-28T01:08:55.5211339+08:00",
   "frozenAt": "2026-10-28T01:10:22+08:00",
-  "updatedAt": "2026-10-27T17:23:34.857675+00:00",
+  "updatedAt": "2026-10-28T02:42:53.314060+00:00",
   "candidateImplementationSha": "1b5124955097702bb8f64177b3511f45060a6eff",
   "deployed": false,
   "productionSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e",
@@ -43,12 +43,13 @@
     "totalTokens": 0
   },
   "remainingChecks": [
-    "actual_browser_verification",
-    "user_guide_after_verification",
     "exact_artifact_authorized_deployment_and_health"
   ],
   "pullRequest": "https://github.com/XB-Dong/ccagent/pull/3",
   "pullRequestDraft": true,
   "pullRequestBase": "codex/p4.1",
-  "verifiedCandidateHeadSha": "16b0391a199da44f959ce06204f61c6b1bf4fe26"
+  "verifiedCandidateHeadSha": "16b0391a199da44f959ce06204f61c6b1bf4fe26",
+  "browserLimitations": [
+    "no_actual_mobile_device_check"
+  ]
 }

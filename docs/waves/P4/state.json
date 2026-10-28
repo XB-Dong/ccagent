@@ -7,7 +7,7 @@
   "automationKind": "heartbeat",
   "automationStatus": "ACTIVE",
   "authorizationDate": "2026-10-26",
-  "executionStatus": "partial_waiting_browser_verification",
+  "executionStatus": "verified_awaiting_release",
   "nextIteration": 3,
   "activeWaveId": "P4.2",
   "lastCheckedAt": "2026-10-27T17:06:54.798118+00:00",
@@ -24,10 +24,10 @@
     {
       "waveId": "P4.2",
       "createdLocalDate": "2026-10-28",
-      "status": "partial",
+      "status": "verified_awaiting_release",
       "plan": "P4.2-PLAN.md",
       "report": "docs/audit/reports/P4.2.zh.md",
-      "blocker": "browser_url_safety_gate"
+      "blocker": null
     }
   ],
   "feedbackRevisions": [
