@@ -185,3 +185,42 @@ test('model copy requires current source, is deterministic and follows deletion 
     f.close();
   }
 });
+
+test('copy rejects corrupt legacy timezones atomically and bounds valid model confirmations', () => {
+  const f = fixture();
+  try {
+    const source = f.store.source('synthetic', 'Copy synthetic task');
+    for (const timeZone of ['Invalid/Zone', 'A'.repeat(7000)]) {
+      const original = f.store.update(f.store.get('synthetic', f.original.id), { timeZone } as any);
+      const counts = () => ({
+        entities: f.store.db.prepare('SELECT COUNT(*) AS n FROM entities').get(),
+        receipts: f.store.db.prepare('SELECT COUNT(*) AS n FROM receipts').get(),
+      });
+      const before = counts();
+      const body = { taskId: original.id, revision: original.revision };
+      assert.throws(
+        () => f.business.mutate('synthetic', 'task-copy', { ...body, requestId: 'invalid-zone' }),
+        /INVALID_TIME_ZONE/,
+      );
+      assert.deepEqual(counts(), before);
+      assert.throws(
+        () => f.business.tool('synthetic', source.id, 'copy_task', body),
+        /INVALID_TIME_ZONE/,
+      );
+      assert.deepEqual(counts(), before);
+    }
+    const original = f.store.update(f.store.get('synthetic', f.original.id), {
+      timeZone: 'Asia/Shanghai',
+      title: '中'.repeat(200),
+      checklist: Array.from({ length: 30 }, () => '中'.repeat(300)),
+    } as any);
+    const result = f.business.tool('synthetic', source.id, 'copy_task', {
+      taskId: original.id,
+      revision: original.revision,
+    }) as any;
+    assert.equal(result.totalItems, 30);
+    assert.ok(Buffer.byteLength(JSON.stringify(result)) <= 6000);
+  } finally {
+    f.close();
+  }
+});

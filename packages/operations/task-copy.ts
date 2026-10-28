@@ -1,5 +1,6 @@
 import { Store, digest, type Source } from '../core/store.ts';
 import type { Task } from '../learning/service.ts';
+import { taskTimeZone } from './task-time.ts';
 
 function fields(body: Record<string, unknown>, allowed: string[]): void {
   if (
@@ -83,6 +84,9 @@ export class TaskCopies {
       const original = this.store.get<Task>(scope, taskId);
       if (original.kind !== 'task') throw new Error('INVALID_TASK');
       if (original.revision !== input.revision) throw new Error('REVISION_CONFLICT');
+      // Legacy data is not trusted: validate inherited fields before creating any copy records.
+      taskTimeZone(original.timeZone);
+      if (original.timeZone.length > 100) throw new Error('INVALID_TIME_ZONE');
       const replace = (text: string) =>
         input.replaceFrom === undefined
           ? text
