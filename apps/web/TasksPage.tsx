@@ -2,10 +2,11 @@ import { useState } from 'react';
 import type { Task } from '../../packages/learning/service.ts';
 import type { Snapshot } from './api.ts';
 import { Badge, Empty, Icon, SourceList, states } from './components.tsx';
-import { timeZones, timeZoneLabel } from './display.ts';
 import { TaskForm, ActualMinutesForm } from './TaskForm.tsx';
 import { plannedLabel } from './task-time.ts';
-import { groupTasksByCreatedDate } from './task-groups.ts';
+import { taskListGroups, listTimeZone } from './task-list-view.ts';
+import { TaskCopyForm } from './TaskCopyForm.tsx';
+import './p43-tasks.css';
 import './p41-tasks.css';
 import './p42-tasks.css';
 
@@ -21,11 +22,15 @@ export function TasksPage({
 }) {
   const [editor, setEditor] = useState<{ task?: Task } | null>(null);
   const [filter, setFilter] = useState('active');
-  const [viewTimeZone, setViewTimeZone] = useState('Asia/Shanghai');
+  const [selectedDate, setSelectedDate] = useState('');
+  const [copyTask, setCopyTask] = useState<Task | null>(null);
+  const [copyNotice, setCopyNotice] = useState('');
   const rows = data.tasks.filter(
     (row) => filter === 'all' || !['done', 'cancelled'].includes(row.status),
   );
-  const groups = groupTasksByCreatedDate(rows, viewTimeZone);
+  const groups = taskListGroups(data.tasks, filter, selectedDate);
+  const visibleCount = groups.reduce((count, group) => count + group.tasks.length, 0);
+  const editorOpen = !!editor || !!copyTask;
   return (
     <>
       <div className="page-heading">
@@ -34,7 +39,7 @@ export function TasksPage({
           <h1>任务清单</h1>
           <p>准备、确认、检查，也可以随时调整待办。</p>
         </div>
-        <button className="primary" disabled={busy || !!editor} onClick={() => setEditor({})}>
+        <button className="primary" disabled={busy || editorOpen} onClick={() => setEditor({})}>
           <Icon name="plus" size={17} /> 新建任务
         </button>
       </div>
@@ -47,27 +52,52 @@ export function TasksPage({
           onClose={() => setEditor(null)}
         />
       )}
+      {copyTask && (
+        <TaskCopyForm
+          key={copyTask.id}
+          task={copyTask}
+          mutate={mutate}
+          busy={busy}
+          onClose={() => setCopyTask(null)}
+          onCopied={() => {
+            setCopyTask(null);
+            setSelectedDate('');
+            setFilter('active');
+            setCopyNotice('已复制成新草稿。请找到新任务，核对后点“确认这份任务”。');
+          }}
+        />
+      )}
+      {copyNotice && (
+        <p className="panel" role="status">
+          {copyNotice}
+        </p>
+      )}
       <section className="panel p42-group-controls" aria-label="任务创建日期归组">
         <div>
-          <strong>按创建日期归组</strong>
+          <strong>按创建日期归组 · 北京时间</strong>
           <p className="metadata" id="task-grouping-description">
-            查看时区仅影响本页显示，计划时间仍按各任务的时区。编辑或完成任务不会改变创建日期。
+            本页日期和计划、完成时间统一按北京时间显示。编辑或完成任务不会改变创建日期；排期编辑仍使用任务原时区。
           </p>
         </div>
-        <label>
-          查看时区
-          <select
-            value={viewTimeZone}
-            onChange={(event) => setViewTimeZone(event.target.value)}
-            aria-describedby="task-grouping-description"
+        <div className="p43-date-controls">
+          <label>
+            创建日期
+            <input
+              type="date"
+              aria-describedby="task-grouping-description"
+              value={selectedDate}
+              onChange={(event) => setSelectedDate(event.target.value)}
+            />
+          </label>
+          <button
+            type="button"
+            className="secondary"
+            disabled={!selectedDate}
+            onClick={() => setSelectedDate('')}
           >
-            {Object.entries(timeZones).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
+            全部日期
+          </button>
+        </div>
       </section>
       <div className="tabs">
         <button
@@ -79,9 +109,9 @@ export function TasksPage({
         <button className={filter === 'all' ? 'selected' : ''} onClick={() => setFilter('all')}>
           全部记录
         </button>
-        <span>{rows.length} 个任务</span>
+        <span>{visibleCount} 个任务</span>
       </div>
-      {!rows.length ? (
+      {!rows.length && !selectedDate ? (
         <section className="panel">
           <Empty
             title="这里还没有任务"
@@ -96,14 +126,29 @@ export function TasksPage({
               <h2>{group.date ? `${group.date} 创建` : '创建日期未记录'}</h2>
               <span>{group.tasks.length} 个任务</span>
             </div>,
+            ...(group.tasks.length
+              ? []
+              : [
+                  <section className="panel" key={`empty-${group.date}`}>
+                    <Empty
+                      title="这一天没有符合条件的任务"
+                      text="可以切换日期、查看全部记录，或新建任务。"
+                      icon="tasks"
+                    />
+                  </section>,
+                ]),
             ...group.tasks.map((task) => (
               <TaskCard
                 key={`task-${task.id}`}
                 task={task}
                 mutate={mutate}
                 busy={busy}
-                editDisabled={!!editor}
+                editDisabled={editorOpen}
                 onEdit={() => setEditor({ task })}
+                onCopy={() => {
+                  setCopyNotice('');
+                  setCopyTask(task);
+                }}
               />
             )),
           ])}
@@ -118,12 +163,14 @@ function TaskCard({
   busy,
   editDisabled,
   onEdit,
+  onCopy,
 }: {
   task: Task;
   mutate: Mutate;
   busy: boolean;
   editDisabled: boolean;
   onEdit: () => void;
+  onCopy: () => void;
 }) {
   const [minutesOpen, setMinutesOpen] = useState(false);
   const active = !['done', 'cancelled'].includes(task.status);
@@ -133,13 +180,11 @@ function TaskCard({
         <h2>{task.title}</h2>
         <Badge tone={task.status === 'done' ? 'green' : ''}>{states[task.status]}</Badge>
       </div>
-      <p className="metadata">
-        {timeZoneLabel(task.timeZone)} · {plannedLabel(task)}
-      </p>
+      <p className="metadata">北京时间 · {plannedLabel({ ...task, timeZone: listTimeZone })}</p>
       {task.status === 'done' && (
         <p className="metadata">
           {task.completedAt
-            ? `完成于 ${new Date(task.completedAt).toLocaleString('zh-CN', { timeZone: task.timeZone, hour12: false })}`
+            ? `完成于 ${new Date(task.completedAt).toLocaleString('zh-CN', { timeZone: listTimeZone, hour12: false })}`
             : '历史完成记录，日期未记录'}{' '}
           · 实际用时：{task.actualMinutes == null ? '未记录' : `${task.actualMinutes} 分钟`}
         </p>
@@ -166,6 +211,9 @@ function TaskCard({
       <div className="card-footer">
         <SourceList sources={task.sources} />
         <div className="p41-actions">
+          <button className="secondary small" disabled={busy || editDisabled} onClick={onCopy}>
+            复制为新任务
+          </button>
           {active && (
             <button className="secondary small" disabled={busy || editDisabled} onClick={onEdit}>
               编辑任务
