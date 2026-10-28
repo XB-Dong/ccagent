@@ -1,0 +1,57 @@
+{
+  "waveId": "P4.2",
+  "baselineSha": "57c1798f5deece4ab7e20e98e35bb54d0617370a",
+  "specVersion": "p42-v1",
+  "planStatus": "frozen",
+  "executionStatus": "completed",
+  "owner": "Leader",
+  "entryDecision": "leader_accepted_creation_date_grouping_in_task_list_only",
+  "tasks": {
+    "P42-TASK-GROUPS": "integrated_offline_verified",
+    "P42-REVIEW": "no_actionable_findings_23_tests_passed",
+    "P42-INTEGRATION": "completed_browser_deployment_public_verification"
+  },
+  "testAllowance": {
+    "maxCost": null,
+    "maxCalls": null,
+    "maxInputTokens": null,
+    "maxOutputTokens": null,
+    "maxTotalTokens": null
+  },
+  "modelValidationDecision": "not_required_for_display_only_change_no_model_contract_change",
+  "perRootRepairLimitBeforeRediagnosis": 2,
+  "repairCounts": {},
+  "verification": {
+    "offline": "88_tests_types_build_verify_passed",
+    "browser": "passed_gpt_chrome_synthetic_actual_ui_20261028",
+    "github": "deployed_head_e5a01ac_ci_40622600201_40622595392_success_main_integration_pending",
+    "deployment": "passed_49_file_backup_isolated_restore_https_login_exact_assets",
+    "staticRender": "react_ssr_red_green_passed_not_browser"
+  },
+  "releaseGate": "satisfied_browser_and_pinned_deployment",
+  "branchCreatedAt": "2026-10-28T01:08:55.5211339+08:00",
+  "frozenAt": "2026-10-28T01:10:22+08:00",
+  "updatedAt": "2026-10-28",
+  "candidateImplementationSha": "1b5124955097702bb8f64177b3511f45060a6eff",
+  "deployed": true,
+  "productionSourceSha": "e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f",
+  "reportRef": "../../audit/reports/P4.2.zh.md",
+  "realModelUsageAdded": {
+    "calls": 0,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0
+  },
+  "remainingChecks": [],
+  "pullRequest": "https://github.com/XB-Dong/ccagent/pull/3",
+  "pullRequestDraft": true,
+  "pullRequestBase": "codex/p4.1",
+  "verifiedCandidateHeadSha": "e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f",
+  "browserLimitations": [
+    "no_actual_mobile_device_check"
+  ],
+  "completedAt": "2026-10-28",
+  "artifactSha256": "b6154b9a8394dc200b233bb39013dfde27789f22374c5f831c84658b2c9556bc",
+  "publicBrowserFollowup": "optional_final_public_view_stopped_by_physical_escape_no_claim_of_public_ui_login",
+  "feedbackCloseout": "source_deleted_tombstone_preserved_no_status_write"
+}

@@ -8,10 +8,10 @@
   "automationStatus": "ACTIVE",
   "authorizationDate": "2026-10-26",
   "executionStatus": "awaiting_next_scheduled_check",
-  "nextIteration": 2,
+  "nextIteration": 3,
   "activeWaveId": null,
-  "lastCheckedAt": "2026-10-26T16:59:49.263357+00:00",
-  "lastAllocatedLocalDate": "2026-10-27",
+  "lastCheckedAt": "2026-10-27T17:06:54.798118+00:00",
+  "lastAllocatedLocalDate": "2026-10-28",
   "iterations": [
     {
       "waveId": "P4.1",
@@ -20,11 +20,19 @@
       "plan": "P4.1-PLAN.md",
       "report": "docs/audit/reports/P4.1.zh.md",
       "deployedSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e"
+    },
+    {
+      "waveId": "P4.2",
+      "createdLocalDate": "2026-10-28",
+      "status": "completed",
+      "plan": "P4.2-PLAN.md",
+      "report": "docs/audit/reports/P4.2.zh.md",
+      "deployedSourceSha": "e5a01aceee4bd6c6faf59d1a83c019f941ac0c8f"
     }
   ],
   "feedbackRevisions": [],
   "policyRef": "README.md",
-  "lastCompletedAt": "2026-10-26T17:38:44.767586+00:00",
+  "lastCompletedAt": "2026-10-28",
   "feedbackRegistry": "operator_private_storage",
   "publicStateContainsBusinessFeedback": false
 }

@@ -2,10 +2,12 @@ import { useState } from 'react';
 import type { Task } from '../../packages/learning/service.ts';
 import type { Snapshot } from './api.ts';
 import { Badge, Empty, Icon, SourceList, states } from './components.tsx';
-import { timeZoneLabel } from './display.ts';
+import { timeZones, timeZoneLabel } from './display.ts';
 import { TaskForm, ActualMinutesForm } from './TaskForm.tsx';
 import { plannedLabel } from './task-time.ts';
+import { groupTasksByCreatedDate } from './task-groups.ts';
 import './p41-tasks.css';
+import './p42-tasks.css';
 
 export type Mutate = (action: string, body: object) => Promise<unknown>;
 export function TasksPage({
@@ -19,9 +21,11 @@ export function TasksPage({
 }) {
   const [editor, setEditor] = useState<{ task?: Task } | null>(null);
   const [filter, setFilter] = useState('active');
+  const [viewTimeZone, setViewTimeZone] = useState('Asia/Shanghai');
   const rows = data.tasks.filter(
     (row) => filter === 'all' || !['done', 'cancelled'].includes(row.status),
   );
+  const groups = groupTasksByCreatedDate(rows, viewTimeZone);
   return (
     <>
       <div className="page-heading">
@@ -43,6 +47,28 @@ export function TasksPage({
           onClose={() => setEditor(null)}
         />
       )}
+      <section className="panel p42-group-controls" aria-label="任务创建日期归组">
+        <div>
+          <strong>按创建日期归组</strong>
+          <p className="metadata" id="task-grouping-description">
+            查看时区仅影响本页显示，计划时间仍按各任务的时区。编辑或完成任务不会改变创建日期。
+          </p>
+        </div>
+        <label>
+          查看时区
+          <select
+            value={viewTimeZone}
+            onChange={(event) => setViewTimeZone(event.target.value)}
+            aria-describedby="task-grouping-description"
+          >
+            {Object.entries(timeZones).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </section>
       <div className="tabs">
         <button
           className={filter === 'active' ? 'selected' : ''}
@@ -64,17 +90,23 @@ export function TasksPage({
           />
         </section>
       ) : (
-        <div className="card-list">
-          {rows.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              mutate={mutate}
-              busy={busy}
-              editDisabled={!!editor}
-              onEdit={() => setEditor({ task })}
-            />
-          ))}
+        <div className="card-list p42-task-list">
+          {groups.flatMap((group) => [
+            <div className="p42-date-heading" key={`date-${group.date ?? 'unknown'}`}>
+              <h2>{group.date ? `${group.date} 创建` : '创建日期未记录'}</h2>
+              <span>{group.tasks.length} 个任务</span>
+            </div>,
+            ...group.tasks.map((task) => (
+              <TaskCard
+                key={`task-${task.id}`}
+                task={task}
+                mutate={mutate}
+                busy={busy}
+                editDisabled={!!editor}
+                onEdit={() => setEditor({ task })}
+              />
+            )),
+          ])}
         </div>
       )}
     </>
