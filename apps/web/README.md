@@ -5,3 +5,5 @@ React capability pages use a single authenticated API boundary. `App` coordinate
 User-facing copy is Chinese and avoids development diagnostics. `display` and `SitePicker` keep business labels readable without changing stored identifiers; `HelpPage` renders and downloads the short guide from `docs/operations/USER-GUIDE.zh.md`. Model availability remains truthful; presentation changes never alter the server-side budget.
 
 Run `pnpm dev` against the configured backend origin, or `pnpm build` for the server's static bundle. Browser evidence records actual login, persistence, activity stages, report preview/import, inventory/allocation/shipment and advertising flows separately from model probes.
+
+Task list dates and timestamps use Beijing time; `task-list-view.ts` handles creation-date/status filtering and copy preview. `TaskCopyForm` freezes the original revision and retry identity, then creates a draft through task-copy. TaskForm and WorkCalendar retain their existing scheduling timezone rules. Test entry: `tests/task-list-view.test.ts`.

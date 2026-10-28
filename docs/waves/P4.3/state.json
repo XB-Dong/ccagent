@@ -3,16 +3,28 @@
   "baselineSha": "49590bec0e24bd689d107aeb289c0492e51aff84",
   "specVersion": "p43-v1",
   "planStatus": "frozen",
-  "executionStatus": "executing",
+  "executionStatus": "completed",
   "owner": "Leader",
   "createdLocalDate": "2026-10-29",
   "frozenAt": "2026-10-28T17:08:36.581386+00:00",
   "entryDecision": "leader_accepted_scoped_copy_and_beijing_list_deferred_personal_ordering",
   "tasks": {
-    "P43-SERVICE": "ready",
-    "P43-UI": "ready",
-    "P43-REVIEW": "ready",
-    "P43-INTEGRATION": "pending"
+    "P43-SERVICE": {
+      "owner": "/root/p43_service",
+      "status": "integrated_verified"
+    },
+    "P43-UI": {
+      "owner": "/root/p43_ui",
+      "status": "integrated_verified"
+    },
+    "P43-REVIEW": {
+      "owner": "/root/p43_review",
+      "status": "all_blocking_findings_closed"
+    },
+    "P43-INTEGRATION": {
+      "owner": "Leader",
+      "status": "published_verified"
+    }
   },
   "testAllowance": {
     "maxCost": null,
@@ -22,16 +34,35 @@
     "maxTotalTokens": null
   },
   "perRootRepairLimitBeforeRediagnosis": 2,
-  "repairCounts": {},
-  "verification": {},
-  "deployed": false,
-  "remainingChecks": [
-    "offline",
-    "independent_review",
-    "browser",
-    "live_model",
-    "ci",
-    "backup_restore",
-    "deployment"
+  "repairCounts": {
+    "P43-SERVICE": 1
+  },
+  "verification": {
+    "offline": "100_tests_types_build_verify_public_passed",
+    "independentReview": "15_related_tests_and_types_no_open_blocker",
+    "browser": "passed_gpt_chrome_synthetic_local_ui",
+    "liveModel": "passed_actual_get_two_pages_copy_completed_reply",
+    "github": "source_pushed_ci_40734489016_success",
+    "deployment": "passed_backup_53_files_restore_public_https_api",
+    "publicBrowser": "not_claimed_public_verified_with_https_api"
+  },
+  "deployed": true,
+  "remainingChecks": [],
+  "updatedAt": "2026-10-28T17:33:49.235609+00:00",
+  "completedAt": "2026-10-28T17:33:49.235609+00:00",
+  "productionSourceSha": "1378d2c8328fbfe4603df4dada4420f95ec34a3b",
+  "verifiedCandidateHeadSha": "1378d2c8328fbfe4603df4dada4420f95ec34a3b",
+  "artifactSha256": "5ab915815d8a0306c8765d499754d38fca03d775a862c91302114fb2bfb16987",
+  "releaseGate": "satisfied_offline_review_browser_model_ci_restore_public",
+  "reportRef": "../../audit/reports/P4.3.zh.md",
+  "pullRequestMerged": false,
+  "realModelUsageAdded": {
+    "calls": 4,
+    "inputTokens": 6740,
+    "outputTokens": 329,
+    "totalTokens": 7069
+  },
+  "deferred": [
+    "personal_identity_and_manual_ordering_scope"
   ]
 }
