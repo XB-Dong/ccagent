@@ -1,0 +1,52 @@
+{
+  "waveId": "P4.1",
+  "baselineSha": "d878c0e97ab64663d81965fbc2977c9ecfb908a8",
+  "specVersion": "p41-v1",
+  "planStatus": "frozen",
+  "executionStatus": "completed",
+  "owner": "Leader",
+  "entryDecision": "leader_reviewed_scope_and_latest_release_evidence",
+  "entryAt": "2026-10-27T01:03:44.5760159+08:00",
+  "tasks": {
+    "P41-TASK": "integrated_verified",
+    "P41-TASK-UI": "integrated_verified",
+    "P41-NOTES": "integrated_verified",
+    "P41-INTEGRATION": "verified_released",
+    "P41-REVIEW": "three_findings_fixed_reverified"
+  },
+  "testAllowance": {
+    "maxCost": null,
+    "maxCalls": null,
+    "maxInputTokens": null,
+    "maxOutputTokens": null,
+    "maxTotalTokens": null
+  },
+  "perRootRepairLimitBeforeRediagnosis": 2,
+  "repairCounts": {
+    "task-null-timezone": 1,
+    "note-history-isolation": 1,
+    "note-old-reader-marker": 1,
+    "task-create-retry": 1,
+    "actual-minutes-revision": 1
+  },
+  "verification": {
+    "offline": "82_pass_types_build_verify",
+    "browser": "actual_local_crud_calendar_two_tab_conflict_and_public_login_navigation_passed",
+    "model": "cloud_isolated_same_source_live_tool_complete_2_calls",
+    "github": "source_pushed_two_exact_ci_success_pr2_open",
+    "deployment": "public_https_dccae6d_config_password_data_preserved",
+    "recovery": "43_files_34_entity_groups_three_accounts_integrity_and_code_rollback_passed"
+  },
+  "updatedAt": "2026-10-26T17:26:15.353294+00:00",
+  "completedAt": "2026-10-26T17:38:44.767586+00:00",
+  "deployedSourceSha": "dccae6d138b6ed50aec48139c7ffde059e0e694e",
+  "artifactSha256": "043c09a56a09533b0afb03d8c30e8440f8881b27a9c87e9464a1b997880313df",
+  "reportRef": "../../audit/reports/P4.1.zh.md",
+  "realModelUsageAdded": {
+    "calls": 2,
+    "inputTokens": 2306,
+    "outputTokens": 177,
+    "totalTokens": 2483
+  },
+  "pullRequest": "https://github.com/XB-Dong/ccagent/pull/2"
+}

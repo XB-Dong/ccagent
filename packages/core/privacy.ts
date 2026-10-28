@@ -12,7 +12,13 @@ function references(value: unknown, ids: Set<string>): boolean {
     Object.entries(value).some(([key, item]) => key !== 'sessionId' && references(item, ids))
   );
 }
-export function eraseClosure(db: DatabaseSync, scope: string, id: string, at: string): void {
+export function eraseClosure(
+  db: DatabaseSync,
+  scope: string,
+  id: string,
+  at: string,
+  retireHistory = true,
+): void {
   const ids = new Set([id]);
   const rows = db
     .prepare('SELECT id,payload FROM entities WHERE scope=?')
@@ -20,7 +26,11 @@ export function eraseClosure(db: DatabaseSync, scope: string, id: string, at: st
     .map((row) => ({ id: String(row.id), data: JSON.parse(String(row.payload)) }));
   // History is conservatively retired so an old native context cannot revive erased facts.
   for (const row of rows)
-    if (['summary', 'conversation'].includes(row.data.kind) && row.data.createdAt <= at)
+    if (
+      retireHistory &&
+      ['summary', 'conversation'].includes(row.data.kind) &&
+      row.data.createdAt <= at
+    )
       ids.add(row.id);
   let changed = true;
   while (changed) {
@@ -50,10 +60,12 @@ export function applyPrivacyLedger(db: DatabaseSync, path: string): void {
   if (!existsSync(path)) return;
   for (const line of readFileSync(path, 'utf-8').trim().split('\n').filter(Boolean)) {
     const row = JSON.parse(line) as { scope: string; id: string; action: string; at: string };
-    const eventId = createHash('sha256').update(`closure-v2:${line}`).digest('hex');
+    // Old readers marked unknown actions applied; the new note action needs its own namespace.
+    const version = row.action === 'delete-note' ? 'closure-v3-note' : 'closure-v2';
+    const eventId = createHash('sha256').update(`${version}:${line}`).digest('hex');
     if (db.prepare('SELECT id FROM privacy_applied WHERE id=?').get(eventId)) continue;
-    if (row.action === 'delete') {
-      eraseClosure(db, row.scope, row.id, row.at);
+    if (row.action === 'delete' || row.action === 'delete-note') {
+      eraseClosure(db, row.scope, row.id, row.at, row.action !== 'delete-note');
       const root = resolve(dirname(path), 'exports');
       const directory = resolve(root, row.scope);
       if (!directory.startsWith(root + '/') && !directory.startsWith(root + '\\'))

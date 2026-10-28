@@ -1,4 +1,5 @@
 import type { Task, Feedback, Memory, Skill } from '../../packages/learning/service.ts';
+import type { Note } from '../../packages/operations/note-types.ts';
 import type { Conversation } from '../server/chat.ts';
 import type { Activity } from '../../packages/operations/activities.ts';
 import type { ReportBatch } from '../../packages/operations/reports.ts';
@@ -26,6 +27,7 @@ export type Snapshot = {
   }[];
   reports: ReportBatch[];
   tasks: Task[];
+  notes: Note[];
   feedback: Feedback[];
   memories: Memory[];
   skills: Skill[];
@@ -89,6 +91,16 @@ const errorLabels: Record<string, string> = {
   EXPORT_REDACTION_REQUIRED: '导出内容需要先移除敏感信息',
   SKILL_REVOKED_OR_UNAVAILABLE: '这条经验已停用或不再适用',
   INVALID_TASK: '请填写任务标题和至少一个检查项',
+  INVALID_CHECKLIST: '请核对检查清单，每一项都需要填写内容',
+  TASK_NOT_EDITABLE: '完成或取消的任务保留原流程，请新建任务；已完成任务仍可修正实际用时',
+  INVALID_ACTUAL_MINUTES: '实际用时请填写 0 到 1440 之间的整数分钟，也可以留空',
+  INVALID_TIME_RANGE: '结束时间需要晚于开始时间',
+  TASK_TIME_ORDER: '结束时间需要晚于开始时间，请检查日期和时间',
+  TIME_ZONE_SCHEDULE_REQUIRED: '修改时区后，请重新选择计划时间，或清除原计划时间',
+  TASK_END_DUE_MISMATCH: '计划结束时间不一致，请重新选择结束日期和时间',
+  INVALID_TIME: '日期或时间无效，请重新选择',
+  INVALID_TEXT: '请填写有效内容，并检查是否超过页面提示的字数限制',
+  INVALID_NOTE: '请填写笔记标题和正文，标题最多 200 字，正文最多 10000 字',
   SITE_TIME_MISMATCH: '时间偏移与站点时区不一致，请检查夏令时及当地时间',
   INVALID_ACTIVITY: '请检查活动起止时间、店铺和链接',
   MISSING_VALUE: '报表包含缺失值，请补齐，缺失不会按零处理',
@@ -157,6 +169,7 @@ export const empty: Snapshot = {
   reminders: [],
   reports: [],
   tasks: [],
+  notes: [],
   feedback: [],
   memories: [],
   skills: [],
