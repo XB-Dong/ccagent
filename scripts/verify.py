@@ -14,7 +14,9 @@ REQUIRED = (
     "README.md",
     "CONSTITUTION.md",
     "AGENTS.md",
-    "P0-PLAN.md",
+    "docs/waves/P0/PLAN.md",
+    "docs/README.md",
+    "docs/waves/README.md",
     "docs/product/REQUIREMENTS.zh.md",
     "docs/product/changes/README.md",
     "docs/product/changes/2026-10-26.md",
@@ -69,6 +71,21 @@ def main() -> int:
     for name in REQUIRED:
         if not (ROOT / name).is_file():
             errors.append(f"Missing required artifact: {name}")
+    for plan in ROOT.glob("P*-PLAN.md"):
+        errors.append(f"Wave plans belong in docs/waves/<wave>/PLAN.md: {plan.name}")
+    series = json.loads((ROOT / "docs/waves/P4/state.json").read_text(encoding="utf-8"))
+    waves = {"P0", "P1", "P2", "P3"}
+    for iteration in series["iterations"]:
+        wave = iteration["waveId"]
+        if not re.fullmatch(r"P\d+(?:\.\d+)?", wave):
+            errors.append("Invalid wave ID in the iteration registry")
+            continue
+        waves.add(wave)
+        if iteration.get("plan") != f"docs/waves/{wave}/PLAN.md":
+            errors.append(f"Noncanonical plan path for {wave}")
+    for wave in sorted(waves):
+        if not (ROOT / f"docs/waves/{wave}/PLAN.md").is_file():
+            errors.append(f"Missing wave plan: {wave}")
     files = repository_files()
     requirements = ROOT / "docs/product/REQUIREMENTS.zh.md"
     known_ids = set(REQUIREMENT_ID.findall(requirements.read_text(encoding="utf-8")))

@@ -1,6 +1,6 @@
 # P4.2 派发任务与验收
 
-冻结规格：[p42-v1](../../../specs/contracts/p42-v1.md)；计划：[P4.2](../../../P4.2-PLAN.md)。精确 baselineSha 在 state.json；派发消息重复该 SHA、路径、依赖与验收。Owner 的实际 Agent 标识在派发后登记，未运行不伪填结果。
+冻结规格：[p42-v1](../../../specs/contracts/p42-v1.md)；计划：[P4.2](PLAN.md)。精确 baselineSha 在 state.json；派发消息重复该 SHA、路径、依赖与验收。Owner 的实际 Agent 标识在派发后登记，未运行不伪填结果。
 
 | 根任务 | 允许写入/依赖 | 可观察验收与交付 |
 | --- | --- | --- |

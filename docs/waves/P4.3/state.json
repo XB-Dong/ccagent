@@ -42,7 +42,7 @@
     "independentReview": "15_related_tests_and_types_no_open_blocker",
     "browser": "passed_gpt_chrome_synthetic_local_ui",
     "liveModel": "passed_actual_get_two_pages_copy_completed_reply",
-    "github": "source_pushed_ci_40734489016_success",
+    "github": "pr4_merged_main_fast_forward_5394d1a_prior_precise_ci_success",
     "deployment": "passed_backup_53_files_restore_public_https_api",
     "publicBrowser": "not_claimed_public_verified_with_https_api"
   },
@@ -55,7 +55,7 @@
   "artifactSha256": "5ab915815d8a0306c8765d499754d38fca03d775a862c91302114fb2bfb16987",
   "releaseGate": "satisfied_offline_review_browser_model_ci_restore_public",
   "reportRef": "../../audit/reports/P4.3.zh.md",
-  "pullRequestMerged": false,
+  "pullRequestMerged": true,
   "realModelUsageAdded": {
     "calls": 4,
     "inputTokens": 6740,
@@ -67,5 +67,6 @@
   ],
   "pullRequest": "https://github.com/XB-Dong/ccagent/pull/4",
   "pullRequestDraft": false,
-  "pullRequestBase": "main"
+  "pullRequestBase": "main",
+  "mergeCommitSha": "5394d1a11dcc8b9cddd933e5c34fb4da095f6005"
 }

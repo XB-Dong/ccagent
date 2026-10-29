@@ -17,17 +17,17 @@
 ## 每波进入流程
 
 1. 核对本波需求、验收证据、未完成项、累计修复次数和下一波依赖，生成本波报告。
-2. 生成下一波对应的 `P1-PLAN.md`、`P2-PLAN.md` 或 `P3-PLAN.md`，按 P0 结构写清目标/非目标、需求 ID、架构/契约、任务及路径、验收、基准 SHA、预算/重试与停止条件；同时建立对应 `docs/waves/Pn/` 状态和自包含任务包。
+2. 生成下一波对应的 `docs/waves/P1/PLAN.md`、`docs/waves/P2/PLAN.md` 或 `docs/waves/P3/PLAN.md`，按 P0 结构写清目标/非目标、需求 ID、架构/契约、任务及路径、验收、基准 SHA、预算/重试与停止条件；同时建立对应 `docs/waves/Pn/` 状态和自包含任务包。
 3. Leader 自行审阅并冻结可执行基线，记录进入决定和依赖检查；需要独立审核的技术门槛仍执行，不以人类逐波审批为前置。
 4. 在已授权范围内直接执行，进行本波测试、审核、修复和回归；后续计划不存在或依赖未满足时不能跳过准备直接写代码。
 
-详细计划已生成：[P1](P1-PLAN.md)、[P2](P2-PLAN.md)、[P3](P3-PLAN.md)，各自规格/任务/状态随计划可查。计划成熟状态为 draft → leader_reviewed → frozen → executing → completed/partial/blocked，不设置逐波 waiting_human_approval 状态。
+详细计划已生成：[P1](docs/waves/P1/PLAN.md)、[P2](docs/waves/P2/PLAN.md)、[P3](docs/waves/P3/PLAN.md)，各自规格/任务/状态随计划可查。计划成熟状态为 draft → leader_reviewed → frozen → executing → completed/partial/blocked，不设置逐波 waiting_human_approval 状态。
 
 ## P3 之后的每日迭代
 
 用户于 2026-10-26 明确授权：每天北京时间 01:00 在当前聊天唤醒 Leader，检查 cc 当前有效建议，自主形成 P4.x 计划并按规范推进多 Agent 开发。每个实际新波次依次编号 P4.1、P4.2、P4.3；无新内容只记录检查，未完成则沿原编号续跑，不按日历日期机械增加编号。首次计划于定时触发时产生，本次配置不等于已开始 P4.1。
 
-每波先写对应根目录 `P4.x-PLAN.md` 和 `docs/waves/P4.x/` 规格引用、验收矩阵、自包含任务包、状态、Leader 冻结/进入决定，再派发。Leader 负责需求分流、契约、集成和发布决定；开发 Agent 按所有权分工，独立审核 Agent 只读检查，实际验收与发现处置留证。按任务依赖决定并行度，不为形式创建空角色；并行写入用独立 worktree。明确的范围内建议不再等待逐条人工审批，撤回、重复、已交付和测试反馈不纳入新开发，歧义或权限扩大项单独保留。
+每波先写 `docs/waves/P4.x/PLAN.md`，并在 `docs/waves/P4.x/` 保存规格引用、验收矩阵、自包含任务包、状态、Leader 冻结/进入决定，再派发。Leader 负责需求分流、契约、集成和发布决定；开发 Agent 按所有权分工，独立审核 Agent 只读检查，实际验收与发现处置留证。按任务依赖决定并行度，不为形式创建空角色；并行写入用独立 worktree。明确的范围内建议不再等待逐条人工审批，撤回、重复、已交付和测试反馈不纳入新开发，歧义或权限扩大项单独保留。
 
 详细执行、幂等、报告及运行条件见 [P4 规则](docs/waves/P4/README.md)；编号登记见 [P4 状态](docs/waves/P4/state.json)。不得修改历史 P0–P3 状态来假称旧缺口当时已通过；依据最新报告核对是否已关闭，仍未关闭的强制依赖先承接。
 

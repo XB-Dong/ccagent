@@ -21,7 +21,7 @@ Leader 自审：用户要求收束 P4.2，随后指定 GPT Chrome 补测。通�
 | apps/web/TasksPage.tsx、task-groups.ts、p42-tasks.css | 单开发 Agent：按 createdAt 在明确查看时区归组，日期新到旧；保留状态筛选和所有任务操作 |
 | tests/task-groups.test.ts | 行为 Red/Green：跨日/时区、Rome 夏令时、完成/编辑不改创建归属、组内实际时刻排序、无有效日期独立归组、不修改原数据 |
 | docs/product/changes/2026-10-28.md、REQUIREMENTS.zh.md | Leader 先日期采纳再更新 CC-TASK-001 版本2，保留版本1 |
-| P4.2-PLAN.md、specs/contracts/p42-v1.md、docs/waves/P4.2/、P4/state.json | Leader 计划/冻结/精确派发基准、验收、状态、独立审核和报告 |
+| docs/waves/P4.2/PLAN.md、specs/contracts/p42-v1.md、docs/waves/P4.2/、P4/state.json | Leader 计划/冻结/精确派发基准、验收、状态、独立审核和报告 |
 | README.md、USER-GUIDE、报告及索引 | Leader 说明创建归组与完成日历的区别，精确发布版本与真实证据 |
 
 依赖 Task.createdAt（服务端创建后不可改）、既有 calendarDay/timeZones、TaskForm/ActualMinutesForm、Snapshot；不改接口、数据库、模型提示/工具或权限。不能用 dueAt、updatedAt、completedAt 替代创建日期，未知日期单列。单开发 worktree 隔离，另设只读审核，Leader 集成与发布；无多写者冲突。纯展示变更不需要新增 DeepSeek 请求，必要测试无累计额度上限但不做无意义付费。验证为相关行为/全离线、类型/构建、实际浏览器、精确 CI、既有主机备份/固定产物发布和回退准备。Windows 界面改用当前 Computer Use 工具，原 CUA 不可用不冒称已操作。
@@ -38,7 +38,7 @@ Leader 于首次定时检查只读读取生产 main 反馈：2 条有效、1 条
 | packages/operations/notes.ts、note-types.ts、apps/web/NotesPage.tsx、p41-notes.css | 一位笔记 Agent 单写；手动学习记录独立于记忆/Skill，不进入模型上下文 |
 | apps/server/business.ts、apps/web/App.tsx、api.ts | Leader 集成领域动作、快照、导航和错误提示，维持鉴权/范围/修订 |
 | tests/task-edit.test.ts、task-time.test.ts、notes.test.ts、p41-api.test.ts | 分别覆盖领域、夏令时/转换、笔记与实际 HTTP/重启持久化 |
-| docs/product/changes/2026-10-27.md、REQUIREMENTS.zh.md、P4.1-PLAN.md、specs/contracts/p41-v1.md、docs/waves/P4.1/ | 先日期采纳，再计划/规格/任务/验收/状态与报告 |
+| docs/product/changes/2026-10-27.md、REQUIREMENTS.zh.md、docs/waves/P4.1/PLAN.md、specs/contracts/p41-v1.md、docs/waves/P4.1/ | 先日期采纳，再计划/规格/任务/验收/状态与报告 |
 
 复用 Store 乐观锁、隐私删除、任务状态与现有 CSS。并行作者必须独立 worktree，以精确冻结 SHA 为基准；Leader 单写契约/集成。先领域行为 Red 再 Green，旧 55 测试回归、类型/构建、浏览器和必要真实模型联调；日历计划时长不能伪作实际，未知完成日不臆造。风险为夏令时歧义、旧数据保留、已成功流程被编辑污染、重复完成派生经验和笔记删除恢复；已纳入契约与审核。仅合成测试，不新增业务数据许可或外部平台写入。
 
@@ -125,7 +125,7 @@ Leader已审阅：用户明确要求8位访问密码，需要调整`apps/server/
 | File                                                 | Purpose                      | Changes Needed                    |
 | ---------------------------------------------------- | ---------------------------- | --------------------------------- |
 | README.md / CONSTITUTION.md / AGENTS.md              | 入口、长期约束、当前执行规则 | 新建 cc 项目专用内容              |
-| P0-PLAN.md / NEXT-WAVES.md                           | P0 提案与后续依赖            | 分开准备状态与实施状态            |
+| docs/waves/P0/PLAN.md / NEXT-WAVES.md                           | P0 提案与后续依赖            | 分开准备状态与实施状态            |
 | specs/product.md / specs/acceptance.md               | 需求与验收追踪               | 纳入既有业务及新增自适应要求      |
 | specs/architecture.md / specs/adaptive-learning.md   | Harness 扩展与沉淀架构       | 标明复用、扩展和待验证点          |
 | specs/contracts/domain.md                            | 状态、数据、错误和幂等契约   | 先定领域约束，不编造上游接口      |

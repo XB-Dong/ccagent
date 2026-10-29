@@ -4,6 +4,8 @@
 
 **当前状态（2026-10-29）：P4.3 已上线，100 项离线测试通过。新增清单预览复制、标识替换、北京时间任务分组和日期筛选，实际页面、真实模型和公网接口验证通过。** 实际公司数据、外部平台接口和业务效果仍需后续验证。
 
+文档从[总导航](docs/README.md)进入；各波计划、任务和验收统一收在所属波次目录。
+
 ## 打开使用
 
 先按下方“本地运行”启动，再打开 `http://127.0.0.1:4310`。自行部署后的访问地址和密码由维护者私下提供。仓库中的域名、IP 和服务器目录均为示例，不提供公共演示服务。
@@ -43,7 +45,7 @@ P4.3另完成53文件最新备份恢复，215实体/95模型请求一致，原20
 
 详见[最新 P4.3 报告](docs/audit/reports/P4.3.zh.md)、[此前补验](docs/audit/reports/SMOKE-COMPLETION-20261026.zh.md)、[项目交付报告](docs/audit/FINAL-REPORT.zh.md)及[波次报告索引](docs/audit/reports/README.md)。这些结果基于合成数据，不代表真实公司运营效果已经验收。
 
-P4.1（PR#2）和P4.2（PR#3）已合并main，随后公开隐私清理已同步。P4.3在codex/p4.3分支发布并通过精确CI，[PR#4](https://github.com/XB-Dong/ccagent/pull/4)已打开、尚未合并main；应用上线与Git合并分别追踪。
+P4.1（PR#2）和P4.2（PR#3）已合并main，随后公开隐私清理已同步。P4.3在codex/p4.3分支发布并通过精确CI，[PR#4](https://github.com/XB-Dong/ccagent/pull/4)已合并main（5394d1a）；应用上线与Git合并分别追踪。
 
 当前已验证云端应用源码为 `1378d2c8328fbfe4603df4dada4420f95ec34a3b`。README、报告及主分支合并提交单独追踪；应用部署版本以服务健康信息和发布记录为准。服务使用 systemd，公网经 Caddy 提供 HTTPS；维护、备份和恢复步骤见[运维手册](docs/operations/runbook.md)。
 
@@ -117,7 +119,7 @@ pnpm server
 | 怎样维护、备份、恢复和配置域名 | [运维手册](docs/operations/runbook.md) · [公网访问](docs/operations/PUBLIC-ACCESS.zh.md)                             |
 | 如何节约模型调用               | [测试策略](docs/testing/deepseek-budget.md)                                                                          |
 | 功能契约与原始验收设计         | [验收矩阵](specs/acceptance.md) · [领域契约](specs/contracts/domain.md)                                              |
-| 波次计划与历史过程             | [P0](P0-PLAN.md) · [P1](P1-PLAN.md) · [P2](P2-PLAN.md) · [P3](P3-PLAN.md) · [报告索引](docs/audit/reports/README.md) |
+| 波次计划与历史过程             | [波次计划索引](docs/waves/README.md) · [报告索引](docs/audit/reports/README.md) |
 | 上游与同类项目参考             | [官方运行框架调研](docs/references/deepseek-harness.md) · [同类项目](docs/references/同类项目.md)                    |
 
 历史计划和早期状态保留当时事实；当前部署与验证结果以最新维护报告为准。业务需求文档与工程宪法分开维护，新增需求按日期追加。

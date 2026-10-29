@@ -7,7 +7,7 @@ Repair allowance: two directed repairs per diagnosed cause, cumulative across wa
 Spec version: 0.2.0 R0 contract frozen by Leader for budget and controlled SDK integration; ADR 0004 defines the selected seam. Other business behavior remains gated by its packet and reviewed contract.
 
 Requirements: CC-HARNESS-001, CC-ENTRY-001, CC-MEMORY-001, CC-SKILL-001.
-Read P0-PLAN.md, specs/architecture.md, specs/adaptive-learning.md, specs/contracts/domain.md, specs/acceptance.md and docs/references/upstream-baseline.json.
+Read docs/waves/P0/PLAN.md, specs/architecture.md, specs/adaptive-learning.md, specs/contracts/domain.md, specs/acceptance.md and docs/references/upstream-baseline.json.
 
 API quota: follow docs/testing/deepseek-budget.md. Implement the shared preflight call/token guard before live probes; test it with a counting fake transport. Enable only a minimal live text/tool sample within the configured wave budget, record usage and sanitized replay, and hand evidence to Acceptance instead of repeating the same probe. Fault-inject timeout/429/cancellation offline. Budget exhaustion blocks further paid calls, not independent offline work.
 
